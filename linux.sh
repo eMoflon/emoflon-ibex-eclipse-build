@@ -31,7 +31,7 @@ install_packages () {
 }
 
 if [[ ! -f "./$ARCHIVE_FILE" ]]; then
-	wget https://ftp.fau.de/eclipse/technology/epp/downloads/release/$VERSION/R/$ARCHIVE_FILE
+	wget -q https://ftp.fau.de/eclipse/technology/epp/downloads/release/$VERSION/R/$ARCHIVE_FILE
 fi
 
 rm -rf ./eclipse/*
