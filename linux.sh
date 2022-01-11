@@ -18,7 +18,7 @@ parse_package_list () {
 	OUTPUT=""
 	while IFS= read -r line
 	do
-        	OUTPUT+=$line","
+        OUTPUT+=$line","
 	done < "$1"
 	echo "$OUTPUT"
 }
@@ -31,12 +31,15 @@ install_packages () {
 }
 
 if [[ ! -f "./$ARCHIVE_FILE" ]]; then
+	echo "=> Downloading eclipse $VERSION archive."
 	wget -q https://ftp.fau.de/eclipse/technology/epp/downloads/release/$VERSION/R/$ARCHIVE_FILE
 fi
 
+echo "=> Clean-up eclipse folder and untar."
 rm -rf ./eclipse/*
 tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz
 
+echo "=> Install eclipse plug-ins."
 install_packages "http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/" "./packages/xtext-dependencies.list"
 install_packages "http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/" "./packages/xtext-packages.list"
 install_packages "http://hallvard.github.io/plantuml/" "./packages/plantuml-packages.list"
@@ -51,7 +54,8 @@ install_packages "https://download.eclipse.org/releases/2021-12" "./packages/the
 install_packages "https://www.codetogether.com/updates/ci/" "./packages/theme-dependencies2.list"
 install_packages "https://www.genuitec.com/updates/devstyle/ci/" "./packages/theme-packages.list"
 
+echo "=> Clean-up eclipse.zip and create new archive."
 rm -f ./eclipse.zip
-zip -r eclipse.zip eclipse
+zip -q -r eclipse.zip eclipse
 
 echo "=> Build finished."
