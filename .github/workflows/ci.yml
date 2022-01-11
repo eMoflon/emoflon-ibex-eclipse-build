@@ -1,0 +1,10 @@
+name: GitHub Actions Demo
+on: [push]
+jobs:
+  build-linux:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - run: echo "Started CI build (Eclipse Linux eMoflon)."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - run: ./linux.sh
