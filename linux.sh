@@ -51,4 +51,7 @@ install_packages "https://download.eclipse.org/releases/2021-12" "./packages/the
 install_packages "https://www.codetogether.com/updates/ci/" "./packages/theme-dependencies2.list"
 install_packages "https://www.genuitec.com/updates/devstyle/ci/" "./packages/theme-packages.list"
 
+rm -f ./eclipse.zip
+zip -r eclipse.zip eclipse
+
 echo "=> Build finished."
