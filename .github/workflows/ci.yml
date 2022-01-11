@@ -7,4 +7,10 @@ jobs:
       - run: echo "Started CI build (Eclipse Linux eMoflon)."
       - name: Check out repository code
         uses: actions/checkout@v2
-      - run: chmod +x linux.sh && ./linux.sh
+      - name: Run build script
+        run: chmod +x linux.sh && ./linux.sh
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Eclipse Linux eMoflon
+          path: eclipse.zip
