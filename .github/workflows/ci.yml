@@ -4,7 +4,8 @@ jobs:
   build-linux:
     runs-on: [self-hosted, linux, x64]
     steps:
-      - run: echo "Started CI build (Eclipse Linux eMoflon)."
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon Linux)."
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Run build script
@@ -12,5 +13,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Eclipse Linux eMoflon
-          path: eclipse.zip
+          name: eclipse-emoflon-linux-user.zip
+          path: eclipse-emoflon-linux-user.zip

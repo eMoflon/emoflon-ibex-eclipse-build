@@ -8,6 +8,7 @@ set -e
 
 VERSION="2021-12"
 ARCHIVE_FILE="eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz"
+OUTPUT_FILE="eclipse-emoflon-linux-user.zip"
 
 #
 # utils
@@ -48,8 +49,8 @@ install_packages "http://www.kermeta.org/k2/update" "./packages/kermeta-packages
 install_packages "https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/" "./packages/emoflon-packages.list"
 install_packages "https://www.genuitec.com/updates/devstyle/ci/" "./packages/theme-packages.list"
 
-echo "=> Clean-up eclipse.zip and create new archive."
-rm -f ./eclipse.zip
-zip -q -r eclipse.zip eclipse
+echo "=> Clean-up old archives and create new archive."
+rm -f ./$OUTPUT_FILE
+zip -q -r $OUTPUT_FILE eclipse
 
 echo "=> Build finished."
