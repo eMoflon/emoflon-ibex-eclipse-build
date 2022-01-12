@@ -8,7 +8,7 @@ set -e
 
 VERSION="2021-12"
 ARCHIVE_FILE="eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz"
-OUTPUT_FILE="eclipse-emoflon-linux-user.zip"
+OUTPUT_FILE_PREFIX="eclipse-emoflon-linux"
 MIRROR="https://ftp.fau.de"
 UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://download.eclipse.org/viatra/updates/release/latest,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/2021-12,https://www.codetogether.com/updates/ci/"
 
@@ -60,8 +60,10 @@ done
 
 if [[ "$MODE" = "user" ]]; then
 	INSTALL_EMOFLON=1
+	OUTPUT_FILE="$OUTPUT_FILE_PREFIX-user.zip"
 elif [[ "$MODE" = "dev" ]]; then
 	INSTALL_EMOFLON=0
+	OUTPUT_FILE="$OUTPUT_FILE_PREFIX-dev.zip"
 else
 	echo "=> Mode argument invalid."; exit 1 ;
 fi
