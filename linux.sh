@@ -46,12 +46,37 @@ if [[ ! -f "./$ARCHIVE_FILE" ]]; then
 	wget -q $MIRROR/eclipse/technology/epp/downloads/release/$VERSION/R/$ARCHIVE_FILE
 fi
 
+# Parse arguments
+if [[ -z "$1" ]]; then
+	echo "No parameter(s) given. Exit."; exit 1 ;
+fi
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -m|--mode) MODE="$2"; shift ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+done
+
+if [[ "$MODE" = "user" ]]; then
+	INSTALL_EMOFLON=1
+elif [[ "$MODE" = "dev" ]]; then
+	INSTALL_EMOFLON=0
+else
+	echo "=> Mode argument invalid."; exit 1 ;
+fi
+
 echo "=> Clean-up Eclipse folder and untar."
 rm -rf ./eclipse/*
 tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz
 
 echo "=> Install Eclipse plug-ins."
 for p in ${ORDER[@]}; do
+	# Check if eMoflon packages must be skipped (for dev builds).
+	if [[ "$p" = "emoflon" ]] && [[ $INSTALL_EMOFLON -eq 0 ]]; then
+		echo "=> Skipping plug-in: $p."
+		continue
+	fi
     echo "=> Installing plug-in: $p."
     install_packages "$UPDATESITES" "./packages/$p-packages.list"
 done

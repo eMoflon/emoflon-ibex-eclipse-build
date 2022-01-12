@@ -1,17 +1,34 @@
 name: Build Eclipse eMoflon
 on: [push]
 jobs:
-  build-linux:
+  # Build Eclipse eMoflon Linux user
+  build-linux-user:
     runs-on: [self-hosted, linux, x64]
     steps:
       - name: Start message
-        run: echo "Started CI build (Eclipse eMoflon Linux)."
+        run: echo "Started CI build (Eclipse eMoflon Linux user)."
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Run build script
-        run: chmod +x linux.sh && ./linux.sh
+        run: chmod +x linux.sh && ./linux.sh -m user
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: eclipse-emoflon-linux-user.zip
+          name: eclipse-emoflon-linux-user
           path: eclipse-emoflon-linux-user.zip
+
+  # Build Eclipse eMoflon Linux dev
+  build-linux-dev:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon Linux dev)."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Run build script
+        run: chmod +x linux.sh && ./linux.sh -m dev
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-linux-dev
+          path: eclipse-emoflon-linux-dev.zip
