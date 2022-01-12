@@ -40,18 +40,12 @@ rm -rf ./eclipse/*
 tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz
 
 echo "=> Install eclipse plug-ins."
-install_packages "http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/" "./packages/xtext-dependencies.list"
 install_packages "http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/" "./packages/xtext-packages.list"
 install_packages "http://hallvard.github.io/plantuml/" "./packages/plantuml-packages.list"
-install_packages "https://download.eclipse.org/releases/2021-12" "./packages/hipe-dependencies.list"
 install_packages "https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/" "./packages/hipe-packages.list"
-install_packages "https://download.eclipse.org/releases/2021-12" "./packages/viatra-dependencies.list"
 install_packages "http://download.eclipse.org/viatra/updates/release/latest" "./packages/viatra-packages.list"
 install_packages "http://www.kermeta.org/k2/update" "./packages/kermeta-packages.list"
-install_packages "http://download.eclipse.org/modeling/emft/mwe/updates/releases/" "./packages/emoflon-dependencies.list"
 install_packages "https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/" "./packages/emoflon-packages.list"
-install_packages "https://download.eclipse.org/releases/2021-12" "./packages/theme-dependencies.list"
-install_packages "https://www.codetogether.com/updates/ci/" "./packages/theme-dependencies2.list"
 install_packages "https://www.genuitec.com/updates/devstyle/ci/" "./packages/theme-packages.list"
 
 echo "=> Clean-up eclipse.zip and create new archive."
