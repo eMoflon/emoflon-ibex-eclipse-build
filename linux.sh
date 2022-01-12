@@ -9,6 +9,8 @@ set -e
 VERSION="2021-12"
 ARCHIVE_FILE="eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz"
 OUTPUT_FILE="eclipse-emoflon-linux-user.zip"
+MIRROR="https://ftp.fau.de"
+UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://download.eclipse.org/viatra/updates/release/latest,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/"
 
 #
 # utils
@@ -32,22 +34,22 @@ install_packages () {
 }
 
 if [[ ! -f "./$ARCHIVE_FILE" ]]; then
-	echo "=> Downloading eclipse $VERSION archive."
-	wget -q https://ftp.fau.de/eclipse/technology/epp/downloads/release/$VERSION/R/$ARCHIVE_FILE
+	echo "=> Downloading Eclipse $VERSION archive from $MIRROR."
+	wget -q $MIRROR/eclipse/technology/epp/downloads/release/$VERSION/R/$ARCHIVE_FILE
 fi
 
-echo "=> Clean-up eclipse folder and untar."
+echo "=> Clean-up Eclipse folder and untar."
 rm -rf ./eclipse/*
 tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz
 
 echo "=> Install eclipse plug-ins."
-install_packages "http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/" "./packages/xtext-packages.list"
-install_packages "http://hallvard.github.io/plantuml/" "./packages/plantuml-packages.list"
-install_packages "https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/" "./packages/hipe-packages.list"
-install_packages "http://download.eclipse.org/viatra/updates/release/latest" "./packages/viatra-packages.list"
-install_packages "http://www.kermeta.org/k2/update" "./packages/kermeta-packages.list"
-install_packages "https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/" "./packages/emoflon-packages.list"
-install_packages "https://www.genuitec.com/updates/devstyle/ci/" "./packages/theme-packages.list"
+install_packages "$UPDATESITES" "./packages/xtext-packages.list"
+install_packages "$UPDATESITES" "./packages/plantuml-packages.list"
+install_packages "$UPDATESITES" "./packages/hipe-packages.list"
+install_packages "$UPDATESITES" "./packages/viatra-packages.list"
+install_packages "$UPDATESITES" "./packages/kermeta-packages.list"
+install_packages "$UPDATESITES" "./packages/emoflon-packages.list"
+install_packages "$UPDATESITES" "./packages/theme-packages.list"
 
 echo "=> Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
