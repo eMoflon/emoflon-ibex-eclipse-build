@@ -36,24 +36,29 @@ install_packages () {
         -installIU "$(parse_package_list $2)"
 }
 
+# Displays the given input including "=> " on the console.
+log () {
+	echo "=> $1"
+}
+
 #
 # Script
 #
 
 # Check if script needs to download the initial Eclipse archive.
 if [[ ! -f "./$ARCHIVE_FILE" ]]; then
-	echo "=> Downloading Eclipse $VERSION archive from $MIRROR."
+	log "Downloading Eclipse $VERSION archive from $MIRROR."
 	wget -q $MIRROR/eclipse/technology/epp/downloads/release/$VERSION/R/$ARCHIVE_FILE
 fi
 
 # Parse arguments
 if [[ -z "$1" ]]; then
-	echo "No parameter(s) given. Exit."; exit 1 ;
+	log "No parameter(s) given. Exit."; exit 1 ;
 fi
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -m|--mode) MODE="$2"; shift ;;
-        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+        *) log "Unknown parameter passed: $1"; exit 1 ;;
     esac
     shift
 done
@@ -65,26 +70,26 @@ elif [[ "$MODE" = "dev" ]]; then
 	INSTALL_EMOFLON=0
 	OUTPUT_FILE="$OUTPUT_FILE_PREFIX-dev.zip"
 else
-	echo "=> Mode argument invalid."; exit 1 ;
+	log "Mode argument invalid."; exit 1 ;
 fi
 
-echo "=> Clean-up Eclipse folder and untar."
+log "Clean-up Eclipse folder and untar."
 rm -rf ./eclipse/*
 tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz
 
-echo "=> Install Eclipse plug-ins."
+log "Install Eclipse plug-ins."
 for p in ${ORDER[@]}; do
 	# Check if eMoflon packages must be skipped (for dev builds).
 	if [[ "$p" = "emoflon" ]] && [[ $INSTALL_EMOFLON -eq 0 ]]; then
-		echo "=> Skipping plug-in: $p."
+		log "Skipping plug-in: $p."
 		continue
 	fi
-    echo "=> Installing plug-in: $p."
+    log "Installing plug-in: $p."
     install_packages "$UPDATESITES" "./packages/$p-packages.list"
 done
 
-echo "=> Clean-up old archives and create new archive."
+log "Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
 zip -q -r $OUTPUT_FILE eclipse
 
-echo "=> Build finished."
+log "Build finished."
