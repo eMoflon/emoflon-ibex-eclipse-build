@@ -53,10 +53,8 @@ tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz
 echo "=> Install Eclipse plug-ins."
 for p in ${ORDER[@]}; do
     echo "=> Installing plug-in: $p."
-    install_packages "$UPDATESITE" "./packages/$p-packages.list"
+    install_packages "$UPDATESITES" "./packages/$p-packages.list"
 done
-
-exit 1
 
 echo "=> Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
