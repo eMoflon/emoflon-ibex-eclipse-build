@@ -3,7 +3,7 @@
 set -e
 
 #
-# config
+# Config
 #
 
 VERSION="2021-12"
@@ -12,8 +12,11 @@ OUTPUT_FILE="eclipse-emoflon-linux-user.zip"
 MIRROR="https://ftp.fau.de"
 UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://download.eclipse.org/viatra/updates/release/latest,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/2021-12,https://www.codetogether.com/updates/ci/"
 
+# Array with the order to install the plugins with.
+ORDER=("xtext" "plantuml" "hipe" "viatra" "kermeta" "emoflon" "theme")
+
 #
-# utils
+# Utils
 #
 
 # Parses a given list and returns the packages as String (comma separated).
@@ -33,6 +36,11 @@ install_packages () {
         -installIU "$(parse_package_list $2)"
 }
 
+#
+# Script
+#
+
+# Check if script needs to download the initial Eclipse archive.
 if [[ ! -f "./$ARCHIVE_FILE" ]]; then
 	echo "=> Downloading Eclipse $VERSION archive from $MIRROR."
 	wget -q $MIRROR/eclipse/technology/epp/downloads/release/$VERSION/R/$ARCHIVE_FILE
@@ -42,14 +50,13 @@ echo "=> Clean-up Eclipse folder and untar."
 rm -rf ./eclipse/*
 tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz
 
-echo "=> Install eclipse plug-ins."
-install_packages "$UPDATESITES" "./packages/xtext-packages.list"
-install_packages "$UPDATESITES" "./packages/plantuml-packages.list"
-install_packages "$UPDATESITES" "./packages/hipe-packages.list"
-install_packages "$UPDATESITES" "./packages/viatra-packages.list"
-install_packages "$UPDATESITES" "./packages/kermeta-packages.list"
-install_packages "$UPDATESITES" "./packages/emoflon-packages.list"
-install_packages "$UPDATESITES" "./packages/theme-packages.list"
+echo "=> Install Eclipse plug-ins."
+for p in ${ORDER[@]}; do
+    echo "=> Installing plug-in: $p."
+    install_packages "$UPDATESITE" "./packages/$p-packages.list"
+done
+
+exit 1
 
 echo "=> Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
