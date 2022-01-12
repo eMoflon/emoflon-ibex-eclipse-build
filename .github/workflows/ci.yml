@@ -32,3 +32,35 @@ jobs:
         with:
           name: eclipse-emoflon-linux-dev
           path: eclipse-emoflon-linux-dev.zip
+
+  # Build Eclipse eMoflon Windows user
+  build-windows-user:
+    runs-on: [self-hosted, windows, x64]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon Windows user)."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Run build script
+        run: chmod +x windows.sh && ./windows.sh -m user
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-windows-user
+          path: eclipse-emoflon-windows-user.zip
+
+  # Build Eclipse eMoflon Windows dev
+  build-windows-dev:
+    runs-on: [self-hosted, windows, x64]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon Windows dev)."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Run build script
+        run: chmod +x windows.sh && ./windows.sh -m dev
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-windows-dev
+          path: eclipse-emoflon-windows-dev.zip
