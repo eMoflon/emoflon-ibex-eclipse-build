@@ -42,7 +42,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Run build script
-        run: chmod +x windows.sh && ./windows.sh -m user
+        run: bash ./windows.sh -m user
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -58,7 +58,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Run build script
-        run: chmod +x windows.sh && ./windows.sh -m dev
+        run: bash ./windows.sh -m dev
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
