@@ -1,5 +1,11 @@
 name: Build Eclipse eMoflon
-on: [push]
+on:
+  push:
+    # Run pipeline for commits on branch 'main' and on 'testing/<stuff>'
+    branches:
+      - main
+      - 'testing/**'
+
 jobs:
   # Build Eclipse eMoflon Linux user
   build-linux-user:
