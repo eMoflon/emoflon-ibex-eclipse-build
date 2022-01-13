@@ -1,6 +1,6 @@
 # emoflon-eclipse-build
 
-[![Build Eclipse eMoflon](https://github.com/maxkratz/emoflon-eclipse-build/actions/workflows/ci.yml/badge.svg?event=push)](https://github.com/maxkratz/emoflon-eclipse-build/actions/workflows/ci.yml)
+[![Build Eclipse eMoflon](https://github.com/maxkratz/emoflon-eclipse-build/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/maxkratz/emoflon-eclipse-build/actions/workflows/ci.yml)
 
 This repository is used to automatically build an Eclipse eMoflon environment.
 
