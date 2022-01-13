@@ -1,9 +1,0 @@
-org.apache.commons.httpclient
-org.eclipse.wst.common.frameworks
-org.eclipse.wst.common.frameworks.ui
-org.eclipse.tm4e.core
-org.eclipse.tm4e.registry
-org.eclipse.tm4e.ui
-org.eclipse.platform
-org.eclipse.mylyn.commons.notifications.core
-org.eclipse.mylyn.commons.notifications.ui
