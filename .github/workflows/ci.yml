@@ -42,7 +42,9 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Run build script
-        run: bash ./windows.sh -m user
+        run: |
+          echo "C:\Program Files\Eclipse Foundation\jdk-16.0.2.7-hotspot\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          bash ./windows.sh -m user
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -58,7 +60,9 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Run build script
-        run: bash ./windows.sh -m dev
+        run: |
+          echo "C:\Program Files\Eclipse Foundation\jdk-16.0.2.7-hotspot\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          bash ./windows.sh -m dev
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
