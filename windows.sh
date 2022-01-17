@@ -89,6 +89,10 @@ for p in ${ORDER[@]}; do
     install_packages "$UPDATESITES" "./packages/$p-packages.list"
 done
 
+# Install com.seeq.eclipse.importprojects (by hand because there is no update site)
+# https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar
+wget -P eclipse/plugins https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar
+
 log "Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
 zip -q -r $OUTPUT_FILE eclipse
