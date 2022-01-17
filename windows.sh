@@ -90,6 +90,7 @@ for p in ${ORDER[@]}; do
 done
 
 # Install com.seeq.eclipse.importprojects (by hand because there is no update site)
+log "Install Eclipse import projects plug-in."
 # https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar
 wget -P eclipse/plugins https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar
 
