@@ -20,7 +20,7 @@ In order to run the "Github Actions" pipeline you must ensure that you have at l
 
 Installed packages:
 * `wget`
-* `untar`
+* `(un)tar`
 * `zip`
 * `OpenJDK 11.0.13` (may differ, as this is just used to boot-up Eclipse in headless)
 * Github Actions runner
