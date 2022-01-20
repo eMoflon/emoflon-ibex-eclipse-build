@@ -59,6 +59,7 @@ fi
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -m|--mode) MODE="$2"; shift ;;
+		--skip-theme) SKIP_THEME=1 ;;
         *) log "Unknown parameter passed: $1"; exit 1 ;;
     esac
     shift
@@ -82,6 +83,12 @@ log "Install Eclipse plug-ins."
 for p in ${ORDER[@]}; do
 	# Check if eMoflon packages must be skipped (for dev builds).
 	if [[ "$p" = "emoflon" ]] && [[ $INSTALL_EMOFLON -eq 0 ]]; then
+		log "Skipping plug-in: $p."
+		continue
+	fi
+	
+	# Check if Dark Theme packages must be skipped (for CI builds = completely headless).
+	if [[ "$p" = "theme" ]] && [[ $SKIP_THEME -eq 1 ]]; then
 		log "Skipping plug-in: $p."
 		continue
 	fi
