@@ -76,7 +76,7 @@ fi
 
 log "Clean-up Eclipse folder and unzip."
 rm -rf ./eclipse/*
-unzip -qq eclipse-modeling-$VERSION-R-win32-x86_64.zip
+unzip -qq -o eclipse-modeling-$VERSION-R-win32-x86_64.zip
 
 log "Install Eclipse plug-ins."
 for p in ${ORDER[@]}; do
@@ -93,6 +93,10 @@ done
 log "Install Eclipse import projects plug-in."
 # https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar
 wget -P eclipse/plugins https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar
+
+# Create and install custom splash image
+log "Create and install custom splash image."
+./splash.sh $VERSION
 
 log "Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
