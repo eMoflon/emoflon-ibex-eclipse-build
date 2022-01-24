@@ -107,7 +107,7 @@ if [[ $SKIP_THEME -eq 1 ]]; then
 	log "Skipping custom splash image."
 else
 	log "Create and install custom splash image."
-	./splash.sh $VERSION
+	chmod +x splash.sh && ./splash.sh $VERSION
 fi
 
 log "Clean-up old archives and create new archive."
