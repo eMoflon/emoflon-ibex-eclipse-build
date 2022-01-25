@@ -10,10 +10,10 @@ VERSION="2021-12"
 ARCHIVE_FILE="eclipse-modeling-$VERSION-R-win32-x86_64.zip"
 OUTPUT_FILE_PREFIX="eclipse-emoflon-windows"
 MIRROR="https://ftp.fau.de"
-UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://download.eclipse.org/viatra/updates/release/latest,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/2021-12,https://www.codetogether.com/updates/ci/"
+UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/2021-12,https://www.codetogether.com/updates/ci/"
 
 # Array with the order to install the plugins with.
-ORDER=("xtext" "plantuml" "hipe" "viatra" "kermeta" "emoflon" "theme-win")
+ORDER=("xtext" "plantuml" "hipe" "kermeta" "emoflon" "theme-win")
 
 #
 # Utils
