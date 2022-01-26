@@ -4,7 +4,6 @@ org.emoflon.ibex.common
 org.emoflon.ibex.common.editor.utils
 org.emoflon.ibex.dependencies
 org.emoflon.ibex.gt
-org.emoflon.ibex.gt.democles
 org.emoflon.ibex.gt.editor
 org.emoflon.ibex.gt.editor.ide
 org.emoflon.ibex.gt.editor.tests
@@ -12,8 +11,6 @@ org.emoflon.ibex.gt.editor.ui
 org.emoflon.ibex.gt.editor.ui.tests
 org.emoflon.ibex.gt.hipe
 org.emoflon.ibex.gt.statemodel
-org.emoflon.ibex.ide.democles.feature.feature.group
-org.emoflon.ibex.ide.democles.feature.feature.jar
 org.emoflon.ibex.ide.feature.feature.group
 org.emoflon.ibex.ide.feature.feature.jar
 org.emoflon.ibex.ide.hipe.feature.feature.group
@@ -27,12 +24,10 @@ org.emoflon.ibex.tgg.editor.feature.feature.group
 org.emoflon.ibex.tgg.editor.feature.feature.jar
 org.emoflon.ibex.tgg.editor.ui
 org.emoflon.ibex.tgg.ide
-org.emoflon.ibex.tgg.ide.democles
 org.emoflon.ibex.tgg.ide.hipe
 org.emoflon.ibex.tgg.integrate
 org.emoflon.ibex.tgg.language
 org.emoflon.ibex.tgg.runtime
-org.emoflon.ibex.tgg.runtime.democles
 org.emoflon.ibex.tgg.runtime.hipe
 org.emoflon.ibex.tgg.ui.debug
 org.emoflon.ibex.tgg.ui.debug.adapter
