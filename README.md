@@ -4,14 +4,14 @@
 
 This repository is used to automatically build an Eclipse [eMoflon](https://github.com/eMoflon/emoflon-ibex) environment.
 
-| Name                    | OS      | eMoflon installed  | Dark theme installed |
-|-------------------------|---------|--------------------|----------------------|
-| Eclipse eMoflon user    | Linux   | :heavy_check_mark: | :heavy_check_mark:   |
-| Eclipse eMoflon dev     | Linux   |                    | :heavy_check_mark:   |
-| Eclipse eMoflon user CI | Linux   | :heavy_check_mark: |                      |
-| Eclipse eMoflon dev CI  | Linux   |                    |                      |
-| Eclipse eMoflon user    | Windows | :heavy_check_mark: | :heavy_check_mark:   |
-| Eclipse eMoflon dev     | Windows |                    | :heavy_check_mark:   |
+| Name                    | OS      | eMoflon installed  | Dark theme installed | Splash image       |
+|-------------------------|---------|--------------------|----------------------|--------------------|
+| Eclipse eMoflon user    | Linux   | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: |
+| Eclipse eMoflon dev     | Linux   |                    | :heavy_check_mark:   | :heavy_check_mark: |
+| Eclipse eMoflon user CI | Linux   | :heavy_check_mark: |                      |                    |
+| Eclipse eMoflon dev CI  | Linux   |                    |                      |                    |
+| Eclipse eMoflon user    | Windows | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: |
+| Eclipse eMoflon dev     | Windows |                    | :heavy_check_mark:   | :heavy_check_mark: |
 
 
 ## Runner requirements
@@ -25,6 +25,7 @@ Required packages:
 * `(un)tar`
 * `zip`
 * `OpenJDK 11.0.13` (may differ, as this is just used to boot-up Eclipse in headless mode)
+* `imagemagick`
 * Github Actions runner
 
 ### Windows
@@ -34,5 +35,6 @@ Required packages:
     * `wget`
     * `unzip`
     * `zip`
+    * `imagemagick`
 * `AdoptJDK 16.0.2.7-hotspot` (must exactly match or you have to adapt [ci.yml](.github/workflows/ci.yml))
 * Github Actions runner

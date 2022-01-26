@@ -101,6 +101,15 @@ log "Install Eclipse import projects plug-in."
 # https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar
 wget -P eclipse/plugins https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar
 
+# Create and install custom splash image
+if [[ $SKIP_THEME -eq 1 ]]; then
+	# Skip UI customization for CI builds
+	log "Skipping custom splash image."
+else
+	log "Create and install custom splash image."
+	chmod +x splash.sh && ./splash.sh $VERSION
+fi
+
 log "Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
 zip -q -r $OUTPUT_FILE eclipse
