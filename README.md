@@ -4,14 +4,17 @@
 
 This repository is used to automatically build an Eclipse [eMoflon](https://github.com/eMoflon/emoflon-ibex) environment.
 
-| Name                    | OS      | eMoflon installed  | Dark theme installed | Splash image       |
-|-------------------------|---------|--------------------|----------------------|--------------------|
-| Eclipse eMoflon user    | Linux   | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: |
-| Eclipse eMoflon dev     | Linux   |                    | :heavy_check_mark:   | :heavy_check_mark: |
-| Eclipse eMoflon user CI | Linux   | :heavy_check_mark: |                      |                    |
-| Eclipse eMoflon dev CI  | Linux   |                    |                      |                    |
-| Eclipse eMoflon user    | Windows | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: |
-| Eclipse eMoflon dev     | Windows |                    | :heavy_check_mark:   | :heavy_check_mark: |
+| Name                    | OS      | eMoflon installed  | Dark theme installed | Splash image       | Pattern matcher |
+|-------------------------|---------|--------------------|----------------------|--------------------|-----------------|
+| Eclipse eMoflon user    | Linux   | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: | HiPE            |
+| Eclipse eMoflon dev     | Linux   |                    | :heavy_check_mark:   | :heavy_check_mark: | HiPE, *)        |
+| Eclipse eMoflon user CI | Linux   | :heavy_check_mark: |                      |                    | HiPE            |
+| Eclipse eMoflon dev CI  | Linux   |                    |                      |                    | HiPE, *)        |
+| Eclipse eMoflon user    | Windows | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: | HiPE            |
+| Eclipse eMoflon dev     | Windows |                    | :heavy_check_mark:   | :heavy_check_mark: | HiPE, *)        |
+
+*) Democles will be installed manually via the [emoflon-dev-workspace](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
+Furthermore, all pattern matcher integrations for eMoflon (HiPE and Democles) will be installed manually via the [emoflon-dev-workspace](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 
 
 ## Runner requirements
