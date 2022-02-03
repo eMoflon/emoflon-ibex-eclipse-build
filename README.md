@@ -41,3 +41,11 @@ Required packages:
     * `imagemagick`
 * `AdoptJDK 16.0.2.7-hotspot` (must exactly match or you have to adapt [ci.yml](.github/workflows/ci.yml))
 * Github Actions runner
+
+### Github secrets
+
+To remove hardcoded values from the CI config ([ci.yml](.github/workflows/ci.yml))), this project uses [Github secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
+
+| Name                    | Example value                                                | Used for                          |
+|-------------------------|--------------------------------------------------------------|-----------------------------------|
+| WINDOWS_JDK_BIN_PATH    | C:\Program Files\Eclipse Foundation\jdk-16.0.2.7-hotspot\bin | JDK path config (Windows runners) |
