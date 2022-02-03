@@ -78,6 +78,8 @@ jobs:
   # Build Eclipse eMoflon Windows user
   build-windows-user:
     runs-on: [self-hosted, windows, x64]
+    env:
+      WINDOWS_JDK_BIN_PATH: ${{ secrets.WINDOWS_JDK_BIN_PATH }}
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows user)."
@@ -85,7 +87,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Run build script
         run: |
-          echo "C:\Program Files\Eclipse Foundation\jdk-16.0.2.7-hotspot\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "$env:WINDOWS_JDK_BIN_PATH" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           bash ./windows.sh -m user
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -96,6 +98,8 @@ jobs:
   # Build Eclipse eMoflon Windows dev
   build-windows-dev:
     runs-on: [self-hosted, windows, x64]
+    env:
+      WINDOWS_JDK_BIN_PATH: ${{ secrets.WINDOWS_JDK_BIN_PATH }}
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows dev)."
@@ -103,7 +107,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Run build script
         run: |
-          echo "C:\Program Files\Eclipse Foundation\jdk-16.0.2.7-hotspot\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "$env:WINDOWS_JDK_BIN_PATH" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           bash ./windows.sh -m dev
       - name: Upload artifact
         uses: actions/upload-artifact@v2
