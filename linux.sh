@@ -12,6 +12,7 @@ OUTPUT_FILE_PREFIX="eclipse-emoflon-linux"
 MIRROR="https://ftp.fau.de"
 UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/2021-12,https://www.codetogether.com/updates/ci/"
 SITEBUILDER_SRC="https://github.com/eMoflon/emoflon-sitebuilder/releases/download/v1.0.0.202202100856/updatesite.zip"
+IMPORT_PLUGIN_SRC="https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar"
 
 # Array with the order to install the plugins with.
 ORDER=("xtext" "plantuml" "hipe" "kermeta" "emoflon-sitebuilder" "emoflon" "theme")
@@ -114,10 +115,9 @@ for p in ${ORDER[@]}; do
     install_packages "$UPDATESITES" "./packages/$p-packages.list"
 done
 
-# Install com.seeq.eclipse.importprojects (by hand because there is no update site)
+# Install com.seeq.eclipse.importprojects (by hand because there is no public update site)
 log "Install Eclipse import projects plug-in."
-# https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar
-wget -P eclipse/plugins https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar
+wget -P eclipse/plugins $IMPORT_PLUGIN_SRC
 
 # Create and install custom splash image
 if [[ $SKIP_THEME -eq 1 ]]; then
