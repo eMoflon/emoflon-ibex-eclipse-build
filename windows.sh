@@ -54,7 +54,7 @@ setup_emoflon_sitebuilder_local_updatesite () {
 	unzip -q ./tmp/emoflon-sitebuilder/updatesite.zip -d tmp/emoflon-sitebuilder
 
 	# Append local folder to path (has to be absolute and, therefore, dynamic)
-	UPDATESITES+=",file:///$PWD/tmp/emoflon-sitebuilder/"
+	UPDATESITES+=",file://$PWD/tmp/emoflon-sitebuilder/"
 }
 
 
