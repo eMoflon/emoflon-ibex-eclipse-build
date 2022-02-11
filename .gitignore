@@ -4,3 +4,5 @@ packages/bak/
 eclipse/
 eclipse*.zip
 eclipse-modeling-*.tar.gz
+
+tmp/
