@@ -11,11 +11,11 @@ ARCHIVE_FILE="eclipse-modeling-$VERSION-R-win32-x86_64.zip"
 OUTPUT_FILE_PREFIX="eclipse-emoflon-windows"
 MIRROR="https://ftp.fau.de"
 UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/2021-12,https://www.codetogether.com/updates/ci/"
-SITEBUILDER_SRC="https://github.com/eMoflon/emoflon-sitebuilder/releases/download/v1.0.0.202202100856/updatesite.zip"
+EMOFLON_HEADLESS_SRC="https://github.com/eMoflon/emoflon-headless/releases/download/v1.0.0.202202101728/updatesite.zip"
 IMPORT_PLUGIN_SRC="https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar"
 
 # Array with the order to install the plugins with.
-ORDER=("xtext" "plantuml" "hipe" "kermeta" "emoflon-sitebuilder" "emoflon" "theme-win")
+ORDER=("xtext" "plantuml" "hipe" "kermeta" "emoflon-headless" "emoflon" "theme-win")
 
 #
 # Utils
@@ -44,17 +44,17 @@ log () {
 	echo "=> $1"
 }
 
-# Setup the local updatesite of the emoflon sitebuilder
-setup_emoflon_sitebuilder_local_updatesite () {
+# Setup the local updatesite of the emoflon headless
+setup_emoflon_headless_local_updatesite () {
 	log "Create local tmp folder."
-	rm -rf ./tmp && mkdir -p ./tmp/emoflon-sitebuilder
+	rm -rf ./tmp && mkdir -p ./tmp/emoflon-headless
 
-	log "Get emoflon-sitebuilder and extract its updatesite."
-	wget -P ./tmp/emoflon-sitebuilder -q $SITEBUILDER_SRC
-	unzip -q ./tmp/emoflon-sitebuilder/updatesite.zip -d tmp/emoflon-sitebuilder
+	log "Get emoflon-headless and extract its updatesite."
+	wget -P ./tmp/emoflon-headless -q $EMOFLON_HEADLESS_SRC
+	unzip -q ./tmp/emoflon-headless/updatesite.zip -d tmp/emoflon-headless
 
 	# Append local folder to path (has to be absolute and, therefore, dynamic)
-	UPDATESITES+=",file://$(echo $PWD | sed -e 's/\/mnt\///g' | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')\tmp\emoflon-sitebuilder\\"
+	UPDATESITES+=",file://$(echo $PWD | sed -e 's/\/mnt\///g' | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')\tmp\emoflon-headless\\"
 }
 
 
@@ -90,8 +90,8 @@ else
 	log "Mode argument invalid."; exit 1 ;
 fi
 
-# Setup the emoflon sitebuilder (special snowflake because of the zipped update site)
-setup_emoflon_sitebuilder_local_updatesite
+# Setup the emoflon headless (special snowflake because of the zipped update site)
+setup_emoflon_headless_local_updatesite
 
 log "Clean-up Eclipse folder and unzip."
 rm -rf ./eclipse/*
