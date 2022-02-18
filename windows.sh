@@ -15,7 +15,7 @@ EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/rele
 IMPORT_PLUGIN_SRC="https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar"
 
 # Array with the order to install the plugins with.
-ORDER=("xtext" "plantuml" "hipe" "kermeta" "emoflon-headless" "emoflon" "theme-win")
+ORDER=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme-win")
 
 #
 # Utils
