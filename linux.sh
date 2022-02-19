@@ -10,12 +10,12 @@ VERSION="2021-12"
 ARCHIVE_FILE="eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz"
 OUTPUT_FILE_PREFIX="eclipse-emoflon-linux"
 MIRROR="https://ftp.fau.de"
-UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/2021-12,https://www.codetogether.com/updates/ci/"
-EMOFLON_HEADLESS_SRC="https://github.com/eMoflon/emoflon-headless/releases/download/v1.0.0.202202101728/updatesite.zip"
+UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/"
+EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
 IMPORT_PLUGIN_SRC="https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar"
 
 # Array with the order to install the plugins with.
-ORDER=("xtext" "plantuml" "hipe" "kermeta" "emoflon-headless" "emoflon" "theme")
+ORDER=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme")
 
 #
 # Utils
@@ -50,8 +50,13 @@ setup_emoflon_headless_local_updatesite () {
 	rm -rf ./tmp && mkdir -p ./tmp/emoflon-headless
 
 	log "Get emoflon-headless and extract its updatesite."
-	wget -P ./tmp/emoflon-headless -q $EMOFLON_HEADLESS_SRC
-	unzip -q ./tmp/emoflon-headless/updatesite.zip -d tmp/emoflon-headless
+	EMOFLON_HEADLESS_LATEST_UPDATESITE=$(curl -s $EMOFLON_HEADLESS_SRC \
+		| grep "updatesite.*zip" \
+		| cut -d : -f 2,3 \
+		| tr -d \")
+	wget -P ./tmp/emoflon-headless -qi $EMOFLON_HEADLESS_LATEST_UPDATESITE
+
+	unzip ./tmp/emoflon-headless/updatesite.zip -d tmp/emoflon-headless
 
 	# Append local folder to path (has to be absolute and, therefore, dynamic)
 	UPDATESITES+=",file://$PWD/tmp/emoflon-headless/"

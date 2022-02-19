@@ -24,6 +24,7 @@ In order to run the "Github Actions" pipeline you must ensure that you have at l
 ### Linux
 
 Required packages:
+* `curl`
 * `wget`
 * `(un)tar`
 * `zip`
@@ -35,6 +36,7 @@ Required packages:
 
 Required packages:
 * `WSL2` with, e.g., Debian as distribution. You have to install some packages inside it:
+    * `curl`
     * `wget`
     * `unzip`
     * `zip`
