@@ -12,7 +12,11 @@ OUTPUT_FILE_PREFIX="eclipse-emoflon-linux"
 MIRROR="https://ftp.fau.de"
 UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/"
 EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
-IMPORT_PLUGIN_SRC="https://github.com/seeq12/eclipse-import-projects-plugin/raw/master/jar/com.seeq.eclipse.importprojects_1.4.0.jar"
+
+# Import plug-in:
+IMPORT_PLUGIN_VERSION="1.4.0"
+IMPORT_PLUGIN_FILENAME="com.seeq.eclipse.importprojects_$IMPORT_PLUGIN_VERSION.jar"
+IMPORT_PLUGIN_SRC="https://api.github.com/repos/maxkratz/eclipse-import-projects-plugin/releases/tags/$IMPORT_PLUGIN_VERSION"
 
 # Array with the order to install the plugins with.
 ORDER=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme")
@@ -60,6 +64,16 @@ setup_emoflon_headless_local_updatesite () {
 
 	# Append local folder to path (has to be absolute and, therefore, dynamic)
 	UPDATESITES+=",file://$PWD/tmp/emoflon-headless/"
+}
+
+# Install eclipse import projects plug-in
+install_eclipse_import_projects () {
+	log "Install Eclipse import projects plug-in."
+	IMPORT_PROJECTS_JAR=$(curl -s $IMPORT_PLUGIN_SRC \
+		| grep "$IMPORT_PLUGIN_FILENAME" \
+		| cut -d : -f 2,3 \
+		| tr -d \")
+	wget -P eclipse/plugins -qi $IMPORT_PROJECTS_JAR
 }
 
 
@@ -121,8 +135,7 @@ for p in ${ORDER[@]}; do
 done
 
 # Install com.seeq.eclipse.importprojects (by hand because there is no public update site)
-log "Install Eclipse import projects plug-in."
-wget -P eclipse/plugins $IMPORT_PLUGIN_SRC
+install_eclipse_import_projects
 
 # Create and install custom splash image
 if [[ $SKIP_THEME -eq 1 ]]; then
