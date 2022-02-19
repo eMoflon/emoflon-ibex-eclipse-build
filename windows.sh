@@ -16,7 +16,7 @@ EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/rele
 # Import plug-in:
 IMPORT_PLUGIN_VERSION="1.4.0"
 IMPORT_PLUGIN_FILENAME="com.seeq.eclipse.importprojects_$IMPORT_PLUGIN_VERSION.jar"
-IMPORT_PLUGIN_SRC="https://api.github.com/repos/maxkratz/eclipse-import-projects-plugin/releases/tags/$IMPORT_PLUGIN_VERSION"
+IMPORT_PLUGIN_SRC="https://api.github.com/repos/maxkratz/eclipse-import-projects-plugin/releases/tags/v$IMPORT_PLUGIN_VERSION"
 
 # Array with the order to install the plugins with.
 ORDER=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme-win")
