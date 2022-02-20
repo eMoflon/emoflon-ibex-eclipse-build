@@ -2,13 +2,29 @@
 
 set -e
 
+# Parse arguments
+if [[ -z "$1" ]]; then
+	echo "=> No parameter(s) given. Exit."; exit 1 ;
+fi
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -m|--mode) MODE="$2"; shift ;;
+        -o|--os) OS="$2"; shift ;;
+		--skip-theme) SKIP_THEME=1 ;;
+        *) echo "=> Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+done
+
 #
-# Config
+# Config and URLs
 #
 
 VERSION="2021-12"
-ARCHIVE_FILE="eclipse-modeling-$VERSION-R-win32-x86_64.zip"
-OUTPUT_FILE_PREFIX="eclipse-emoflon-windows"
+ARCHIVE_FILE_LINUX="eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz"
+ARCHIVE_FILE_WINDOWS="eclipse-modeling-$VERSION-R-win32-x86_64.zip"
+OUTPUT_FILE_PREFIX_LINUX="eclipse-emoflon-linux"
+OUTPUT_FILE_PREFIX_WINDOWS="eclipse-emoflon-windows"
 MIRROR="https://ftp.fau.de"
 UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/"
 EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
@@ -19,7 +35,25 @@ IMPORT_PLUGIN_FILENAME="com.seeq.eclipse.importprojects_$IMPORT_PLUGIN_VERSION.j
 IMPORT_PLUGIN_SRC="https://api.github.com/repos/maxkratz/eclipse-import-projects-plugin/releases/tags/v$IMPORT_PLUGIN_VERSION"
 
 # Array with the order to install the plugins with.
-ORDER=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme-win")
+ORDER_LINUX=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme")
+ORDER_WINDOWS=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme-win")
+
+#
+# Configure OS specific details
+#
+
+if [[ "$OS" = "linux" ]]; then
+	ARCHIVE_FILE=$ARCHIVE_FILE_LINUX
+    OUTPUT_FILE_PREFIX=$OUTPUT_FILE_PREFIX_LINUX
+    ORDER=$ORDER_LINUX
+elif [[ "$OS" = "windows" ]]; then
+    ARCHIVE_FILE=$ARCHIVE_FILE_WINDOWS
+    OUTPUT_FILE_PREFIX=$OUTPUT_FILE_PREFIX_WINDOWS
+    ORDER=$ORDER_WINDOWS
+else
+	echo "=> OS $OS not known."
+    exit 1
+fi
 
 #
 # Utils
@@ -37,10 +71,17 @@ parse_package_list () {
 
 # Installs a given list of packages from a given update site.
 install_packages () {
-./eclipse/eclipsec.exe -nosplash \
-		-application org.eclipse.equinox.p2.director \
-        -repository "$1" \
-        -installIU "$(parse_package_list $2)"
+    if [[ "$OS" = "linux" ]]; then
+        ./eclipse/eclipse -nosplash \
+            -application org.eclipse.equinox.p2.director \
+            -repository "$1" \
+            -installIU "$(parse_package_list $2)"
+    elif [[ "$OS" = "windows" ]]; then
+        ./eclipse/eclipsec.exe -nosplash \
+            -application org.eclipse.equinox.p2.director \
+            -repository "$1" \
+            -installIU "$(parse_package_list $2)"
+    fi
 }
 
 # Displays the given input including "=> " on the console.
@@ -63,7 +104,11 @@ setup_emoflon_headless_local_updatesite () {
 	unzip ./tmp/emoflon-headless/updatesite.zip -d tmp/emoflon-headless
 
 	# Append local folder to path (has to be absolute and, therefore, dynamic)
-	UPDATESITES+=",file://$(echo $PWD | sed -e 's/\/mnt\///g' | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')\tmp\emoflon-headless\\"
+    if [[ "$OS" = "linux" ]]; then
+        UPDATESITES+=",file://$PWD/tmp/emoflon-headless/"
+    elif [[ "$OS" = "windows" ]]; then
+        UPDATESITES+=",file://$(echo $PWD | sed -e 's/\/mnt\///g' | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')\tmp\emoflon-headless\\"
+    fi
 }
 
 # Install eclipse import projects plug-in
@@ -87,18 +132,6 @@ if [[ ! -f "./$ARCHIVE_FILE" ]]; then
 	wget -q $MIRROR/eclipse/technology/epp/downloads/release/$VERSION/R/$ARCHIVE_FILE
 fi
 
-# Parse arguments
-if [[ -z "$1" ]]; then
-	log "No parameter(s) given. Exit."; exit 1 ;
-fi
-while [[ "$#" -gt 0 ]]; do
-    case $1 in
-        -m|--mode) MODE="$2"; shift ;;
-        *) log "Unknown parameter passed: $1"; exit 1 ;;
-    esac
-    shift
-done
-
 if [[ "$MODE" = "user" ]]; then
 	INSTALL_EMOFLON=1
 	OUTPUT_FILE="$OUTPUT_FILE_PREFIX-user.zip"
@@ -112,14 +145,27 @@ fi
 # Setup the emoflon headless (special snowflake because of the zipped update site)
 setup_emoflon_headless_local_updatesite
 
-log "Clean-up Eclipse folder and unzip."
-rm -rf ./eclipse/*
-unzip -qq -o eclipse-modeling-$VERSION-R-win32-x86_64.zip
+# Extract new Eclipse
+if [[ "$OS" = "linux" ]]; then
+    log "Clean-up Eclipse folder and untar."
+    rm -rf ./eclipse/*
+    tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz
+elif [[ "$OS" = "windows" ]]; then
+    log "Clean-up Eclipse folder and unzip."
+    rm -rf ./eclipse/*
+    unzip -qq -o eclipse-modeling-$VERSION-R-win32-x86_64.zip
+fi
 
 log "Install Eclipse plug-ins."
 for p in ${ORDER[@]}; do
 	# Check if eMoflon packages must be skipped (for dev builds).
 	if [[ "$p" = "emoflon" ]] && [[ $INSTALL_EMOFLON -eq 0 ]]; then
+		log "Skipping plug-in: $p."
+		continue
+	fi
+	
+	# Check if Dark Theme packages must be skipped (for CI builds = completely headless).
+	if ( [[ "$p" = "theme" ]] || [[ "$p" = "theme-win" ]] ) && [[ $SKIP_THEME -eq 1 ]]; then
 		log "Skipping plug-in: $p."
 		continue
 	fi
@@ -131,8 +177,13 @@ done
 install_eclipse_import_projects
 
 # Create and install custom splash image
-log "Create and install custom splash image."
-./splash.sh $VERSION
+if [[ $SKIP_THEME -eq 1 ]]; then
+	# Skip UI customization for CI builds
+	log "Skipping custom splash image."
+else
+	log "Create and install custom splash image."
+	chmod +x splash.sh && ./splash.sh $VERSION
+fi
 
 log "Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
