@@ -45,11 +45,11 @@ ORDER_WINDOWS=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "em
 if [[ "$OS" = "linux" ]]; then
 	ARCHIVE_FILE=$ARCHIVE_FILE_LINUX
     OUTPUT_FILE_PREFIX=$OUTPUT_FILE_PREFIX_LINUX
-    ORDER=$ORDER_LINUX
+    ORDER=("${ORDER_LINUX[@]}")
 elif [[ "$OS" = "windows" ]]; then
     ARCHIVE_FILE=$ARCHIVE_FILE_WINDOWS
     OUTPUT_FILE_PREFIX=$OUTPUT_FILE_PREFIX_WINDOWS
-    ORDER=$ORDER_WINDOWS
+    ORDER=("${ORDER_WINDOWS[@]}")
 else
 	echo "=> OS $OS not known."
     exit 1
