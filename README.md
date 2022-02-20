@@ -17,6 +17,12 @@ This repository is used to automatically build an Eclipse [eMoflon](https://gith
 Furthermore, all pattern matcher integrations for eMoflon (HiPE and Democles) will be installed manually via the [emoflon-dev-workspace](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 
 
+## Usage/Installation
+
+**The latest release can be found [here](https://github.com/maxkratz/emoflon-eclipse-build/releases/latest).**
+Download an archive for the version you are looking for from the release page and extract it.
+
+
 ## Runner requirements
 
 In order to run the "Github Actions" pipeline you must ensure that you have at least one properly configured Linux and one Windows runner added to the Github project.
