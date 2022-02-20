@@ -30,7 +30,7 @@ UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/re
 EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
 
 # Import plug-in:
-IMPORT_PLUGIN_VERSION="1.4.0"
+IMPORT_PLUGIN_VERSION="2.0.0"
 IMPORT_PLUGIN_FILENAME="com.seeq.eclipse.importprojects_$IMPORT_PLUGIN_VERSION.jar"
 IMPORT_PLUGIN_SRC="https://api.github.com/repos/maxkratz/eclipse-import-projects-plugin/releases/tags/v$IMPORT_PLUGIN_VERSION"
 
