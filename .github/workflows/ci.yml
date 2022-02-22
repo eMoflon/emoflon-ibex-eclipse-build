@@ -127,13 +127,21 @@ jobs:
     steps:
       - name: Collect artifacts
         uses: actions/download-artifact@master
-      - name: Release
+      - name: Release eclipse-emoflon-linux
         uses: softprops/action-gh-release@v1
         with:
           files: |
             eclipse-emoflon-linux-user/eclipse-emoflon-linux-user.zip
             eclipse-emoflon-linux-dev/eclipse-emoflon-linux-dev.zip
+      - name: Release eclipse-emoflon-linux-ci
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
             eclipse-emoflon-linux-user-ci/eclipse-emoflon-linux-user-ci.zip
             eclipse-emoflon-linux-dev-ci/eclipse-emoflon-linux-dev-ci.zip
+      - name: Release eclipse-emoflon-windows
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
             eclipse-emoflon-windows-user/eclipse-emoflon-windows-user.zip
             eclipse-emoflon-windows-dev/eclipse-emoflon-windows-dev.zip
