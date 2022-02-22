@@ -5,6 +5,9 @@ on:
     branches:
       - main
       - 'testing/**'
+    # Run pipeline for release tags
+    tags:
+      - 'v*.*.*'
 
 jobs:
   # Build Eclipse eMoflon Linux user
@@ -114,3 +117,31 @@ jobs:
         with:
           name: eclipse-emoflon-windows-dev
           path: eclipse-emoflon-windows-dev.zip
+
+  # Create a release if running on tag
+  create-release:
+    needs: [build-linux-user, build-linux-dev, build-linux-user-ci, build-linux-dev-ci, build-windows-user, build-windows-dev]
+    runs-on: [self-hosted, linux, x64]
+    # Only run on tags
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    steps:
+      - name: Collect artifacts
+        uses: actions/download-artifact@master
+      - name: Release eclipse-emoflon-linux
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            eclipse-emoflon-linux-user/eclipse-emoflon-linux-user.zip
+            eclipse-emoflon-linux-dev/eclipse-emoflon-linux-dev.zip
+      - name: Release eclipse-emoflon-linux-ci
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            eclipse-emoflon-linux-user-ci/eclipse-emoflon-linux-user-ci.zip
+            eclipse-emoflon-linux-dev-ci/eclipse-emoflon-linux-dev-ci.zip
+      - name: Release eclipse-emoflon-windows
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            eclipse-emoflon-windows-user/eclipse-emoflon-windows-user.zip
+            eclipse-emoflon-windows-dev/eclipse-emoflon-windows-dev.zip
