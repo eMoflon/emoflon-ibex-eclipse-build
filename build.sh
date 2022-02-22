@@ -26,7 +26,7 @@ ARCHIVE_FILE_WINDOWS="eclipse-modeling-$VERSION-R-win32-x86_64.zip"
 OUTPUT_FILE_PREFIX_LINUX="eclipse-emoflon-linux"
 OUTPUT_FILE_PREFIX_WINDOWS="eclipse-emoflon-windows"
 MIRROR="https://ftp.fau.de"
-UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/"
+UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/,http://download.eclipse.org/viatra/updates/release/latest"
 EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
 
 # Import plug-in:
@@ -35,8 +35,8 @@ IMPORT_PLUGIN_FILENAME="com.seeq.eclipse.importprojects_$IMPORT_PLUGIN_VERSION.j
 IMPORT_PLUGIN_SRC="https://api.github.com/repos/maxkratz/eclipse-import-projects-plugin/releases/tags/v$IMPORT_PLUGIN_VERSION"
 
 # Array with the order to install the plugins with.
-ORDER_LINUX=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme")
-ORDER_WINDOWS=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme-win")
+ORDER_LINUX=("xtext" "plantuml" "hipe" "viatra" "kermeta" "misc" "emoflon-headless" "emoflon" "theme")
+ORDER_WINDOWS=("xtext" "plantuml" "hipe" "viatra" "kermeta" "misc" "emoflon-headless" "emoflon" "theme-win")
 
 #
 # Configure OS specific details
