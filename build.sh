@@ -138,6 +138,10 @@ if [[ "$MODE" = "user" ]]; then
 elif [[ "$MODE" = "dev" ]]; then
 	INSTALL_EMOFLON=0
 	OUTPUT_FILE="$OUTPUT_FILE_PREFIX-dev.zip"
+elif [[ "$MODE" = "hipedev" ]]; then
+	INSTALL_EMOFLON=0
+	SKIP_HIPE=1
+	OUTPUT_FILE="$OUTPUT_FILE_PREFIX-dev-hipe.zip"
 else
 	log "Mode argument invalid."; exit 1 ;
 fi
@@ -166,6 +170,12 @@ for p in ${ORDER[@]}; do
 	
 	# Check if Dark Theme packages must be skipped (for CI builds = completely headless).
 	if ( [[ "$p" = "theme" ]] || [[ "$p" = "theme-win" ]] ) && [[ $SKIP_THEME -eq 1 ]]; then
+		log "Skipping plug-in: $p."
+		continue
+	fi
+
+	# Check if HiPE must be skipped (for hipe-dev builds).
+	if [[ "$p" = "hipe" ]] && [[ $SKIP_HIPE -eq 1 ]]; then
 		log "Skipping plug-in: $p."
 		continue
 	fi

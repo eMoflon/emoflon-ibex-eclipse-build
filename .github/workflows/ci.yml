@@ -78,6 +78,24 @@ jobs:
           name: eclipse-emoflon-linux-dev-ci
           path: eclipse-emoflon-linux-dev-ci.zip
 
+  # Build Eclipse eMoflon Linux dev CI
+  build-linux-dev-hipe:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon Linux dev HiPE)."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Run build script
+        run: chmod +x build.sh && ./build.sh -m hipedev -o linux --skip-theme
+      - name: Rename ZIP archive
+        run: mv eclipse-emoflon-linux-dev.zip eclipse-emoflon-linux-dev-hipe.zip
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-linux-dev-hipe
+          path: eclipse-emoflon-linux-dev-hipe.zip
+
   # Build Eclipse eMoflon Windows user
   build-windows-user:
     runs-on: [self-hosted, windows, x64]
@@ -118,9 +136,29 @@ jobs:
           name: eclipse-emoflon-windows-dev
           path: eclipse-emoflon-windows-dev.zip
 
+    # Build Eclipse eMoflon Windows dev
+  build-windows-dev-hipe:
+    runs-on: [self-hosted, windows, x64]
+    env:
+      WINDOWS_JDK_BIN_PATH: ${{ secrets.WINDOWS_JDK_BIN_PATH }}
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon Windows dev HiPE)."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Run build script
+        run: |
+          echo "$env:WINDOWS_JDK_BIN_PATH" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          bash ./build.sh -m hipedev -o windows
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-windows-dev-hipe
+          path: eclipse-emoflon-windows-dev-hipe.zip
+
   # Create a release if running on tag
   create-release:
-    needs: [build-linux-user, build-linux-dev, build-linux-user-ci, build-linux-dev-ci, build-windows-user, build-windows-dev]
+    needs: [build-linux-user, build-linux-dev, build-linux-user-ci, build-linux-dev-ci, build-linux-dev-hipe, build-windows-user, build-windows-dev, build-windows-dev-hipe]
     runs-on: [self-hosted, linux, x64]
     # Only run on tags
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
@@ -145,3 +183,9 @@ jobs:
           files: |
             eclipse-emoflon-windows-user/eclipse-emoflon-windows-user.zip
             eclipse-emoflon-windows-dev/eclipse-emoflon-windows-dev.zip
+      - name: Release eclipse-emoflon-dev-hipe
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            eclipse-emoflon-linux-dev-hipe/eclipse-emoflon-linux-dev-hipe.zip
+            eclipse-emoflon-windows-dev-hipe/eclipse-emoflon-windows-dev-hipe.zip
