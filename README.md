@@ -36,6 +36,7 @@ Required packages:
 * `zip`
 * `OpenJDK 11.0.13` (may differ, as this is just used to boot-up Eclipse in headless mode)
 * `imagemagick`
+* `fonts-liberation`
 * Github Actions runner
 
 ### Windows
@@ -47,6 +48,7 @@ Required packages:
     * `unzip`
     * `zip`
     * `imagemagick`
+    * `fonts-liberation`
 * `AdoptJDK 16.0.2.7-hotspot` (must exactly match or you have to adapt [ci.yml](.github/workflows/ci.yml))
 * Github Actions runner
 
