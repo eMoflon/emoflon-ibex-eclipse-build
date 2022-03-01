@@ -78,7 +78,7 @@ jobs:
           name: eclipse-emoflon-linux-dev-ci
           path: eclipse-emoflon-linux-dev-ci.zip
 
-  # Build Eclipse eMoflon Linux dev CI
+  # Build Eclipse eMoflon Linux dev HiPE
   build-linux-dev-hipe:
     runs-on: [self-hosted, linux, x64]
     steps:
@@ -88,8 +88,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m hipedev -o linux --skip-theme
-      - name: Rename ZIP archive
-        run: mv eclipse-emoflon-linux-dev.zip eclipse-emoflon-linux-dev-hipe.zip
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -136,7 +134,7 @@ jobs:
           name: eclipse-emoflon-windows-dev
           path: eclipse-emoflon-windows-dev.zip
 
-    # Build Eclipse eMoflon Windows dev
+  # Build Eclipse eMoflon Windows dev HiPE
   build-windows-dev-hipe:
     runs-on: [self-hosted, windows, x64]
     env:
