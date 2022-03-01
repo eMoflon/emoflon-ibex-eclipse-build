@@ -88,11 +88,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon Windows user)."
       - name: Install dependencies
         run: |
-          choco install wget --no-progress
-          choco install curl --no-progress
-          choco install unzip --no-progress
-          choco install zip --no-progress
-          choco install imagemagick --no-progress
+          choco install wget curl unzip zip imagemagick --no-progress
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Run build script
@@ -115,11 +111,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon Windows dev)."
       - name: Install dependencies
         run: |
-          choco install wget --no-progress
-          choco install curl --no-progress
-          choco install unzip --no-progress
-          choco install zip --no-progress
-          choco install imagemagick --no-progress
+          choco install wget curl unzip zip imagemagick --no-progress
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Run build script
