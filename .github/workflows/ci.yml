@@ -93,7 +93,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Run build script
         run: |
-          echo "$env:WINDOWS_JDK_BIN_PATH" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           bash ./build.sh -m user -o windows
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -116,7 +115,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Run build script
         run: |
-          echo "$env:WINDOWS_JDK_BIN_PATH" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           bash ./build.sh -m dev -o windows
       - name: Upload artifact
         uses: actions/upload-artifact@v2
