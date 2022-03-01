@@ -12,7 +12,7 @@ on:
 jobs:
   # Build Eclipse eMoflon Linux user
   build-linux-user:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux user)."
@@ -28,7 +28,7 @@ jobs:
 
   # Build Eclipse eMoflon Linux dev
   build-linux-dev:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev)."
@@ -44,7 +44,7 @@ jobs:
 
   # Build Eclipse eMoflon Linux user CI
   build-linux-user-ci:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux user CI)."
@@ -62,7 +62,7 @@ jobs:
 
   # Build Eclipse eMoflon Linux dev CI
   build-linux-dev-ci:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev CI)."
@@ -80,7 +80,7 @@ jobs:
 
   # Build Eclipse eMoflon Windows user
   build-windows-user:
-    runs-on: [self-hosted, windows, x64]
+    runs-on: [windows-2022]
     env:
       WINDOWS_JDK_BIN_PATH: ${{ secrets.WINDOWS_JDK_BIN_PATH }}
     steps:
@@ -100,7 +100,7 @@ jobs:
 
   # Build Eclipse eMoflon Windows dev
   build-windows-dev:
-    runs-on: [self-hosted, windows, x64]
+    runs-on: [windows-2022]
     env:
       WINDOWS_JDK_BIN_PATH: ${{ secrets.WINDOWS_JDK_BIN_PATH }}
     steps:
@@ -121,7 +121,7 @@ jobs:
   # Create a release if running on tag
   create-release:
     needs: [build-linux-user, build-linux-dev, build-linux-user-ci, build-linux-dev-ci, build-windows-user, build-windows-dev]
-    runs-on: [self-hosted, linux, x64]
+    runs-on: [ubuntu-20.04]
     # Only run on tags
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     steps:
