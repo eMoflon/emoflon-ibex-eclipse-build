@@ -89,6 +89,11 @@ jobs:
       - name: Install dependencies
         run: |
           choco install wget curl unzip zip imagemagick liberationfonts --no-progress
+      - name: Install correct Java version
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '16'
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Run build script
@@ -111,6 +116,11 @@ jobs:
       - name: Install dependencies
         run: |
           choco install wget curl unzip zip imagemagick liberationfonts --no-progress
+      - name: Install correct Java version
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '16'
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Run build script
