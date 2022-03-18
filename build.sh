@@ -104,9 +104,14 @@ setup_emoflon_headless_local_updatesite () {
 	unzip ./tmp/emoflon-headless/updatesite.zip -d tmp/emoflon-headless
 
 	# Append local folder to path (has to be absolute and, therefore, dynamic)
-	if [[ "$OS" = "linux" ]]; then
+	if [[ ! -z ${GITHUB_WORKSPACE} ]] && [[ "$OS" = "windows" ]]; then
+		log "Using a Github-hosted runner on Windows."
+		UPDATESITES+=",file:/D:/a/emoflon-eclipse-build/emoflon-eclipse-build/tmp/emoflon-headless/"
+	elif [[ "$OS" = "linux" ]]; then
+		log "Using a runner on Linux."
 		UPDATESITES+=",file://$PWD/tmp/emoflon-headless/"
 	elif [[ "$OS" = "windows" ]]; then
+		log "Using a runner on Windows."
 		UPDATESITES+=",file://$(echo $PWD | sed -e 's/\/mnt\///g' | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')\tmp\emoflon-headless\\"
 	fi
 }
