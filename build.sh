@@ -36,7 +36,7 @@ IMPORT_PLUGIN_SRC="https://api.github.com/repos/maxkratz/eclipse-import-projects
 
 # Array with the order to install the plugins with.
 ORDER_LINUX=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme")
-ORDER_WINDOWS=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme-win")
+#ORDER_WINDOWS=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme-win")
 
 #
 # Configure OS specific details
@@ -49,7 +49,8 @@ if [[ "$OS" = "linux" ]]; then
 elif [[ "$OS" = "windows" ]]; then
 	ARCHIVE_FILE=$ARCHIVE_FILE_WINDOWS
 	OUTPUT_FILE_PREFIX=$OUTPUT_FILE_PREFIX_WINDOWS
-	ORDER=("${ORDER_WINDOWS[@]}")
+#	ORDER=("${ORDER_WINDOWS[@]}")
+	ORDER=("${ORDER_LINUX[@]}")
 else
 	echo "=> OS $OS not known."
 	exit 1
