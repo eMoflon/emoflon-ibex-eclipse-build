@@ -112,8 +112,6 @@ jobs:
   build-windows-user:
     needs: [create-splash-image]
     runs-on: [windows-2022]
-    env:
-      WINDOWS_JDK_BIN_PATH: ${{ secrets.WINDOWS_JDK_BIN_PATH }}
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows user)."
@@ -144,8 +142,6 @@ jobs:
   build-windows-dev:
     needs: [create-splash-image]
     runs-on: [windows-2022]
-    env:
-      WINDOWS_JDK_BIN_PATH: ${{ secrets.WINDOWS_JDK_BIN_PATH }}
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows dev)."
