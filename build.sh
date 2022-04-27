@@ -36,7 +36,6 @@ IMPORT_PLUGIN_SRC="https://api.github.com/repos/maxkratz/eclipse-import-projects
 
 # Array with the order to install the plugins with.
 ORDER_LINUX=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme")
-#ORDER_WINDOWS=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme-win")
 
 #
 # Configure OS specific details
@@ -49,7 +48,7 @@ if [[ "$OS" = "linux" ]]; then
 elif [[ "$OS" = "windows" ]]; then
 	ARCHIVE_FILE=$ARCHIVE_FILE_WINDOWS
 	OUTPUT_FILE_PREFIX=$OUTPUT_FILE_PREFIX_WINDOWS
-#	ORDER=("${ORDER_WINDOWS[@]}")
+	# Windows now uses the linux install order too
 	ORDER=("${ORDER_LINUX[@]}")
 else
 	echo "=> OS $OS not known."
@@ -166,7 +165,7 @@ for p in ${ORDER[@]}; do
 	fi
 	
 	# Check if Dark Theme packages must be skipped (for CI builds = completely headless).
-	if ( [[ "$p" = "theme" ]] || [[ "$p" = "theme-win" ]] ) && [[ $SKIP_THEME -eq 1 ]]; then
+	if [[ "$p" = "theme" ]] && [[ $SKIP_THEME -eq 1 ]]; then
 		log "Skipping plug-in: $p."
 		continue
 	fi
