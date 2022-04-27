@@ -9,15 +9,40 @@ on:
     tags:
       - 'v*.*.*'
 
+env:
+  # Eclipse version to use in this CI
+  VERSION: "2021-12"
+
 jobs:
+  # Create splash image
+  create-splash-image:
+    runs-on: [ubuntu-20.04]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Start message
+        run: echo "Creating splash image for version $VERSION."
+      - name: Run splash creator script
+        run: chmod +x splash.sh && ./splash.sh img $VERSION
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: splash.bmp
+          path: splash.bmp
+
   # Build Eclipse eMoflon Linux user
   build-linux-user:
+    needs: [create-splash-image]
     runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux user)."
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m user -o linux
       - name: Upload artifact
@@ -28,12 +53,17 @@ jobs:
 
   # Build Eclipse eMoflon Linux dev
   build-linux-dev:
+    needs: [create-splash-image]
     runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev)."
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m dev -o linux
       - name: Upload artifact
@@ -80,6 +110,7 @@ jobs:
 
   # Build Eclipse eMoflon Windows user
   build-windows-user:
+    needs: [create-splash-image]
     runs-on: [windows-2022]
     env:
       WINDOWS_JDK_BIN_PATH: ${{ secrets.WINDOWS_JDK_BIN_PATH }}
@@ -88,7 +119,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon Windows user)."
       - name: Install dependencies
         run: |
-          choco install wget curl unzip zip imagemagick liberationfonts --no-progress
+          choco install wget curl unzip zip --no-progress
       - name: Install correct Java version
         uses: actions/setup-java@v2
         with:
@@ -96,6 +127,10 @@ jobs:
           java-version: '16'
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
       - name: Run build script
         run: |
           bash ./build.sh -m user -o windows
@@ -107,6 +142,7 @@ jobs:
 
   # Build Eclipse eMoflon Windows dev
   build-windows-dev:
+    needs: [create-splash-image]
     runs-on: [windows-2022]
     env:
       WINDOWS_JDK_BIN_PATH: ${{ secrets.WINDOWS_JDK_BIN_PATH }}
@@ -115,7 +151,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon Windows dev)."
       - name: Install dependencies
         run: |
-          choco install wget curl unzip zip imagemagick liberationfonts --no-progress
+          choco install wget curl unzip zip --no-progress
       - name: Install correct Java version
         uses: actions/setup-java@v2
         with:
@@ -123,6 +159,10 @@ jobs:
           java-version: '16'
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
       - name: Run build script
         run: |
           bash ./build.sh -m dev -o windows
