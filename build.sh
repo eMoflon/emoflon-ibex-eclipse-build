@@ -20,7 +20,7 @@ done
 # Config and URLs
 #
 
-VERSION="2021-12"
+VERSION="2022-03"
 ARCHIVE_FILE_LINUX="eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz"
 ARCHIVE_FILE_WINDOWS="eclipse-modeling-$VERSION-R-win32-x86_64.zip"
 OUTPUT_FILE_PREFIX_LINUX="eclipse-emoflon-linux"
