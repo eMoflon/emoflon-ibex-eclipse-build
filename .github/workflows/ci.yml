@@ -110,14 +110,19 @@ jobs:
 
   # Build Eclipse eMoflon Linux dev HiPE
   build-linux-dev-hipe:
-    runs-on: [self-hosted, linux, x64]
+    needs: [create-splash-image]
+    runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev HiPE)."
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
       - name: Run build script
-        run: chmod +x build.sh && ./build.sh -m hipedev -o linux --skip-theme
+        run: chmod +x build.sh && ./build.sh -m hipedev -o linux
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -190,17 +195,29 @@ jobs:
 
   # Build Eclipse eMoflon Windows dev HiPE
   build-windows-dev-hipe:
-    runs-on: [self-hosted, windows, x64]
-    env:
-      WINDOWS_JDK_BIN_PATH: ${{ secrets.WINDOWS_JDK_BIN_PATH }}
+    needs: [create-splash-image]
+    runs-on: [windows-2022]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows dev HiPE)."
+      - name: Install dependencies
+        run: |
+          choco install wget curl unzip zip --no-progress
+      - name: Install correct Java version
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '16'
+      - name: Fix Git line endings
+        run: git config --global core.autocrlf input
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
       - name: Run build script
         run: |
-          echo "$env:WINDOWS_JDK_BIN_PATH" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           bash ./build.sh -m hipedev -o windows
       - name: Upload artifact
         uses: actions/upload-artifact@v2
