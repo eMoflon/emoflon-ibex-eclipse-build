@@ -20,13 +20,13 @@ done
 # Config and URLs
 #
 
-VERSION="2021-12"
+VERSION=$VERSION # version comes from the CI env
 ARCHIVE_FILE_LINUX="eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz"
 ARCHIVE_FILE_WINDOWS="eclipse-modeling-$VERSION-R-win32-x86_64.zip"
 OUTPUT_FILE_PREFIX_LINUX="eclipse-emoflon-linux"
 OUTPUT_FILE_PREFIX_WINDOWS="eclipse-emoflon-windows"
 MIRROR="https://ftp.fau.de"
-UPDATESITES="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,http://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,http://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/"
+UPDATESITES="https://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,https://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,https://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/"
 EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
 
 # Import plug-in:
@@ -104,9 +104,14 @@ setup_emoflon_headless_local_updatesite () {
 	unzip ./tmp/emoflon-headless/updatesite.zip -d tmp/emoflon-headless
 
 	# Append local folder to path (has to be absolute and, therefore, dynamic)
-	if [[ "$OS" = "linux" ]]; then
+	if [[ ! -z ${GITHUB_WORKSPACE} ]] && [[ "$OS" = "windows" ]]; then
+		log "Using a Github-hosted runner on Windows."
+		UPDATESITES+=",file:/D:/a/emoflon-eclipse-build/emoflon-eclipse-build/tmp/emoflon-headless/"
+	elif [[ "$OS" = "linux" ]]; then
+		log "Using a runner on Linux."
 		UPDATESITES+=",file://$PWD/tmp/emoflon-headless/"
 	elif [[ "$OS" = "windows" ]]; then
+		log "Using a runner on Windows."
 		UPDATESITES+=",file://$(echo $PWD | sed -e 's/\/mnt\///g' | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')\tmp\emoflon-headless\\"
 	fi
 }
@@ -138,6 +143,10 @@ if [[ "$MODE" = "user" ]]; then
 elif [[ "$MODE" = "dev" ]]; then
 	INSTALL_EMOFLON=0
 	OUTPUT_FILE="$OUTPUT_FILE_PREFIX-dev.zip"
+elif [[ "$MODE" = "hipedev" ]]; then
+	INSTALL_EMOFLON=0
+	SKIP_HIPE=1
+	OUTPUT_FILE="$OUTPUT_FILE_PREFIX-dev-hipe.zip"
 else
 	log "Mode argument invalid."; exit 1 ;
 fi
@@ -169,6 +178,12 @@ for p in ${ORDER[@]}; do
 		log "Skipping plug-in: $p."
 		continue
 	fi
+
+	# Check if HiPE must be skipped (for hipe-dev builds).
+	if [[ "$p" = "hipe" ]] && [[ $SKIP_HIPE -eq 1 ]]; then
+		log "Skipping plug-in: $p."
+		continue
+	fi
 	log "Installing plug-in: $p."
 	install_packages "$UPDATESITES" "./packages/$p-packages.list"
 done
@@ -176,13 +191,13 @@ done
 # Install com.seeq.eclipse.importprojects (by hand because there is no public update site)
 install_eclipse_import_projects
 
-# Create and install custom splash image
+# Deploy custom splash image
 if [[ $SKIP_THEME -eq 1 ]]; then
 	# Skip UI customization for CI builds
 	log "Skipping custom splash image."
 else
-	log "Create and install custom splash image."
-	chmod +x splash.sh && ./splash.sh $VERSION
+	log "Deploy custom splash image."
+	chmod +x splash.sh && ./splash.sh deploy
 fi
 
 log "Clean-up old archives and create new archive."
