@@ -11,7 +11,7 @@ on:
 
 env:
   # Eclipse version to use in this CI
-  VERSION: "2021-12"
+  VERSION: "2022-03"
 
 jobs:
   # Create splash image
