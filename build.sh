@@ -20,7 +20,7 @@ done
 # Config and URLs
 #
 
-VERSION="2021-12"
+VERSION=$VERSION # version comes from the CI env
 ARCHIVE_FILE_LINUX="eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz"
 ARCHIVE_FILE_WINDOWS="eclipse-modeling-$VERSION-R-win32-x86_64.zip"
 OUTPUT_FILE_PREFIX_LINUX="eclipse-emoflon-linux"
@@ -104,9 +104,14 @@ setup_emoflon_headless_local_updatesite () {
 	unzip ./tmp/emoflon-headless/updatesite.zip -d tmp/emoflon-headless
 
 	# Append local folder to path (has to be absolute and, therefore, dynamic)
-	if [[ "$OS" = "linux" ]]; then
+	if [[ ! -z ${GITHUB_WORKSPACE} ]] && [[ "$OS" = "windows" ]]; then
+		log "Using a Github-hosted runner on Windows."
+		UPDATESITES+=",file:/D:/a/emoflon-eclipse-build/emoflon-eclipse-build/tmp/emoflon-headless/"
+	elif [[ "$OS" = "linux" ]]; then
+		log "Using a runner on Linux."
 		UPDATESITES+=",file://$PWD/tmp/emoflon-headless/"
 	elif [[ "$OS" = "windows" ]]; then
+		log "Using a runner on Windows."
 		UPDATESITES+=",file://$(echo $PWD | sed -e 's/\/mnt\///g' | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')\tmp\emoflon-headless\\"
 	fi
 }
@@ -176,13 +181,13 @@ done
 # Install com.seeq.eclipse.importprojects (by hand because there is no public update site)
 install_eclipse_import_projects
 
-# Create and install custom splash image
+# Deploy custom splash image
 if [[ $SKIP_THEME -eq 1 ]]; then
 	# Skip UI customization for CI builds
 	log "Skipping custom splash image."
 else
-	log "Create and install custom splash image."
-	chmod +x splash.sh && ./splash.sh $VERSION
+	log "Deploy custom splash image."
+	chmod +x splash.sh && ./splash.sh deploy
 fi
 
 log "Clean-up old archives and create new archive."
