@@ -72,12 +72,12 @@ parse_package_list () {
 # Installs a given list of packages from a given update site.
 install_packages () {
 	if [[ "$OS" = "linux" ]]; then
-		./eclipse/eclipse -nosplash -consolelog \
+		./eclipse/eclipse -nosplash \
 			-application org.eclipse.equinox.p2.director \
 			-repository "$1" \
 			-installIU "$(parse_package_list $2)"
 	elif [[ "$OS" = "windows" ]]; then
-		./eclipse/eclipsec.exe -nosplash -consolelog \
+		./eclipse/eclipsec.exe -nosplash \
 			-application org.eclipse.equinox.p2.director \
 			-repository "$1" \
 			-installIU "$(parse_package_list $2)"
