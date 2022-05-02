@@ -126,6 +126,13 @@ install_eclipse_import_projects () {
 	wget -P eclipse/plugins -qi $IMPORT_PROJECTS_JAR
 }
 
+# Install custom global configuration
+install_global_eclipse_settings () {
+	log "Install global Eclipse settings."
+	cp ./resources/emoflon.properties ./eclipse
+	echo "-Declipse.pluginCustomization=emoflon.properties" >> ./eclipse/eclipse.ini
+}
+
 
 #
 # Script
@@ -164,6 +171,9 @@ elif [[ "$OS" = "windows" ]]; then
 	rm -rf ./eclipse/*
 	unzip -qq -o eclipse-modeling-$VERSION-R-win32-x86_64.zip
 fi
+
+# Install global Eclipse settings from config file
+install_global_eclipse_settings
 
 log "Install Eclipse plug-ins."
 for p in ${ORDER[@]}; do
