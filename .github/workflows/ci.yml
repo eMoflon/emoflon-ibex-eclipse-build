@@ -139,7 +139,7 @@ jobs:
       - name: Install dependencies
         run: |
           brew update
-          brew install p7zip coreutils grep
+          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Download splash image

@@ -16,6 +16,8 @@ while [[ "$#" -gt 0 ]]; do
 	shift
 done
 
+# TODO: Check if env VERSION is set
+
 #
 # Config and URLs
 #
@@ -78,13 +80,18 @@ parse_package_list () {
 
 # Installs a given list of packages from a given update site.
 install_packages () {
-	if [[ "$OS" = "linux" ]] ||[[ "$OS" = "macos" ]]; then
+	if [[ "$OS" = "linux" ]]; then
 		./eclipse/eclipse -nosplash \
 			-application org.eclipse.equinox.p2.director \
 			-repository "$1" \
 			-installIU "$(parse_package_list $2)"
 	elif [[ "$OS" = "windows" ]]; then
 		./eclipse/eclipsec.exe -nosplash \
+			-application org.eclipse.equinox.p2.director \
+			-repository "$1" \
+			-installIU "$(parse_package_list $2)"
+	elif [[ "$OS" = "macos" ]]; then
+		./eclipse/Eclipse/Contents/MacOS/eclipse -nosplash \
 			-application org.eclipse.equinox.p2.director \
 			-repository "$1" \
 			-installIU "$(parse_package_list $2)"
@@ -181,9 +188,8 @@ elif [[ "$OS" = "macos" ]]; then
 	log "Clean-up Eclipse folder and unzip."
 	rm -rf ./eclipse/*
 	7z x $ARCHIVE_FILE_MACOS
-	7z x 4.hfs
-	log "DEBUGGING:"
-	ls
+	# Rename folder because "Eclipse" is inconsistent
+	mv Eclipse eclipse
 fi
 
 # Install global Eclipse settings from config file
