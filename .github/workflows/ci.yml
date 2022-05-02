@@ -129,6 +129,31 @@ jobs:
           name: eclipse-emoflon-linux-dev-hipe
           path: eclipse-emoflon-linux-dev-hipe.zip
 
+  # Build Eclipse eMoflon macOS user
+  build-macos-user:
+    needs: [create-splash-image]
+    runs-on: [macos-latest]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon macOS user)."
+      - name: Install dependencies
+        run: |
+          brew update
+          brew install p7zip
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
+      - name: Run build script
+        run: chmod +x build.sh && ./build.sh -m user -o macos
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-macos-user
+          path: eclipse-emoflon-macos-user.zip
+
   # Build Eclipse eMoflon Windows user
   build-windows-user:
     needs: [create-splash-image]

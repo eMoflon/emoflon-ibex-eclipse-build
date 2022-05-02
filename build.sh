@@ -23,8 +23,10 @@ done
 VERSION=$VERSION # version comes from the CI env
 ARCHIVE_FILE_LINUX="eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz"
 ARCHIVE_FILE_WINDOWS="eclipse-modeling-$VERSION-R-win32-x86_64.zip"
+ARCHIVE_FILE_MACOS="eclipse-modeling-$VERSION-R-macosx-cocoa-x86_64.dmg"
 OUTPUT_FILE_PREFIX_LINUX="eclipse-emoflon-linux"
 OUTPUT_FILE_PREFIX_WINDOWS="eclipse-emoflon-windows"
+OUTOUT_FILE_PREFIX_MACOS="eclipse-emoflon-macos"
 MIRROR="https://ftp.fau.de"
 UPDATESITES="https://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,https://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,https://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/"
 EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
@@ -50,6 +52,11 @@ elif [[ "$OS" = "windows" ]]; then
 	OUTPUT_FILE_PREFIX=$OUTPUT_FILE_PREFIX_WINDOWS
 	# Windows now uses the linux install order too
 	ORDER=("${ORDER_LINUX[@]}")
+elif [[ "$OS" = "macos" ]]; then
+	ARCHIVE_FILE=$ARCHIVE_FILE_MACOS
+	OUTPUT_FILE_PREFIX=$OUTOUT_FILE_PREFIX_MACOS
+	# Lets try with linux install order
+	ORDER=("${ORDER_LINUX[@]}")
 else
 	echo "=> OS $OS not known."
 	exit 1
@@ -71,7 +78,7 @@ parse_package_list () {
 
 # Installs a given list of packages from a given update site.
 install_packages () {
-	if [[ "$OS" = "linux" ]]; then
+	if [[ "$OS" = "linux" ]] ||[[ "$OS" = "macos" ]]; then
 		./eclipse/eclipse -nosplash \
 			-application org.eclipse.equinox.p2.director \
 			-repository "$1" \
@@ -170,6 +177,13 @@ elif [[ "$OS" = "windows" ]]; then
 	log "Clean-up Eclipse folder and unzip."
 	rm -rf ./eclipse/*
 	unzip -qq -o eclipse-modeling-$VERSION-R-win32-x86_64.zip
+elif [[ "$OS" = "macos" ]]; then
+	log "Clean-up Eclipse folder and unzip."
+	rm -rf ./eclipse/*
+	7z x $ARCHIVE_FILE_MACOS
+	7z x 4.hfs
+	log "DEBUGGING:"
+	ls
 fi
 
 # Install global Eclipse settings from config file
