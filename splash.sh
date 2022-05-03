@@ -21,6 +21,8 @@ elif [[ "$MODE" = "deploy" ]]; then
         # https://stackoverflow.com/questions/19456518/error-when-using-sed-with-find-command-on-os-x-invalid-command-code
         sed -i.fix $REGEX_ECLIPSE_INI $ECLIPSE_BASE_PATH/eclipse.ini
         sed -i.fix $REGEX_CONFIG_INI $ECLIPSE_BASE_PATH/configuration/config.ini
+        rm -f $ECLIPSE_BASE_PATH/eclipse.ini.fix
+        rm -f $ECLIPSE_BASE_PATH/configuration/config.ini.fix
     else
         sed -i $REGEX_ECLIPSE_INI $ECLIPSE_BASE_PATH/eclipse.ini
         sed -i $REGEX_CONFIG_INI $ECLIPSE_BASE_PATH/configuration/config.ini
