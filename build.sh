@@ -111,6 +111,7 @@ setup_emoflon_headless_local_updatesite () {
 		| grep "updatesite.*zip" \
 		| cut -d : -f 2,3 \
 		| tr -d \")
+	log "Using updatesite URL $EMOFLON_HEADLESS_LATEST_UPDATESITE."
 	wget -P ./tmp/emoflon-headless -qi $EMOFLON_HEADLESS_LATEST_UPDATESITE
 
 	unzip ./tmp/emoflon-headless/updatesite.zip -d tmp/emoflon-headless
