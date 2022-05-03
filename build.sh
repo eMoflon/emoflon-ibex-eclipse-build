@@ -225,7 +225,7 @@ if [[ $SKIP_THEME -eq 1 ]]; then
 	log "Skipping custom splash image."
 else
 	log "Deploy custom splash image."
-	chmod +x splash.sh && ./splash.sh deploy
+	chmod +x splash.sh && ./splash.sh deploy $VERSION $ECLIPSE_BASE_PATH
 fi
 
 log "Clean-up old archives and create new archive."
