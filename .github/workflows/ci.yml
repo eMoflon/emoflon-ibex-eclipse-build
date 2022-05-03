@@ -154,6 +154,56 @@ jobs:
           name: eclipse-emoflon-macos-user
           path: eclipse-emoflon-macos-user.zip
 
+  # Build Eclipse eMoflon macOS dev
+  build-macos-dev:
+    needs: [create-splash-image]
+    runs-on: [macos-latest]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon macOS dev)."
+      - name: Install dependencies
+        run: |
+          brew update
+          brew install p7zip coreutils grep wget curl
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
+      - name: Run build script
+        run: chmod +x build.sh && ./build.sh -m dev -o macos
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-macos-dev
+          path: eclipse-emoflon-macos-dev.zip
+
+  # Build Eclipse eMoflon macOS dev HiPE
+  build-macos-dev-hipe:
+    needs: [create-splash-image]
+    runs-on: [macos-latest]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon macOS dev HiPE)."
+      - name: Install dependencies
+        run: |
+          brew update
+          brew install p7zip coreutils grep wget curl
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
+      - name: Run build script
+        run: chmod +x build.sh && ./build.sh -m hipedev -o macos
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-macos-dev-hipe
+          path: eclipse-emoflon-macos-dev-hipe.zip
+
   # Build Eclipse eMoflon Windows user
   build-windows-user:
     needs: [create-splash-image]
@@ -252,7 +302,7 @@ jobs:
 
   # Create a release if running on tag
   create-release:
-    needs: [build-linux-user, build-linux-dev, build-linux-user-ci, build-linux-dev-ci, build-linux-dev-hipe, build-windows-user, build-windows-dev, build-windows-dev-hipe]
+    needs: [build-linux-user, build-linux-dev, build-linux-user-ci, build-linux-dev-ci, build-linux-dev-hipe, build-macos-user, build-macos-dev, build-macos-dev-hipe, build-windows-user, build-windows-dev, build-windows-dev-hipe]
     runs-on: [ubuntu-20.04]
     # Only run on tags
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
@@ -265,6 +315,12 @@ jobs:
           files: |
             eclipse-emoflon-linux-user/eclipse-emoflon-linux-user.zip
             eclipse-emoflon-linux-dev/eclipse-emoflon-linux-dev.zip
+      - name: Release eclipse-emoflon-macos
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            eclipse-emoflon-macos-user/eclipse-emoflon-macos-user.zip
+            eclipse-emoflon-macos-dev/eclipse-emoflon-macos-dev.zip
       - name: Release eclipse-emoflon-linux-ci
         uses: softprops/action-gh-release@v1
         with:
@@ -277,9 +333,14 @@ jobs:
           files: |
             eclipse-emoflon-windows-user/eclipse-emoflon-windows-user.zip
             eclipse-emoflon-windows-dev/eclipse-emoflon-windows-dev.zip
-      - name: Release eclipse-emoflon-dev-hipe
+      - name: Release eclipse-emoflon-dev-hipe-1
         uses: softprops/action-gh-release@v1
         with:
           files: |
             eclipse-emoflon-linux-dev-hipe/eclipse-emoflon-linux-dev-hipe.zip
             eclipse-emoflon-windows-dev-hipe/eclipse-emoflon-windows-dev-hipe.zip
+      - name: Release eclipse-emoflon-dev-hipe-2
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            eclipse-emoflon-macos-dev-hipe/eclipse-emoflon-macos-dev-hipe.zip
