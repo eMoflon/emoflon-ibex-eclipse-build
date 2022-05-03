@@ -91,7 +91,8 @@ install_packages () {
 			-repository "$1" \
 			-installIU "$(parse_package_list $2)"
 	elif [[ "$OS" = "macos" ]]; then
-		./eclipse/Eclipse/Contents/MacOS/eclipse -nosplash \
+		chmod +x ./eclipse/Eclipse.app/Contents/MacOS/eclipse
+		./eclipse/Eclipse.app/Contents/MacOS/eclipse -nosplash \
 			-application org.eclipse.equinox.p2.director \
 			-repository "$1" \
 			-installIU "$(parse_package_list $2)"
