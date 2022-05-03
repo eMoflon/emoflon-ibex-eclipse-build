@@ -148,6 +148,8 @@ jobs:
           name: splash.bmp
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m user -o macos
+      - name: Fix permissions
+        run: sudo xattr -cr ./eclipse/Eclipse.app
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -173,6 +175,8 @@ jobs:
           name: splash.bmp
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m dev -o macos
+      - name: Fix permissions
+        run: sudo xattr -cr ./eclipse/Eclipse.app
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -198,6 +202,8 @@ jobs:
           name: splash.bmp
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m hipedev -o macos
+      - name: Fix permissions
+        run: sudo xattr -cr ./eclipse/Eclipse.app
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
