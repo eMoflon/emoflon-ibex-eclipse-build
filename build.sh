@@ -49,16 +49,22 @@ if [[ "$OS" = "linux" ]]; then
 	ARCHIVE_FILE=$ARCHIVE_FILE_LINUX
 	OUTPUT_FILE_PREFIX=$OUTPUT_FILE_PREFIX_LINUX
 	ORDER=("${ORDER_LINUX[@]}")
+	ECLIPSE_BIN_PATH="./eclipse/eclipse"
+	ECLIPSE_BASE_PATH="./eclipse"
 elif [[ "$OS" = "windows" ]]; then
 	ARCHIVE_FILE=$ARCHIVE_FILE_WINDOWS
 	OUTPUT_FILE_PREFIX=$OUTPUT_FILE_PREFIX_WINDOWS
 	# Windows now uses the linux install order too
 	ORDER=("${ORDER_LINUX[@]}")
+	ECLIPSE_BIN_PATH="./eclipse/eclipsec.exe"
+	ECLIPSE_BASE_PATH="./eclipse"
 elif [[ "$OS" = "macos" ]]; then
 	ARCHIVE_FILE=$ARCHIVE_FILE_MACOS
 	OUTPUT_FILE_PREFIX=$OUTOUT_FILE_PREFIX_MACOS
 	# Lets try with linux install order
 	ORDER=("${ORDER_LINUX[@]}")
+	ECLIPSE_BIN_PATH="./eclipse/Eclipse.app/Contents/MacOS/eclipse"
+	ECLIPSE_BASE_PATH="./eclipse/Eclipse.app/Contents/Eclipse"
 else
 	echo "=> OS $OS not known."
 	exit 1
@@ -80,23 +86,14 @@ parse_package_list () {
 
 # Installs a given list of packages from a given update site.
 install_packages () {
-	if [[ "$OS" = "linux" ]]; then
-		./eclipse/eclipse -nosplash \
-			-application org.eclipse.equinox.p2.director \
-			-repository "$1" \
-			-installIU "$(parse_package_list $2)"
-	elif [[ "$OS" = "windows" ]]; then
-		./eclipse/eclipsec.exe -nosplash \
-			-application org.eclipse.equinox.p2.director \
-			-repository "$1" \
-			-installIU "$(parse_package_list $2)"
-	elif [[ "$OS" = "macos" ]]; then
-		chmod +x ./eclipse/Eclipse.app/Contents/MacOS/eclipse
-		./eclipse/Eclipse.app/Contents/MacOS/eclipse -nosplash \
-			-application org.eclipse.equinox.p2.director \
-			-repository "$1" \
-			-installIU "$(parse_package_list $2)"
+	if [[ "$OS" = "macos" ]]; then
+		chmod +x $ECLIPSE_BIN_PATH
 	fi
+
+	$ECLIPSE_BIN_PATH -nosplash \
+			-application org.eclipse.equinox.p2.director \
+			-repository "$1" \
+			-installIU "$(parse_package_list $2)"
 }
 
 # Displays the given input including "=> " on the console.
@@ -141,14 +138,14 @@ install_eclipse_import_projects () {
 		| grep "$IMPORT_PLUGIN_FILENAME" \
 		| cut -d : -f 2,3 \
 		| tr -d \")
-	wget -P eclipse/plugins -qi $IMPORT_PROJECTS_JAR
+	wget -P $ECLIPSE_BASE_PATH/plugins -qi $IMPORT_PROJECTS_JAR
 }
 
 # Install custom global configuration
 install_global_eclipse_settings () {
 	log "Install global Eclipse settings."
-	cp ./resources/emoflon.properties ./eclipse
-	echo "-Declipse.pluginCustomization=emoflon.properties" >> ./eclipse/eclipse.ini
+	cp ./resources/emoflon.properties $ECLIPSE_BASE_PATH
+	echo "-Declipse.pluginCustomization=emoflon.properties" >> $ECLIPSE_BASE_PATH/eclipse.ini
 }
 
 
@@ -180,17 +177,13 @@ fi
 setup_emoflon_headless_local_updatesite
 
 # Extract new Eclipse
+log "Clean-up Eclipse folder and extract downloaded archive."
+rm -rf ./eclipse/*
 if [[ "$OS" = "linux" ]]; then
-	log "Clean-up Eclipse folder and untar."
-	rm -rf ./eclipse/*
 	tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz
 elif [[ "$OS" = "windows" ]]; then
-	log "Clean-up Eclipse folder and unzip."
-	rm -rf ./eclipse/*
 	unzip -qq -o eclipse-modeling-$VERSION-R-win32-x86_64.zip
 elif [[ "$OS" = "macos" ]]; then
-	log "Clean-up Eclipse folder and unzip."
-	rm -rf ./eclipse/*
 	7z x $ARCHIVE_FILE_MACOS
 	# Rename folder because "Eclipse" is inconsistent
 	mv Eclipse eclipse
