@@ -103,25 +103,27 @@ log () {
 
 # Setup the local updatesite of the emoflon headless
 setup_emoflon_headless_local_updatesite () {
-	log "Create local tmp folder."
-	rm -rf ./tmp && mkdir -p ./tmp/emoflon-headless
-
 	log "Get emoflon-headless and extract its updatesite."
-	# Workaround for API not responding properly (e.g., on macOS-based runners)
-	# (Github Actions currently do not support "re-trigger if failed")
-	for i in {1..5}; do
-		if [[ -z ${EMOFLON_HEADLESS_LATEST_UPDATESITE} ]]; then
-			EMOFLON_HEADLESS_LATEST_UPDATESITE=$(curl -s $EMOFLON_HEADLESS_SRC \
-				| grep "updatesite.*zip" \
-				| cut -d : -f 2,3 \
-				| tr -d \")
+	if [[ ! -f "./tmp/emoflon-headless/updatesite.zip" ]]; then
+		log "Create local tmp folder."
+		rm -rf ./tmp && mkdir -p ./tmp/emoflon-headless
+		log "emoflon-headless ZIP not found"
+		CURL_RET=$(curl -s $EMOFLON_HEADLESS_SRC)
+		log "curl: $CURL_RET"
+		EMOFLON_HEADLESS_LATEST_UPDATESITE=$(echo "$CURL_RET" \
+			| grep "updatesite.*zip" \
+			| cut -d : -f 2,3 \
+			| tr -d \")
+		if [[ -z "${EMOFLON_HEADLESS_LATEST_UPDATESITE// }" ]]; then
+			log "This runner propably reached it's Github API rate limit. Exit."
+			exit 1
 		fi
-	done
-	log "Using updatesite URL $(echo $EMOFLON_HEADLESS_LATEST_UPDATESITE \
-		| grep "/updatesite.*zip" \
-		| sed 's/^[ \t]*//;s/[ \t]*$//')."
-	wget -P ./tmp/emoflon-headless -qi $EMOFLON_HEADLESS_LATEST_UPDATESITE
 
+		log "Using updatesite URL $(echo $EMOFLON_HEADLESS_LATEST_UPDATESITE \
+			| grep "/updatesite.*zip" \
+			| sed 's/^[ \t]*//;s/[ \t]*$//')."
+		wget -P ./tmp/emoflon-headless -qi $EMOFLON_HEADLESS_LATEST_UPDATESITE
+	fi
 	unzip ./tmp/emoflon-headless/updatesite.zip -d tmp/emoflon-headless
 
 	# Append local folder to path (has to be absolute and, therefore, dynamic)

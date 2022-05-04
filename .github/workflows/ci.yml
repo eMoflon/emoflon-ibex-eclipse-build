@@ -12,8 +12,37 @@ on:
 env:
   # Eclipse version to use in this CI
   VERSION: "2021-12"
+  # emoflon-headless source URL (needed by macOS-based runner workaround)
+  EMOFLON_HEADLESS_SRC: "https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
 
 jobs:
+  # Get emoflon-headless updatesite release
+  # This is necessary because some of the Github-hosted macOS-based runner
+  # did trigger the API rate limit from time to time.
+  emoflon-headless-setup:
+    runs-on: [ubuntu-20.04]
+    steps:
+      - name: Find emoflon-headless updatesite
+        run: |
+          RESPONSE=$(curl -s $EMOFLON_HEADLESS_SRC)
+          echo "curl: $RESPONSE"
+          EMOFLON_HEADLESS_LATEST_UPDATESITE=$(echo "$RESPONSE" \
+            | grep "updatesite.*zip" \
+            | cut -d : -f 2,3 \
+            | tr -d \")
+          if [[ -z "${EMOFLON_HEADLESS_LATEST_UPDATESITE// }" ]]; then
+            log "This runner propably reached it's Github API rate limit. Exit."
+            exit 1
+          fi
+          wget -qi $EMOFLON_HEADLESS_LATEST_UPDATESITE
+          mv updatesite.zip emoflon-headless-updatesite.zip
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+          path: emoflon-headless-updatesite.zip
+
+
   # Create splash image
   create-splash-image:
     runs-on: [ubuntu-20.04]
@@ -32,7 +61,7 @@ jobs:
 
   # Build Eclipse eMoflon Linux user
   build-linux-user:
-    needs: [create-splash-image]
+    needs: [create-splash-image, emoflon-headless-setup]
     runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
@@ -43,8 +72,17 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Run build script
-        run: chmod +x build.sh && ./build.sh -m user -o linux
+        run: |
+          chmod +x build.sh && ./build.sh -m user -o linux
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -53,7 +91,7 @@ jobs:
 
   # Build Eclipse eMoflon Linux dev
   build-linux-dev:
-    needs: [create-splash-image]
+    needs: [create-splash-image, emoflon-headless-setup]
     runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
@@ -64,6 +102,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m dev -o linux
       - name: Upload artifact
@@ -74,12 +120,21 @@ jobs:
 
   # Build Eclipse eMoflon Linux user CI
   build-linux-user-ci:
+    needs: [emoflon-headless-setup]
     runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux user CI)."
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m user -o linux --skip-theme
       - name: Rename ZIP archive
@@ -92,12 +147,21 @@ jobs:
 
   # Build Eclipse eMoflon Linux dev CI
   build-linux-dev-ci:
+    needs: [emoflon-headless-setup]
     runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev CI)."
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m dev -o linux --skip-theme
       - name: Rename ZIP archive
@@ -110,7 +174,7 @@ jobs:
 
   # Build Eclipse eMoflon Linux dev HiPE
   build-linux-dev-hipe:
-    needs: [create-splash-image]
+    needs: [create-splash-image, emoflon-headless-setup]
     runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
@@ -121,6 +185,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m hipedev -o linux
       - name: Upload artifact
@@ -131,7 +203,7 @@ jobs:
 
   # Build Eclipse eMoflon macOS user
   build-macos-user:
-    needs: [create-splash-image]
+    needs: [create-splash-image, emoflon-headless-setup]
     runs-on: [macos-latest]
     steps:
       - name: Start message
@@ -146,6 +218,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m user -o macos
       - name: Fix permissions
@@ -158,7 +238,7 @@ jobs:
 
   # Build Eclipse eMoflon macOS dev
   build-macos-dev:
-    needs: [create-splash-image]
+    needs: [create-splash-image, emoflon-headless-setup]
     runs-on: [macos-latest]
     steps:
       - name: Start message
@@ -173,6 +253,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m dev -o macos
       - name: Fix permissions
@@ -185,7 +273,7 @@ jobs:
 
   # Build Eclipse eMoflon macOS dev HiPE
   build-macos-dev-hipe:
-    needs: [create-splash-image]
+    needs: [create-splash-image, emoflon-headless-setup]
     runs-on: [macos-latest]
     steps:
       - name: Start message
@@ -200,6 +288,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m hipedev -o macos
       - name: Fix permissions
@@ -212,7 +308,7 @@ jobs:
 
   # Build Eclipse eMoflon Windows user
   build-windows-user:
-    needs: [create-splash-image]
+    needs: [create-splash-image, emoflon-headless-setup]
     runs-on: [windows-2022]
     steps:
       - name: Start message
@@ -233,6 +329,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Run build script
         run: |
           bash ./build.sh -m user -o windows
@@ -244,7 +348,7 @@ jobs:
 
   # Build Eclipse eMoflon Windows dev
   build-windows-dev:
-    needs: [create-splash-image]
+    needs: [create-splash-image, emoflon-headless-setup]
     runs-on: [windows-2022]
     steps:
       - name: Start message
@@ -265,6 +369,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Run build script
         run: |
           bash ./build.sh -m dev -o windows
@@ -276,7 +388,7 @@ jobs:
 
   # Build Eclipse eMoflon Windows dev HiPE
   build-windows-dev-hipe:
-    needs: [create-splash-image]
+    needs: [create-splash-image, emoflon-headless-setup]
     runs-on: [windows-2022]
     steps:
       - name: Start message
@@ -297,6 +409,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Run build script
         run: |
           bash ./build.sh -m hipedev -o windows
