@@ -16,7 +16,10 @@ while [[ "$#" -gt 0 ]]; do
 	shift
 done
 
-# TODO: Check if env VERSION is set
+# Check for existing ENVs
+if [[ -z "$VERSION" ]]; then
+	echo "=> No version ENV found. Exit."; exit 1 ;
+fi
 
 #
 # Config and URLs

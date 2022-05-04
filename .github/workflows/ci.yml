@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - 'testing/**'
+      - 'feature/**'
+      - 'hotfix/**'
     # Run pipeline for release tags
     tags:
       - 'v*.*.*'
@@ -65,7 +67,6 @@ jobs:
           name: com.seeq.eclipse.importprojects.jar
           path: com.seeq.eclipse.importprojects.jar
 
-
   # Create splash image
   create-splash-image:
     runs-on: [ubuntu-20.04]
@@ -75,7 +76,7 @@ jobs:
       - name: Start message
         run: echo "Creating splash image for version $VERSION."
       - name: Run splash creator script
-        run: chmod +x splash.sh && ./splash.sh img $VERSION
+        run: chmod +x splash.sh && ./splash.sh img $VERSION null
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
