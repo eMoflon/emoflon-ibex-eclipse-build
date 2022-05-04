@@ -145,11 +145,19 @@ setup_emoflon_headless_local_updatesite () {
 # Install eclipse import projects plug-in
 install_eclipse_import_projects () {
 	log "Install Eclipse import projects plug-in."
-	IMPORT_PROJECTS_JAR=$(curl -s $IMPORT_PLUGIN_SRC \
-		| grep "$IMPORT_PLUGIN_FILENAME" \
-		| cut -d : -f 2,3 \
-		| tr -d \")
-	wget -P $ECLIPSE_BASE_PATH/plugins -qi $IMPORT_PROJECTS_JAR
+
+	# Check if plugin JAR file is present at current location
+	if [[ -f "com.seeq.eclipse.importprojects.jar" ]]; then
+		log "Found local file of eclipse import plugin."
+		mv ./com.seeq.eclipse.importprojects.jar $ECLIPSE_BASE_PATH/plugins
+	else
+		log "Download JAR file from Github API."
+		IMPORT_PROJECTS_JAR=$(curl -s $IMPORT_PLUGIN_SRC \
+			| grep "$IMPORT_PLUGIN_FILENAME" \
+			| cut -d : -f 2,3 \
+			| tr -d \")
+		wget -P $ECLIPSE_BASE_PATH/plugins -qi $IMPORT_PROJECTS_JAR
+	fi
 }
 
 # Install custom global configuration
