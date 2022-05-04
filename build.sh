@@ -16,6 +16,8 @@ while [[ "$#" -gt 0 ]]; do
 	shift
 done
 
+# TODO: Check if env VERSION is set
+
 #
 # Config and URLs
 #
@@ -23,8 +25,10 @@ done
 VERSION=$VERSION # version comes from the CI env
 ARCHIVE_FILE_LINUX="eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz"
 ARCHIVE_FILE_WINDOWS="eclipse-modeling-$VERSION-R-win32-x86_64.zip"
+ARCHIVE_FILE_MACOS="eclipse-modeling-$VERSION-R-macosx-cocoa-x86_64.dmg"
 OUTPUT_FILE_PREFIX_LINUX="eclipse-emoflon-linux"
 OUTPUT_FILE_PREFIX_WINDOWS="eclipse-emoflon-windows"
+OUTOUT_FILE_PREFIX_MACOS="eclipse-emoflon-macos"
 MIRROR="https://ftp.fau.de"
 UPDATESITES="https://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,https://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,https://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/"
 EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
@@ -45,11 +49,22 @@ if [[ "$OS" = "linux" ]]; then
 	ARCHIVE_FILE=$ARCHIVE_FILE_LINUX
 	OUTPUT_FILE_PREFIX=$OUTPUT_FILE_PREFIX_LINUX
 	ORDER=("${ORDER_LINUX[@]}")
+	ECLIPSE_BIN_PATH="./eclipse/eclipse"
+	ECLIPSE_BASE_PATH="./eclipse"
 elif [[ "$OS" = "windows" ]]; then
 	ARCHIVE_FILE=$ARCHIVE_FILE_WINDOWS
 	OUTPUT_FILE_PREFIX=$OUTPUT_FILE_PREFIX_WINDOWS
 	# Windows now uses the linux install order too
 	ORDER=("${ORDER_LINUX[@]}")
+	ECLIPSE_BIN_PATH="./eclipse/eclipsec.exe"
+	ECLIPSE_BASE_PATH="./eclipse"
+elif [[ "$OS" = "macos" ]]; then
+	ARCHIVE_FILE=$ARCHIVE_FILE_MACOS
+	OUTPUT_FILE_PREFIX=$OUTOUT_FILE_PREFIX_MACOS
+	# Lets try with linux install order
+	ORDER=("${ORDER_LINUX[@]}")
+	ECLIPSE_BIN_PATH="./eclipse/Eclipse.app/Contents/MacOS/eclipse"
+	ECLIPSE_BASE_PATH="./eclipse/Eclipse.app/Contents/Eclipse"
 else
 	echo "=> OS $OS not known."
 	exit 1
@@ -71,17 +86,14 @@ parse_package_list () {
 
 # Installs a given list of packages from a given update site.
 install_packages () {
-	if [[ "$OS" = "linux" ]]; then
-		./eclipse/eclipse -nosplash \
-			-application org.eclipse.equinox.p2.director \
-			-repository "$1" \
-			-installIU "$(parse_package_list $2)"
-	elif [[ "$OS" = "windows" ]]; then
-		./eclipse/eclipsec.exe -nosplash \
-			-application org.eclipse.equinox.p2.director \
-			-repository "$1" \
-			-installIU "$(parse_package_list $2)"
+	if [[ "$OS" = "macos" ]]; then
+		chmod +x $ECLIPSE_BIN_PATH
 	fi
+
+	$ECLIPSE_BIN_PATH -nosplash \
+			-application org.eclipse.equinox.p2.director \
+			-repository "$1" \
+			-installIU "$(parse_package_list $2)"
 }
 
 # Displays the given input including "=> " on the console.
@@ -91,16 +103,27 @@ log () {
 
 # Setup the local updatesite of the emoflon headless
 setup_emoflon_headless_local_updatesite () {
-	log "Create local tmp folder."
-	rm -rf ./tmp && mkdir -p ./tmp/emoflon-headless
-
 	log "Get emoflon-headless and extract its updatesite."
-	EMOFLON_HEADLESS_LATEST_UPDATESITE=$(curl -s $EMOFLON_HEADLESS_SRC \
-		| grep "updatesite.*zip" \
-		| cut -d : -f 2,3 \
-		| tr -d \")
-	wget -P ./tmp/emoflon-headless -qi $EMOFLON_HEADLESS_LATEST_UPDATESITE
+	if [[ ! -f "./tmp/emoflon-headless/updatesite.zip" ]]; then
+		log "Create local tmp folder."
+		rm -rf ./tmp && mkdir -p ./tmp/emoflon-headless
+		log "emoflon-headless ZIP not found"
+		CURL_RET=$(curl -s $EMOFLON_HEADLESS_SRC)
+		log "curl: $CURL_RET"
+		EMOFLON_HEADLESS_LATEST_UPDATESITE=$(echo "$CURL_RET" \
+			| grep "updatesite.*zip" \
+			| cut -d : -f 2,3 \
+			| tr -d \")
+		if [[ -z "${EMOFLON_HEADLESS_LATEST_UPDATESITE// }" ]]; then
+			log "This runner propably reached it's Github API rate limit. Exit."
+			exit 1
+		fi
 
+		log "Using updatesite URL $(echo $EMOFLON_HEADLESS_LATEST_UPDATESITE \
+			| grep "/updatesite.*zip" \
+			| sed 's/^[ \t]*//;s/[ \t]*$//')."
+		wget -P ./tmp/emoflon-headless -qi $EMOFLON_HEADLESS_LATEST_UPDATESITE
+	fi
 	unzip ./tmp/emoflon-headless/updatesite.zip -d tmp/emoflon-headless
 
 	# Append local folder to path (has to be absolute and, therefore, dynamic)
@@ -113,24 +136,35 @@ setup_emoflon_headless_local_updatesite () {
 	elif [[ "$OS" = "windows" ]]; then
 		log "Using a runner on Windows."
 		UPDATESITES+=",file://$(echo $PWD | sed -e 's/\/mnt\///g' | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')\tmp\emoflon-headless\\"
+	elif [[ "$OS" = "macos" ]]; then
+		log "Using a runner on macOS."
+		UPDATESITES+=",file://$PWD/tmp/emoflon-headless/"
 	fi
 }
 
 # Install eclipse import projects plug-in
 install_eclipse_import_projects () {
 	log "Install Eclipse import projects plug-in."
-	IMPORT_PROJECTS_JAR=$(curl -s $IMPORT_PLUGIN_SRC \
-		| grep "$IMPORT_PLUGIN_FILENAME" \
-		| cut -d : -f 2,3 \
-		| tr -d \")
-	wget -P eclipse/plugins -qi $IMPORT_PROJECTS_JAR
+
+	# Check if plugin JAR file is present at current location
+	if [[ -f "com.seeq.eclipse.importprojects.jar" ]]; then
+		log "Found local file of eclipse import plugin."
+		mv ./com.seeq.eclipse.importprojects.jar $ECLIPSE_BASE_PATH/plugins
+	else
+		log "Download JAR file from Github API."
+		IMPORT_PROJECTS_JAR=$(curl -s $IMPORT_PLUGIN_SRC \
+			| grep "$IMPORT_PLUGIN_FILENAME" \
+			| cut -d : -f 2,3 \
+			| tr -d \")
+		wget -P $ECLIPSE_BASE_PATH/plugins -qi $IMPORT_PROJECTS_JAR
+	fi
 }
 
 # Install custom global configuration
 install_global_eclipse_settings () {
 	log "Install global Eclipse settings."
-	cp ./resources/emoflon.properties ./eclipse
-	echo "-Declipse.pluginCustomization=emoflon.properties" >> ./eclipse/eclipse.ini
+	cp ./resources/emoflon.properties $ECLIPSE_BASE_PATH
+	echo "-Declipse.pluginCustomization=emoflon.properties" >> $ECLIPSE_BASE_PATH/eclipse.ini
 }
 
 
@@ -162,14 +196,16 @@ fi
 setup_emoflon_headless_local_updatesite
 
 # Extract new Eclipse
+log "Clean-up Eclipse folder and extract downloaded archive."
+rm -rf ./eclipse/*
 if [[ "$OS" = "linux" ]]; then
-	log "Clean-up Eclipse folder and untar."
-	rm -rf ./eclipse/*
 	tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz
 elif [[ "$OS" = "windows" ]]; then
-	log "Clean-up Eclipse folder and unzip."
-	rm -rf ./eclipse/*
 	unzip -qq -o eclipse-modeling-$VERSION-R-win32-x86_64.zip
+elif [[ "$OS" = "macos" ]]; then
+	7z x $ARCHIVE_FILE_MACOS
+	# Rename folder because "Eclipse" is inconsistent
+	mv Eclipse eclipse
 fi
 
 # Install global Eclipse settings from config file
@@ -207,7 +243,7 @@ if [[ $SKIP_THEME -eq 1 ]]; then
 	log "Skipping custom splash image."
 else
 	log "Deploy custom splash image."
-	chmod +x splash.sh && ./splash.sh deploy
+	chmod +x splash.sh && ./splash.sh deploy $VERSION $ECLIPSE_BASE_PATH
 fi
 
 log "Clean-up old archives and create new archive."

@@ -14,6 +14,9 @@ This repository is used to automatically build an Eclipse [eMoflon](https://gith
 | Eclipse eMoflon user     | Windows | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: | HiPE            |
 | Eclipse eMoflon dev      | Windows |                    | :heavy_check_mark:   | :heavy_check_mark: | HiPE, *)        |
 | Eclipse eMoflon dev HiPE | Windows |                    | :heavy_check_mark:   | :heavy_check_mark: | *)              |
+| Eclipse eMoflon user     | macOS   | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: | HiPE            |
+| Eclipse eMoflon dev      | macOS   |                    | :heavy_check_mark:   | :heavy_check_mark: | HiPE, *)        |
+| Eclipse eMoflon dev HiPE | macOS   |                    | :heavy_check_mark:   | :heavy_check_mark: | *)              |
 
 *) Democles will be installed manually via the [emoflon-dev-workspace](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 Furthermore, all pattern matcher integrations for eMoflon (HiPE and Democles) will be installed manually via the [emoflon-dev-workspace](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
@@ -30,7 +33,7 @@ Download an archive for the version you are looking for from the release page an
 Currently, all actions are run by the cloud-hosted Github runners.
 All required packages get installed by the CI confguration while running.
 
-In order to run the "Github Actions" pipeline on selfhosted runners, you must ensure that you have at least one properly configured Linux and one Windows runner added to the Github project.
+In order to run the "Github Actions" pipeline on selfhosted runners, you must ensure that you have at least one properly configured Linux, one Windows runner, and one macOS runner added to the Github project.
 
 Required packages (at least):
 * `curl`
@@ -42,3 +45,4 @@ Required packages (at least):
 * `fonts-liberation`
 * Github Actions runner
 * WSL2 with, e.g., Debian as distribution (in case the runner is Windows-based)
+* `coreutils` on macOS
