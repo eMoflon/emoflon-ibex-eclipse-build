@@ -107,11 +107,19 @@ setup_emoflon_headless_local_updatesite () {
 	rm -rf ./tmp && mkdir -p ./tmp/emoflon-headless
 
 	log "Get emoflon-headless and extract its updatesite."
-	EMOFLON_HEADLESS_LATEST_UPDATESITE=$(curl -s $EMOFLON_HEADLESS_SRC \
-		| grep "updatesite.*zip" \
-		| cut -d : -f 2,3 \
-		| tr -d \")
-	log "Using updatesite URL $EMOFLON_HEADLESS_LATEST_UPDATESITE."
+	# Workaround for API not responding properly (e.g., on macOS-based runners)
+	# (Github Actions currently do not support "re-trigger if failed")
+	for i in {1..5}; do
+		if [[ -z ${EMOFLON_HEADLESS_LATEST_UPDATESITE} ]]; then
+			EMOFLON_HEADLESS_LATEST_UPDATESITE=$(curl -s $EMOFLON_HEADLESS_SRC \
+				| grep "updatesite.*zip" \
+				| cut -d : -f 2,3 \
+				| tr -d \")
+		fi
+	done
+	log "Using updatesite URL $(echo $EMOFLON_HEADLESS_LATEST_UPDATESITE \
+		| grep "/updatesite.*zip" \
+		| sed 's/^[ \t]*//;s/[ \t]*$//')."
 	wget -P ./tmp/emoflon-headless -qi $EMOFLON_HEADLESS_LATEST_UPDATESITE
 
 	unzip ./tmp/emoflon-headless/updatesite.zip -d tmp/emoflon-headless
