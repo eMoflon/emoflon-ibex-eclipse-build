@@ -44,15 +44,15 @@ jobs:
           RESPONSE=$(curl -s $IMPORT_PLUGIN_SRC)
           echo "curl: $RESPONSE"
           IMPORT_PLUGIN_LATEST_SRC=$(echo "$RESPONSE" \
-            | grep "com.seeq.eclipse.importprojects*.*jar" \
+            | grep "/com.seeq.eclipse.importprojects*.*jar" \
             | cut -d : -f 2,3 \
             | tr -d \")
           if [[ -z "${IMPORT_PLUGIN_LATEST_SRC// }" ]]; then
-            log "This runner propably reached it's Github API rate limit. Exit."
+            echo "This runner propably reached it's Github API rate limit. Exit."
             exit 1
           fi
-          IMPORT_PLUGIN_LATEST_SRC=$(echo $IMPORT_PLUGIN_LATEST_SRC | tail -1)
-          wget -q "${IMPORT_PLUGIN_LATEST_SRC// }"
+          echo "Found URL: $IMPORT_PLUGIN_LATEST_SRC"
+          wget "${IMPORT_PLUGIN_LATEST_SRC// }"
           mv com.seeq.eclipse.importprojects*.jar com.seeq.eclipse.importprojects.jar
       - name: Upload emoflon-headless updatesite artifact
         uses: actions/upload-artifact@v2
