@@ -5,22 +5,113 @@ on:
     branches:
       - main
       - 'testing/**'
+      - 'feature/**'
+      - 'hotfix/**'
       - 'archive/**'
     # Run pipeline for release tags
     tags:
       - 'v*.*.*'
 
+env:
+  # Eclipse version to use in this CI
+  VERSION: "2021-12"
+  # emoflon-headless source URL (needed by macOS-based runner workaround)
+  EMOFLON_HEADLESS_SRC: "https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
+  # import plugin URL
+  IMPORT_PLUGIN_SRC: "https://api.github.com/repos/maxkratz/eclipse-import-projects-plugin/releases/latest"
+
+
 jobs:
+  # Get emoflon-headless updatesite release + eclipse import plugin artifacts
+  # This is necessary because some of the Github-hosted macOS-based runner
+  # did trigger the API rate limit from time to time.
+  collect-github-api-artifacts:
+    runs-on: [ubuntu-20.04]
+    steps:
+      - name: Find emoflon-headless updatesite
+        run: |
+          RESPONSE=$(curl -s $EMOFLON_HEADLESS_SRC)
+          echo "curl: $RESPONSE"
+          EMOFLON_HEADLESS_LATEST_UPDATESITE=$(echo "$RESPONSE" \
+            | grep "updatesite.*zip" \
+            | cut -d : -f 2,3 \
+            | tr -d \")
+          if [[ -z "${EMOFLON_HEADLESS_LATEST_UPDATESITE// }" ]]; then
+            log "This runner propably reached it's Github API rate limit. Exit."
+            exit 1
+          fi
+          wget -qi $EMOFLON_HEADLESS_LATEST_UPDATESITE
+          mv updatesite.zip emoflon-headless-updatesite.zip
+      - name: Find eclipse import plugin jar
+        run: |
+          RESPONSE=$(curl -s $IMPORT_PLUGIN_SRC)
+          echo "curl: $RESPONSE"
+          IMPORT_PLUGIN_LATEST_SRC=$(echo "$RESPONSE" \
+            | grep "/com.seeq.eclipse.importprojects*.*jar" \
+            | cut -d : -f 2,3 \
+            | tr -d \")
+          if [[ -z "${IMPORT_PLUGIN_LATEST_SRC// }" ]]; then
+            echo "This runner propably reached it's Github API rate limit. Exit."
+            exit 1
+          fi
+          echo "Found URL: $IMPORT_PLUGIN_LATEST_SRC"
+          wget "${IMPORT_PLUGIN_LATEST_SRC// }"
+          mv com.seeq.eclipse.importprojects*.jar com.seeq.eclipse.importprojects.jar
+      - name: Upload emoflon-headless updatesite artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+          path: emoflon-headless-updatesite.zip
+      - name: Upload eclipse import plugin artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: com.seeq.eclipse.importprojects.jar
+          path: com.seeq.eclipse.importprojects.jar
+
+  # Create splash image
+  create-splash-image:
+    runs-on: [ubuntu-20.04]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Start message
+        run: echo "Creating splash image for version $VERSION."
+      - name: Run splash creator script
+        run: chmod +x splash.sh && ./splash.sh img $VERSION null
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: splash.bmp
+          path: splash.bmp
+
   # Build Eclipse eMoflon Linux user
   build-linux-user:
-    runs-on: [self-hosted, linux, x64]
+    needs: [create-splash-image, collect-github-api-artifacts]
+    runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux user)."
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v2
+        with:
+          name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
-        run: chmod +x build.sh && ./build.sh -m user -o linux
+        run: |
+          chmod +x build.sh && ./build.sh -m user -o linux
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -29,12 +120,29 @@ jobs:
 
   # Build Eclipse eMoflon Linux dev
   build-linux-dev:
-    runs-on: [self-hosted, linux, x64]
+    needs: [create-splash-image, collect-github-api-artifacts]
+    runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev)."
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v2
+        with:
+          name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m dev -o linux
       - name: Upload artifact
@@ -45,12 +153,25 @@ jobs:
 
   # Build Eclipse eMoflon Linux user CI
   build-linux-user-ci:
-    runs-on: [self-hosted, linux, x64]
+    needs: [collect-github-api-artifacts]
+    runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux user CI)."
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v2
+        with:
+          name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m user -o linux --skip-theme
       - name: Rename ZIP archive
@@ -63,12 +184,25 @@ jobs:
 
   # Build Eclipse eMoflon Linux dev CI
   build-linux-dev-ci:
-    runs-on: [self-hosted, linux, x64]
+    needs: [collect-github-api-artifacts]
+    runs-on: [ubuntu-20.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev CI)."
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v2
+        with:
+          name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m dev -o linux --skip-theme
       - name: Rename ZIP archive
@@ -79,19 +213,193 @@ jobs:
           name: eclipse-emoflon-linux-dev-ci
           path: eclipse-emoflon-linux-dev-ci.zip
 
+  # Build Eclipse eMoflon Linux dev HiPE
+  build-linux-dev-hipe:
+    needs: [create-splash-image, collect-github-api-artifacts]
+    runs-on: [ubuntu-20.04]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon Linux dev HiPE)."
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v2
+        with:
+          name: com.seeq.eclipse.importprojects.jar
+      - name: Run build script
+        run: chmod +x build.sh && ./build.sh -m hipedev -o linux
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-linux-dev-hipe
+          path: eclipse-emoflon-linux-dev-hipe.zip
+
+  # Build Eclipse eMoflon macOS user
+  build-macos-user:
+    needs: [create-splash-image, collect-github-api-artifacts]
+    runs-on: [macos-latest]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon macOS user)."
+      - name: Install dependencies
+        run: |
+          brew update
+          brew install p7zip coreutils grep wget curl
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v2
+        with:
+          name: com.seeq.eclipse.importprojects.jar
+      - name: Run build script
+        run: chmod +x build.sh && ./build.sh -m user -o macos
+      - name: Fix permissions
+        run: sudo xattr -cr ./eclipse/Eclipse.app
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-macos-user
+          path: eclipse-emoflon-macos-user.zip
+
+  # Build Eclipse eMoflon macOS dev
+  build-macos-dev:
+    needs: [create-splash-image, collect-github-api-artifacts]
+    runs-on: [macos-latest]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon macOS dev)."
+      - name: Install dependencies
+        run: |
+          brew update
+          brew install p7zip coreutils grep wget curl
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v2
+        with:
+          name: com.seeq.eclipse.importprojects.jar
+      - name: Run build script
+        run: chmod +x build.sh && ./build.sh -m dev -o macos
+      - name: Fix permissions
+        run: sudo xattr -cr ./eclipse/Eclipse.app
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-macos-dev
+          path: eclipse-emoflon-macos-dev.zip
+
+  # Build Eclipse eMoflon macOS dev HiPE
+  build-macos-dev-hipe:
+    needs: [create-splash-image, collect-github-api-artifacts]
+    runs-on: [macos-latest]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon macOS dev HiPE)."
+      - name: Install dependencies
+        run: |
+          brew update
+          brew install p7zip coreutils grep wget curl
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v2
+        with:
+          name: com.seeq.eclipse.importprojects.jar
+      - name: Run build script
+        run: chmod +x build.sh && ./build.sh -m hipedev -o macos
+      - name: Fix permissions
+        run: sudo xattr -cr ./eclipse/Eclipse.app
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-macos-dev-hipe
+          path: eclipse-emoflon-macos-dev-hipe.zip
+
   # Build Eclipse eMoflon Windows user
   build-windows-user:
-    runs-on: [self-hosted, windows, x64]
-    env:
-      WINDOWS_JDK_BIN_PATH: ${{ secrets.WINDOWS_JDK_BIN_PATH }}
+    needs: [create-splash-image, collect-github-api-artifacts]
+    runs-on: [windows-2022]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows user)."
+      - name: Install dependencies
+        run: |
+          choco install wget curl unzip zip --no-progress
+      - name: Install correct Java version
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '16'
+      - name: Fix Git line endings
+        run: git config --global core.autocrlf input
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v2
+        with:
+          name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
         run: |
-          echo "$env:WINDOWS_JDK_BIN_PATH" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           bash ./build.sh -m user -o windows
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -101,17 +409,41 @@ jobs:
 
   # Build Eclipse eMoflon Windows dev
   build-windows-dev:
-    runs-on: [self-hosted, windows, x64]
-    env:
-      WINDOWS_JDK_BIN_PATH: ${{ secrets.WINDOWS_JDK_BIN_PATH }}
+    needs: [create-splash-image, collect-github-api-artifacts]
+    runs-on: [windows-2022]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows dev)."
+      - name: Install dependencies
+        run: |
+          choco install wget curl unzip zip --no-progress
+      - name: Install correct Java version
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '16'
+      - name: Fix Git line endings
+        run: git config --global core.autocrlf input
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v2
+        with:
+          name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
         run: |
-          echo "$env:WINDOWS_JDK_BIN_PATH" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           bash ./build.sh -m dev -o windows
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -119,10 +451,54 @@ jobs:
           name: eclipse-emoflon-windows-dev
           path: eclipse-emoflon-windows-dev.zip
 
+  # Build Eclipse eMoflon Windows dev HiPE
+  build-windows-dev-hipe:
+    needs: [create-splash-image, collect-github-api-artifacts]
+    runs-on: [windows-2022]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon Windows dev HiPE)."
+      - name: Install dependencies
+        run: |
+          choco install wget curl unzip zip --no-progress
+      - name: Install correct Java version
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '16'
+      - name: Fix Git line endings
+        run: git config --global core.autocrlf input
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Download splash image
+        uses: actions/download-artifact@v2
+        with:
+          name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v2
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v2
+        with:
+          name: com.seeq.eclipse.importprojects.jar
+      - name: Run build script
+        run: |
+          bash ./build.sh -m hipedev -o windows
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: eclipse-emoflon-windows-dev-hipe
+          path: eclipse-emoflon-windows-dev-hipe.zip
+
   # Create a release if running on tag
   create-release:
-    needs: [build-linux-user, build-linux-dev, build-linux-user-ci, build-linux-dev-ci, build-windows-user, build-windows-dev]
-    runs-on: [self-hosted, linux, x64]
+    needs: [build-linux-user, build-linux-dev, build-linux-user-ci, build-linux-dev-ci, build-linux-dev-hipe, build-macos-user, build-macos-dev, build-macos-dev-hipe, build-windows-user, build-windows-dev, build-windows-dev-hipe]
+    runs-on: [ubuntu-20.04]
     # Only run on tags
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     steps:
@@ -134,6 +510,12 @@ jobs:
           files: |
             eclipse-emoflon-linux-user/eclipse-emoflon-linux-user.zip
             eclipse-emoflon-linux-dev/eclipse-emoflon-linux-dev.zip
+      - name: Release eclipse-emoflon-macos
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            eclipse-emoflon-macos-user/eclipse-emoflon-macos-user.zip
+            eclipse-emoflon-macos-dev/eclipse-emoflon-macos-dev.zip
       - name: Release eclipse-emoflon-linux-ci
         uses: softprops/action-gh-release@v1
         with:
@@ -146,3 +528,14 @@ jobs:
           files: |
             eclipse-emoflon-windows-user/eclipse-emoflon-windows-user.zip
             eclipse-emoflon-windows-dev/eclipse-emoflon-windows-dev.zip
+      - name: Release eclipse-emoflon-dev-hipe-1
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            eclipse-emoflon-linux-dev-hipe/eclipse-emoflon-linux-dev-hipe.zip
+            eclipse-emoflon-windows-dev-hipe/eclipse-emoflon-windows-dev-hipe.zip
+      - name: Release eclipse-emoflon-dev-hipe-2
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            eclipse-emoflon-macos-dev-hipe/eclipse-emoflon-macos-dev-hipe.zip
