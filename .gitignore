@@ -4,5 +4,8 @@ packages/bak/
 eclipse/
 eclipse*.zip
 eclipse-modeling-*.tar.gz
+eclipse-modeling-.dmg
 
 tmp/
+
+.DS_Store
