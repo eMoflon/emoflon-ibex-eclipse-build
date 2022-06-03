@@ -11,6 +11,15 @@ on:
     tags:
       - 'v*.*.*'
 
+  schedule:
+    # Weekly builds on Monday morning 4:42
+    # Github doc:
+    # "The schedule event can be delayed during periods of high loads of GitHub Actions workflow runs.
+    # High load times include the start of every hour.
+    # To decrease the chance of delay, schedule your workflow to run at a different time of the hour."
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
+    - cron: '42 4 * * 1'
+
 env:
   # Eclipse version to use in this CI
   VERSION: "2022-03"
@@ -498,8 +507,8 @@ jobs:
   create-release:
     needs: [build-linux-user, build-linux-dev, build-linux-user-ci, build-linux-dev-ci, build-linux-dev-hipe, build-macos-user, build-macos-dev, build-macos-dev-hipe, build-windows-user, build-windows-dev, build-windows-dev-hipe]
     runs-on: [ubuntu-20.04]
-    # Only run on tags
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    # Only run on pushed tags (and explicitely ignore scheduled runs)
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/') && github.event_name != 'schedule'
     steps:
       - name: Collect artifacts
         uses: actions/download-artifact@master
