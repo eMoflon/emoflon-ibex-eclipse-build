@@ -4,23 +4,31 @@
 
 This repository is used to automatically build an Eclipse [eMoflon](https://github.com/eMoflon/emoflon-ibex) environment.
 
-| Name                     | OS      | eMoflon installed  | Dark theme installed | Splash image       | Pattern matcher |
-|--------------------------|---------|--------------------|----------------------|--------------------|-----------------|
-| Eclipse eMoflon user     | Linux   | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: | HiPE            |
-| Eclipse eMoflon dev      | Linux   |                    | :heavy_check_mark:   | :heavy_check_mark: | HiPE, *)        |
-| Eclipse eMoflon user CI  | Linux   | :heavy_check_mark: |                      |                    | HiPE            |
-| Eclipse eMoflon dev CI   | Linux   |                    |                      |                    | HiPE, *)        |
-| Eclipse eMoflon dev HiPE | Linux   |                    | :heavy_check_mark:   | :heavy_check_mark: | *)              |
-| Eclipse eMoflon user     | Windows | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: | HiPE            |
-| Eclipse eMoflon dev      | Windows |                    | :heavy_check_mark:   | :heavy_check_mark: | HiPE, *)        |
-| Eclipse eMoflon dev HiPE | Windows |                    | :heavy_check_mark:   | :heavy_check_mark: | *)              |
-| Eclipse eMoflon user     | macOS   | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: | HiPE            |
-| Eclipse eMoflon dev      | macOS   |                    | :heavy_check_mark:   | :heavy_check_mark: | HiPE, *)        |
-| Eclipse eMoflon dev HiPE | macOS   |                    | :heavy_check_mark:   | :heavy_check_mark: | *)              |
+| Name                     | OS      | eMoflon installed  | Dark theme installed | Splash image       | Pattern matcher | Additional packages |
+|--------------------------|---------|--------------------|----------------------|--------------------|-----------------|---------------------|
+| Eclipse eMoflon user     | Linux   | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: | HiPE            | :heavy_check_mark:  |
+| Eclipse eMoflon dev      | Linux   |                    | :heavy_check_mark:   | :heavy_check_mark: | HiPE, *)        | :heavy_check_mark:  |
+| Eclipse eMoflon user CI  | Linux   | :heavy_check_mark: |                      |                    | HiPE            |                     |
+| Eclipse eMoflon dev CI   | Linux   |                    |                      |                    | HiPE, *)        |                     |
+| Eclipse eMoflon dev HiPE | Linux   |                    | :heavy_check_mark:   | :heavy_check_mark: | *)              | :heavy_check_mark:  |
+| Eclipse eMoflon user     | Windows | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: | HiPE            | :heavy_check_mark:  |
+| Eclipse eMoflon dev      | Windows |                    | :heavy_check_mark:   | :heavy_check_mark: | HiPE, *)        | :heavy_check_mark:  |
+| Eclipse eMoflon dev HiPE | Windows |                    | :heavy_check_mark:   | :heavy_check_mark: | *)              | :heavy_check_mark:  |
+| Eclipse eMoflon user     | macOS   | :heavy_check_mark: | :heavy_check_mark:   | :heavy_check_mark: | HiPE            | :heavy_check_mark:  |
+| Eclipse eMoflon dev      | macOS   |                    | :heavy_check_mark:   | :heavy_check_mark: | HiPE, *)        | :heavy_check_mark:  |
+| Eclipse eMoflon dev HiPE | macOS   |                    | :heavy_check_mark:   | :heavy_check_mark: | *)              | :heavy_check_mark:  |
 
 *) Democles will be installed manually via the [emoflon-dev-workspace](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 Furthermore, all pattern matcher integrations for eMoflon (HiPE and Democles) will be installed manually via the [emoflon-dev-workspace](https://github.com/eMoflon/emoflon-ibex#how-to-develop).
 
+**Additional packages** are installed for every non-CI build.
+Currently, the list of additional packages includes:
+- [EclEmma](https://www.eclemma.org/)
+- [PMD](https://pmd.github.io/latest/index.html)
+- [Checkstyle](https://checkstyle.org/eclipse-cs/#!/)
+- [SpotBugs](https://spotbugs.github.io/https://spotbugs.github.io/)
+
+Feel free to request others, e.g., via Github issues.
 
 ## Usage/Installation
 
