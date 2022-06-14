@@ -1,6 +1,6 @@
 # emoflon-eclipse-build
 
-[![Build Eclipse eMoflon](https://github.com/maxkratz/emoflon-eclipse-build/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/maxkratz/emoflon-eclipse-build/actions/workflows/ci.yml)
+[![Build Eclipse eMoflon](https://github.com/eMoflon/emoflon-eclipse-build/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/eMoflon/emoflon-eclipse-build/actions/workflows/ci.yml)
 
 This repository is used to automatically build an Eclipse [eMoflon](https://github.com/eMoflon/emoflon-ibex) environment.
 
@@ -32,7 +32,7 @@ Feel free to request others, e.g., via Github issues.
 
 ## Usage/Installation
 
-**The latest release can be found [here](https://github.com/maxkratz/emoflon-eclipse-build/releases/latest).**
+**The latest release can be found [here](https://github.com/eMoflon/emoflon-eclipse-build/releases/latest).**
 Download an archive for the version you are looking for from the release page and extract it.
 
 
