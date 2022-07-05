@@ -35,6 +35,11 @@ Feel free to request others, e.g., via Github issues.
 **The latest release can be found [here](https://github.com/eMoflon/emoflon-eclipse-build/releases/latest).**
 Download an archive for the version you are looking for from the release page and extract it.
 
+### Updating
+
+You can use the [update script](./eclipse-update.sh) to update your installation.
+Example usage: `$ ./eclipse-update.sh ~/eclipse-apps/emt`
+
 
 ## Runner requirements
 
