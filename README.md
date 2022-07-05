@@ -30,7 +30,13 @@ Currently, the list of additional packages includes:
 
 Feel free to request others, e.g., via Github issues.
 
+
 ## Usage/Installation
+
+Quick installation using curl and bash:
+`$ FOLDER="$HOME/eclipse-apps/emt"; mkdir -p $FOLDER && cd $FOLDER && curl https://raw.githubusercontent.com/eMoflon/emoflon-eclipse-build/main/emoflon-update.sh | bash -s -- $FOLDER`
+
+### Normal installation
 
 **The latest release can be found [here](https://github.com/eMoflon/emoflon-eclipse-build/releases/latest).**
 Download an archive for the version you are looking for from the release page and extract it.
@@ -38,7 +44,8 @@ Download an archive for the version you are looking for from the release page an
 ### Updating
 
 You can use the [update script](./eclipse-update.sh) to update your installation.
-Example usage: `$ ./eclipse-update.sh ~/eclipse-apps/emt`
+Example usage:
+`$ ./eclipse-update.sh ~/eclipse-apps/emt`
 
 
 ## Runner requirements
