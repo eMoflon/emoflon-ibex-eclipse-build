@@ -43,9 +43,9 @@ Download an archive for the version you are looking for from the release page an
 
 ### Updating
 
-You can use the [update script](./eclipse-update.sh) to update your installation.
+You can use the [update script](./emoflon-update.sh) to update your installation.
 Example usage:
-`$ ./eclipse-update.sh ~/eclipse-apps/emt`
+`$ ./emoflon-update.sh ~/eclipse-apps/emt`
 
 
 ## Runner requirements
