@@ -170,6 +170,20 @@ install_global_eclipse_settings () {
 	echo "-Declipse.pluginCustomization=emoflon.properties" >> $ECLIPSE_BASE_PATH/eclipse.ini
 }
 
+# Remove all configured update sites
+remove_update_sites () {
+	log "Remove all update sites."
+	UPDATE_SITE_CONFIG_PATH="$ECLIPSE_BASE_PATH/p2/org.eclipse.equinox.p2.engine/profileRegistry/epp.package.modeling.profile/.data/.settings"
+	UPDATE_SITE_METADATA="org.eclipse.equinox.p2.metadata.repository.prefs"
+	UPDATE_SITE_ARTIFACT="org.eclipse.equinox.p2.artifact.repository.prefs"
+
+	# First, create a ZIP as "backup"
+	zip -q -r $UPDATE_SITE_CONFIG_PATH/update-sites.zip $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_ARTIFACT $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_METADATA
+
+	rm -rf $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_ARTIFACT 
+	rm -rf $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_METADATA
+}
+
 
 #
 # Script
@@ -245,6 +259,9 @@ done
 
 # Install com.seeq.eclipse.importprojects (by hand because there is no public update site)
 install_eclipse_import_projects
+
+# Remove all configured update sites
+remove_update_sites
 
 # Deploy custom splash image
 if [[ $SKIP_THEME -eq 1 ]]; then
