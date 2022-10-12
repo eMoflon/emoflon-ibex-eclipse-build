@@ -66,12 +66,12 @@ jobs:
           wget "${IMPORT_PLUGIN_LATEST_SRC// }"
           mv com.seeq.eclipse.importprojects*.jar com.seeq.eclipse.importprojects.jar
       - name: Upload emoflon-headless updatesite artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: emoflon-headless-updatesite.zip
           path: emoflon-headless-updatesite.zip
       - name: Upload eclipse import plugin artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: com.seeq.eclipse.importprojects.jar
           path: com.seeq.eclipse.importprojects.jar
@@ -87,7 +87,7 @@ jobs:
       - name: Run splash creator script
         run: chmod +x splash.sh && ./splash.sh img $VERSION null
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: splash.bmp
           path: splash.bmp
@@ -121,7 +121,7 @@ jobs:
         run: |
           chmod +x build.sh && ./build.sh -m user -o linux
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: eclipse-emoflon-linux-user
           path: eclipse-emoflon-linux-user.zip
@@ -154,7 +154,7 @@ jobs:
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m dev -o linux
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: eclipse-emoflon-linux-dev
           path: eclipse-emoflon-linux-dev.zip
@@ -185,7 +185,7 @@ jobs:
       - name: Rename ZIP archive
         run: mv eclipse-emoflon-linux-user.zip eclipse-emoflon-linux-user-ci.zip
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: eclipse-emoflon-linux-user-ci
           path: eclipse-emoflon-linux-user-ci.zip
@@ -216,7 +216,7 @@ jobs:
       - name: Rename ZIP archive
         run: mv eclipse-emoflon-linux-dev.zip eclipse-emoflon-linux-dev-ci.zip
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: eclipse-emoflon-linux-dev-ci
           path: eclipse-emoflon-linux-dev-ci.zip
@@ -249,7 +249,7 @@ jobs:
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m hipedev -o linux
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: eclipse-emoflon-linux-dev-hipe
           path: eclipse-emoflon-linux-dev-hipe.zip
@@ -288,7 +288,7 @@ jobs:
       - name: Fix permissions
         run: sudo xattr -cr ./eclipse/Eclipse.app
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: eclipse-emoflon-macos-user
           path: eclipse-emoflon-macos-user.zip
@@ -327,7 +327,7 @@ jobs:
       - name: Fix permissions
         run: sudo xattr -cr ./eclipse/Eclipse.app
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: eclipse-emoflon-macos-dev
           path: eclipse-emoflon-macos-dev.zip
@@ -366,7 +366,7 @@ jobs:
       - name: Fix permissions
         run: sudo xattr -cr ./eclipse/Eclipse.app
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: eclipse-emoflon-macos-dev-hipe
           path: eclipse-emoflon-macos-dev-hipe.zip
@@ -410,7 +410,7 @@ jobs:
         run: |
           bash ./build.sh -m user -o windows
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: eclipse-emoflon-windows-user
           path: eclipse-emoflon-windows-user.zip
@@ -454,7 +454,7 @@ jobs:
         run: |
           bash ./build.sh -m dev -o windows
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: eclipse-emoflon-windows-dev
           path: eclipse-emoflon-windows-dev.zip
@@ -498,7 +498,7 @@ jobs:
         run: |
           bash ./build.sh -m hipedev -o windows
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: eclipse-emoflon-windows-dev-hipe
           path: eclipse-emoflon-windows-dev-hipe.zip
