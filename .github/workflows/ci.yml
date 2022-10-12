@@ -81,7 +81,7 @@ jobs:
     runs-on: [ubuntu-20.04]
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Start message
         run: echo "Creating splash image for version $VERSION."
       - name: Run splash creator script
@@ -100,13 +100,13 @@ jobs:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux user)."
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download splash image
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -114,7 +114,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -134,13 +134,13 @@ jobs:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev)."
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download splash image
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -148,7 +148,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -167,9 +167,9 @@ jobs:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux user CI)."
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -177,7 +177,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -198,9 +198,9 @@ jobs:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev CI)."
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -208,7 +208,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -229,13 +229,13 @@ jobs:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev HiPE)."
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download splash image
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -243,7 +243,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -266,13 +266,13 @@ jobs:
           brew update
           brew install p7zip coreutils grep wget curl
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download splash image
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -280,7 +280,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -305,13 +305,13 @@ jobs:
           brew update
           brew install p7zip coreutils grep wget curl
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download splash image
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -319,7 +319,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -344,13 +344,13 @@ jobs:
           brew update
           brew install p7zip coreutils grep wget curl
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download splash image
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -358,7 +358,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -389,13 +389,13 @@ jobs:
       - name: Fix Git line endings
         run: git config --global core.autocrlf input
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download splash image
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -403,7 +403,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -433,13 +433,13 @@ jobs:
       - name: Fix Git line endings
         run: git config --global core.autocrlf input
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download splash image
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -447,7 +447,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -477,13 +477,13 @@ jobs:
       - name: Fix Git line endings
         run: git config --global core.autocrlf input
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download splash image
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -491,7 +491,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
