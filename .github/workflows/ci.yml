@@ -382,7 +382,7 @@ jobs:
         run: |
           choco install wget curl unzip zip --no-progress
       - name: Install correct Java version
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
           java-version: '16'
@@ -426,7 +426,7 @@ jobs:
         run: |
           choco install wget curl unzip zip --no-progress
       - name: Install correct Java version
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
           java-version: '16'
@@ -470,7 +470,7 @@ jobs:
         run: |
           choco install wget curl unzip zip --no-progress
       - name: Install correct Java version
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
           java-version: '16'
