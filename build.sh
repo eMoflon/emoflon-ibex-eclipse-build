@@ -166,7 +166,13 @@ install_eclipse_import_projects () {
 # Install custom global configuration
 install_global_eclipse_settings () {
 	log "Install global Eclipse settings."
-	cp ./resources/emoflon.properties $ECLIPSE_BASE_PATH
+	if [[ "$MODE" = "user" ]]; then
+		cp ./resources/emoflon_user.properties $ECLIPSE_BASE_PATH/emoflon.properties
+	elif [[ "$MODE" = "dev" ]] || [[ "$MODE" = "hipedev" ]]; then
+		cp ./resources/emoflon_dev.properties $ECLIPSE_BASE_PATH/emoflon.properties
+	else
+		log "Mode argument invalid."; exit 1 ;
+	fi
 	echo "-Declipse.pluginCustomization=emoflon.properties" >> $ECLIPSE_BASE_PATH/eclipse.ini
 }
 
