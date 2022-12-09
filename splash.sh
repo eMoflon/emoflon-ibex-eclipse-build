@@ -9,7 +9,7 @@ ECLIPSE_BASE_PATH=$3
 
 # replacement regexs
 REGEX_ECLIPSE_INI='s/org.eclipse.epp.package.common/org.emoflon.splash/g'
-REGEX_CONFIG_INI='s/osgi.splashPath=platform\\:\/base\/plugins\/org.eclipse.platform/osgi.splashPath=platform\\:\/base\/plugins\/org.emoflon.splash/g'
+REGEX_CONFIG_INI='s/osgi.splashPath=platform\\:\/base\/plugins\/org.eclipse.epp.package.common/osgi.splashPath=platform\\:\/base\/plugins\/org.emoflon.splash/g'
 
 # Check for existing ENVs
 if [[ -z "$MODE" ]]; then
