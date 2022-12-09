@@ -3,4 +3,3 @@ org.eclipse.emf.mwe2.runtime.sdk.feature.group
 org.eclipse.emf.mwe2.language.sdk.feature.group
 org.eclipse.emf.examples.feature.group
 org.eclipse.collections.feature.feature.group
-org.apache.commons.lang
