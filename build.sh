@@ -43,7 +43,7 @@ IMPORT_PLUGIN_SRC="https://api.github.com/repos/maxkratz/eclipse-import-projects
 
 # Array with the order to install the plugins with.
 #ORDER_LINUX=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme" "additional")
-ORDER_LINUX=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme")
+ORDER_LINUX=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme" "additional")
 
 #
 # Configure OS specific details
