@@ -42,7 +42,8 @@ IMPORT_PLUGIN_FILENAME="com.seeq.eclipse.importprojects_$IMPORT_PLUGIN_VERSION.j
 IMPORT_PLUGIN_SRC="https://api.github.com/repos/maxkratz/eclipse-import-projects-plugin/releases/tags/v$IMPORT_PLUGIN_VERSION"
 
 # Array with the order to install the plugins with.
-ORDER_LINUX=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme" "additional")
+#ORDER_LINUX=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme" "additional")
+ORDER_LINUX=("xtext")
 
 #
 # Configure OS specific details
