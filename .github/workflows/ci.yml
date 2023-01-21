@@ -261,22 +261,9 @@ jobs:
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon macOS user)."
-      # `brew install xy` when run after `brew update` triggers
-      # upgrade of python which fails unless conflicting symlinks are deleted.
-      # See: https://github.com/actions/setup-python/issues/577
       - name: Install dependencies
         run: |
           brew update
-          rm '/usr/local/bin/2to3'
-          rm '/usr/local/bin/idle3'
-          rm '/usr/local/bin/pydoc3'
-          rm '/usr/local/bin/python3'
-          rm '/usr/local/bin/python3-config'
-          rm '/usr/local/bin/2to3-3.11'
-          rm '/usr/local/bin/idle3.11'
-          rm '/usr/local/bin/pydoc3.11'
-          rm '/usr/local/bin/python3.11'
-          rm '/usr/local/bin/python3.11-config'
           brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -313,22 +300,9 @@ jobs:
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon macOS dev)."
-      # `brew install xy` when run after `brew update` triggers
-      # upgrade of python which fails unless conflicting symlinks are deleted.
-      # See: https://github.com/actions/setup-python/issues/577
       - name: Install dependencies
         run: |
           brew update
-          rm '/usr/local/bin/2to3'
-          rm '/usr/local/bin/idle3'
-          rm '/usr/local/bin/pydoc3'
-          rm '/usr/local/bin/python3'
-          rm '/usr/local/bin/python3-config'
-          rm '/usr/local/bin/2to3-3.11'
-          rm '/usr/local/bin/idle3.11'
-          rm '/usr/local/bin/pydoc3.11'
-          rm '/usr/local/bin/python3.11'
-          rm '/usr/local/bin/python3.11-config'
           brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -365,22 +339,9 @@ jobs:
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon macOS dev HiPE)."
-      # `brew install xy` when run after `brew update` triggers
-      # upgrade of python which fails unless conflicting symlinks are deleted.
-      # See: https://github.com/actions/setup-python/issues/577
       - name: Install dependencies
         run: |
           brew update
-          rm '/usr/local/bin/2to3'
-          rm '/usr/local/bin/idle3'
-          rm '/usr/local/bin/pydoc3'
-          rm '/usr/local/bin/python3'
-          rm '/usr/local/bin/python3-config'
-          rm '/usr/local/bin/2to3-3.11'
-          rm '/usr/local/bin/idle3.11'
-          rm '/usr/local/bin/pydoc3.11'
-          rm '/usr/local/bin/python3.11'
-          rm '/usr/local/bin/python3.11-config'
           brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v3
