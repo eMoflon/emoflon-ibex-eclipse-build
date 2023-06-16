@@ -263,7 +263,6 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon macOS user)."
       - name: Install dependencies
         run: |
-          brew update
           brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -302,7 +301,6 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon macOS dev)."
       - name: Install dependencies
         run: |
-          brew update
           brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -341,7 +339,6 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon macOS dev HiPE)."
       - name: Install dependencies
         run: |
-          brew update
           brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v3
