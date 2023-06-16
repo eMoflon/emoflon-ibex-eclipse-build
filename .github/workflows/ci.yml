@@ -22,7 +22,7 @@ on:
 
 env:
   # Eclipse version to use in this CI
-  VERSION: "2023-03"
+  VERSION: "2023-06"
   # emoflon-headless source URL (needed by macOS-based runner workaround)
   EMOFLON_HEADLESS_SRC: "https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
   # import plugin URL
