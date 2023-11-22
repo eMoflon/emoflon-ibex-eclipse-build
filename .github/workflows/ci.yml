@@ -286,6 +286,8 @@ jobs:
         run: chmod +x build.sh && ./build.sh -m user -o macos
       - name: Fix permissions
         run: sudo xattr -cr ./eclipse/Eclipse.app
+      - name: Fix quarantine setting
+        run: sudo xattr -d com.apple.quarantine ./eclipse/Eclipse.app
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
@@ -324,6 +326,8 @@ jobs:
         run: chmod +x build.sh && ./build.sh -m dev -o macos
       - name: Fix permissions
         run: sudo xattr -cr ./eclipse/Eclipse.app
+      - name: Fix quarantine setting
+        run: sudo xattr -d com.apple.quarantine ./eclipse/Eclipse.app
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
@@ -362,6 +366,8 @@ jobs:
         run: chmod +x build.sh && ./build.sh -m hipedev -o macos
       - name: Fix permissions
         run: sudo xattr -cr ./eclipse/Eclipse.app
+      - name: Fix quarantine setting
+        run: sudo xattr -d com.apple.quarantine ./eclipse/Eclipse.app
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
