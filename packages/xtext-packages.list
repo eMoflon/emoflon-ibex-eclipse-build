@@ -16,7 +16,6 @@ org.eclipse.xtext.docs.feature.group
 org.eclipse.xtext.docs.source.feature.group
 org.eclipse.xtext.examples.feature.group
 org.eclipse.xtext.examples.source.feature.group
-org.eclipse.xtext.generator.feature.group
 org.eclipse.xtext.gwt.feature.group
 org.eclipse.xtext.gwt.source.feature.group
 org.eclipse.xtext.redist.feature.group
