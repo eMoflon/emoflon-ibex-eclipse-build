@@ -510,37 +510,37 @@ jobs:
       - name: Collect artifacts
         uses: actions/download-artifact@master
       - name: Release eclipse-emoflon-linux
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             eclipse-emoflon-linux-user/eclipse-emoflon-linux-user.zip
             eclipse-emoflon-linux-dev/eclipse-emoflon-linux-dev.zip
       - name: Release eclipse-emoflon-macos
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             eclipse-emoflon-macos-user/eclipse-emoflon-macos-user.zip
             eclipse-emoflon-macos-dev/eclipse-emoflon-macos-dev.zip
       - name: Release eclipse-emoflon-linux-ci
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             eclipse-emoflon-linux-user-ci/eclipse-emoflon-linux-user-ci.zip
             eclipse-emoflon-linux-dev-ci/eclipse-emoflon-linux-dev-ci.zip
       - name: Release eclipse-emoflon-windows
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             eclipse-emoflon-windows-user/eclipse-emoflon-windows-user.zip
             eclipse-emoflon-windows-dev/eclipse-emoflon-windows-dev.zip
       - name: Release eclipse-emoflon-dev-hipe-1
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             eclipse-emoflon-linux-dev-hipe/eclipse-emoflon-linux-dev-hipe.zip
             eclipse-emoflon-windows-dev-hipe/eclipse-emoflon-windows-dev-hipe.zip
       - name: Release eclipse-emoflon-dev-hipe-2
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             eclipse-emoflon-macos-dev-hipe/eclipse-emoflon-macos-dev-hipe.zip
