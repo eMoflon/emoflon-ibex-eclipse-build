@@ -216,7 +216,7 @@ else
 fi
 
 # Setup the emoflon headless (special snowflake because of the zipped update site)
-setup_emoflon_headless_local_updatesite
+#setup_emoflon_headless_local_updatesite
 
 # Extract new Eclipse
 log "Clean-up Eclipse folder and extract downloaded archive."
@@ -232,51 +232,51 @@ elif [[ "$OS" = "macos" ]]; then
 fi
 
 # Install global Eclipse settings from config file
-install_global_eclipse_settings
+#install_global_eclipse_settings
 
-log "Install Eclipse plug-ins."
-for p in ${ORDER[@]}; do
-	# Check if eMoflon packages must be skipped (for dev builds).
-	if [[ "$p" = "emoflon" ]] && [[ $INSTALL_EMOFLON -eq 0 ]]; then
-		log "Skipping plug-in: $p."
-		continue
-	fi
+# log "Install Eclipse plug-ins."
+# for p in ${ORDER[@]}; do
+# 	# Check if eMoflon packages must be skipped (for dev builds).
+# 	if [[ "$p" = "emoflon" ]] && [[ $INSTALL_EMOFLON -eq 0 ]]; then
+# 		log "Skipping plug-in: $p."
+# 		continue
+# 	fi
 	
-	# Check if Dark Theme packages must be skipped (for CI builds = completely headless).
-	if [[ "$p" = "theme" ]] && [[ $SKIP_THEME -eq 1 ]]; then
-		log "Skipping plug-in: $p."
-		continue
-	fi
+# 	# Check if Dark Theme packages must be skipped (for CI builds = completely headless).
+# 	if [[ "$p" = "theme" ]] && [[ $SKIP_THEME -eq 1 ]]; then
+# 		log "Skipping plug-in: $p."
+# 		continue
+# 	fi
 
-	# Check if additional packages must be skipped (for CI builds).
-	if [[ "$p" = "additional" ]] && [[ $SKIP_THEME -eq 1 ]]; then
-		log "Skipping additional plug-ins."
-		continue
-	fi
+# 	# Check if additional packages must be skipped (for CI builds).
+# 	if [[ "$p" = "additional" ]] && [[ $SKIP_THEME -eq 1 ]]; then
+# 		log "Skipping additional plug-ins."
+# 		continue
+# 	fi
 
-	# Check if HiPE must be skipped (for hipe-dev builds).
-	if [[ "$p" = "hipe" ]] && [[ $SKIP_HIPE -eq 1 ]]; then
-		log "Skipping plug-in: $p."
-		continue
-	fi
-	log "Installing plug-in: $p."
-	install_packages "$UPDATESITES" "./packages/$p-packages.list"
-done
+# 	# Check if HiPE must be skipped (for hipe-dev builds).
+# 	if [[ "$p" = "hipe" ]] && [[ $SKIP_HIPE -eq 1 ]]; then
+# 		log "Skipping plug-in: $p."
+# 		continue
+# 	fi
+# 	log "Installing plug-in: $p."
+# 	install_packages "$UPDATESITES" "./packages/$p-packages.list"
+# done
 
 # Install com.seeq.eclipse.importprojects (by hand because there is no public update site)
-install_eclipse_import_projects
+#install_eclipse_import_projects
 
 # Remove all configured update sites
-remove_update_sites
+#remove_update_sites
 
-# Deploy custom splash image
-if [[ $SKIP_THEME -eq 1 ]]; then
-	# Skip UI customization for CI builds
-	log "Skipping custom splash image."
-else
-	log "Deploy custom splash image."
-	chmod +x splash.sh && ./splash.sh deploy $VERSION $ECLIPSE_BASE_PATH
-fi
+# # Deploy custom splash image
+# if [[ $SKIP_THEME -eq 1 ]]; then
+# 	# Skip UI customization for CI builds
+# 	log "Skipping custom splash image."
+# else
+# 	log "Deploy custom splash image."
+# 	chmod +x splash.sh && ./splash.sh deploy $VERSION $ECLIPSE_BASE_PATH
+# fi
 
 log "Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
