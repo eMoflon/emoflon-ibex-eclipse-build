@@ -122,8 +122,10 @@ jobs:
       #     name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
         run: chmod +x build.sh && ./build.sh -m hipedev -o macos
-      # - name: Fix permissions
-      #   run: sudo xattr -cr ./eclipse/Eclipse.app
+      - name: Fix permissions
+        run: |
+          sudo xattr -cr ./eclipse/Eclipse.app
+          sudo chmod +x ./eclipse/Eclipse.app/Contents/MacOS/eclipse
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
