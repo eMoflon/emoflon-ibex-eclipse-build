@@ -41,6 +41,9 @@ Quick installation using curl and bash:
 **The latest release can be found [here](https://github.com/eMoflon/emoflon-ibex-eclipse-build/releases/latest).**
 Download an archive for the version you are looking for from the release page and extract it.
 
+> [!CAUTION]
+> The built Eclipse version for **macOS** needs further adjustments to execute correctly. Please follow the steps in the respective [documentation](./doc/how-to-run-eclipse-on-macos.md) if you are using macOS.
+
 ### Updating
 
 You can use the [update script](./emoflon-update.sh) to update your installation.
