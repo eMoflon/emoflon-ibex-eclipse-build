@@ -148,7 +148,7 @@ setup_emoflon_headless_local_updatesite () {
 	elif [[ "$OS" = "windows" ]]; then
 		log "Using a runner on Windows."
 		UPDATESITES+=",file://$(echo $PWD | sed -e 's/\/mnt\///g' | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')\tmp\emoflon-headless\\"
-	elif [[ "$OS" = "macos" ]]; then
+	elif [[ "$OS" = "macos" ]] || [[ "$OS" = "macosarm" ]]; then
 		log "Using a runner on macOS."
 		UPDATESITES+=",file://$PWD/tmp/emoflon-headless/"
 	fi
