@@ -98,7 +98,7 @@ parse_package_list () {
 
 # Installs a given list of packages from a given update site.
 install_packages () {
-	if [[ "$OS" = "macos" ]]; then
+	if [[ "$OS" = "macos" ]] || [[ "$OS" = "macosarm" ]]; then
 		chmod +x $ECLIPSE_BIN_PATH
 	fi
 
