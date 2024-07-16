@@ -29,9 +29,11 @@ VERSION=$VERSION # version comes from the CI env
 ARCHIVE_FILE_LINUX="eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz"
 ARCHIVE_FILE_WINDOWS="eclipse-modeling-$VERSION-R-win32-x86_64.zip"
 ARCHIVE_FILE_MACOS="eclipse-modeling-$VERSION-R-macosx-cocoa-x86_64.dmg"
+ARCHIVE_FILE_MACOS_ARM="eclipse-modeling-$VERSION-R-macosx-cocoa-aarch64.dmg"
 OUTPUT_FILE_PREFIX_LINUX="eclipse-emoflon-linux"
 OUTPUT_FILE_PREFIX_WINDOWS="eclipse-emoflon-windows"
 OUTOUT_FILE_PREFIX_MACOS="eclipse-emoflon-macos"
+OUTOUT_FILE_PREFIX_MACOSARM="eclipse-emoflon-macos-arm"
 MIRROR="https://ftp.fau.de"
 UPDATESITES="https://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,https://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,https://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://www.genuitec.com/updates/devstyle/ci/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/,http://update.eclemma.org/,https://pmd.github.io/pmd-eclipse-plugin-p2-site/,https://checkstyle.org/eclipse-cs-update-site/,https://spotbugs.github.io/eclipse/,https://download.eclipse.org/technology/m2e/releases/latest"
 EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
@@ -64,6 +66,13 @@ elif [[ "$OS" = "windows" ]]; then
 elif [[ "$OS" = "macos" ]]; then
 	ARCHIVE_FILE=$ARCHIVE_FILE_MACOS
 	OUTPUT_FILE_PREFIX=$OUTOUT_FILE_PREFIX_MACOS
+	# Lets try with linux install order
+	ORDER=("${ORDER_LINUX[@]}")
+	ECLIPSE_BIN_PATH="./eclipse/Eclipse.app/Contents/MacOS/eclipse"
+	ECLIPSE_BASE_PATH="./eclipse/Eclipse.app/Contents/Eclipse"
+elif [[ "$OS" = "macosarm" ]]; then
+	ARCHIVE_FILE=$ARCHIVE_FILE_MACOS_ARM
+	OUTPUT_FILE_PREFIX=$OUTOUT_FILE_PREFIX_MACOSARM
 	# Lets try with linux install order
 	ORDER=("${ORDER_LINUX[@]}")
 	ECLIPSE_BIN_PATH="./eclipse/Eclipse.app/Contents/MacOS/eclipse"
@@ -227,6 +236,10 @@ elif [[ "$OS" = "windows" ]]; then
 	unzip -qq -o eclipse-modeling-$VERSION-R-win32-x86_64.zip
 elif [[ "$OS" = "macos" ]]; then
 	7z x $ARCHIVE_FILE_MACOS
+	# Rename folder because "Eclipse" is inconsistent
+	mv Eclipse eclipse
+elif [[ "$OS" = "macosarm" ]]; then
+	7z x $ARCHIVE_FILE_MACOSARM
 	# Rename folder because "Eclipse" is inconsistent
 	mv Eclipse eclipse
 fi
