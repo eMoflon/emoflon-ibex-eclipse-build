@@ -29,7 +29,7 @@ VERSION=$VERSION # version comes from the CI env
 ARCHIVE_FILE_LINUX="eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz"
 ARCHIVE_FILE_WINDOWS="eclipse-modeling-$VERSION-R-win32-x86_64.zip"
 ARCHIVE_FILE_MACOS="eclipse-modeling-$VERSION-R-macosx-cocoa-x86_64.dmg"
-ARCHIVE_FILE_MACOS_ARM="eclipse-modeling-$VERSION-R-macosx-cocoa-aarch64.dmg"
+ARCHIVE_FILE_MACOSARM="eclipse-modeling-$VERSION-R-macosx-cocoa-aarch64.dmg"
 OUTPUT_FILE_PREFIX_LINUX="eclipse-emoflon-linux"
 OUTPUT_FILE_PREFIX_WINDOWS="eclipse-emoflon-windows"
 OUTOUT_FILE_PREFIX_MACOS="eclipse-emoflon-macos"
@@ -71,7 +71,7 @@ elif [[ "$OS" = "macos" ]]; then
 	ECLIPSE_BIN_PATH="./eclipse/Eclipse.app/Contents/MacOS/eclipse"
 	ECLIPSE_BASE_PATH="./eclipse/Eclipse.app/Contents/Eclipse"
 elif [[ "$OS" = "macosarm" ]]; then
-	ARCHIVE_FILE=$ARCHIVE_FILE_MACOS_ARM
+	ARCHIVE_FILE=$ARCHIVE_FILE_MACOSARM
 	OUTPUT_FILE_PREFIX=$OUTOUT_FILE_PREFIX_MACOSARM
 	# Lets try with linux install order
 	ORDER=("${ORDER_LINUX[@]}")
