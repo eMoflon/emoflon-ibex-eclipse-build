@@ -368,6 +368,120 @@ jobs:
           name: eclipse-emoflon-macos-dev-hipe
           path: eclipse-emoflon-macos-dev-hipe.zip
 
+  # Build Eclipse eMoflon macOS ARM user
+  build-macos-arm-user:
+    needs: [create-splash-image, collect-github-api-artifacts]
+    runs-on: [macos-14]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon macOS user)."
+      - name: Install dependencies
+        run: |
+          brew install p7zip coreutils grep wget curl
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Download splash image
+        uses: actions/download-artifact@v4
+        with:
+          name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v4
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: com.seeq.eclipse.importprojects.jar
+      - name: Run build script
+        run: chmod +x build.sh && ./build.sh -m user -o macosarm
+      - name: Fix permissions
+        run: sudo xattr -cr ./eclipse/Eclipse.app
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: eclipse-emoflon-macos-arm-user
+          path: eclipse-emoflon-macos-arm-user.zip
+
+  # Build Eclipse eMoflon macOS ARM dev
+  build-macos-arm-dev:
+    needs: [create-splash-image, collect-github-api-artifacts]
+    runs-on: [macos-14]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon macOS dev)."
+      - name: Install dependencies
+        run: |
+          brew install p7zip coreutils grep wget curl
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Download splash image
+        uses: actions/download-artifact@v4
+        with:
+          name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v4
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: com.seeq.eclipse.importprojects.jar
+      - name: Run build script
+        run: chmod +x build.sh && ./build.sh -m dev -o macosarm
+      - name: Fix permissions
+        run: sudo xattr -cr ./eclipse/Eclipse.app
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: eclipse-emoflon-macos-arm-dev
+          path: eclipse-emoflon-macos-arm-dev.zip
+
+  # Build Eclipse eMoflon macOS ARM dev HiPE
+  build-macos-arm-dev-hipe:
+    needs: [create-splash-image, collect-github-api-artifacts]
+    runs-on: [macos-14]
+    steps:
+      - name: Start message
+        run: echo "Started CI build (Eclipse eMoflon macOS dev HiPE)."
+      - name: Install dependencies
+        run: |
+          brew install p7zip coreutils grep wget curl
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Download splash image
+        uses: actions/download-artifact@v4
+        with:
+          name: splash.bmp
+      - name: Download emoflon-headless updatesite
+        uses: actions/download-artifact@v4
+        with:
+          name: emoflon-headless-updatesite.zip
+      - name: Move emoflon-headless updatesite
+        run: |
+          mkdir -p ./tmp/emoflon-headless
+          mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
+      - name: Download Eclipse import plugin JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: com.seeq.eclipse.importprojects.jar
+      - name: Run build script
+        run: chmod +x build.sh && ./build.sh -m hipedev -o macosarm
+      - name: Fix permissions
+        run: sudo xattr -cr ./eclipse/Eclipse.app
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: eclipse-emoflon-macos-arm-dev-hipe
+          path: eclipse-emoflon-macos-arm-dev-hipe.zip
+
   # Build Eclipse eMoflon Windows user
   build-windows-user:
     needs: [create-splash-image, collect-github-api-artifacts]
@@ -502,7 +616,7 @@ jobs:
 
   # Create a release if running on tag
   create-release:
-    needs: [build-linux-user, build-linux-dev, build-linux-user-ci, build-linux-dev-ci, build-linux-dev-hipe, build-macos-user, build-macos-dev, build-macos-dev-hipe, build-windows-user, build-windows-dev, build-windows-dev-hipe]
+    needs: [build-linux-user, build-linux-dev, build-linux-user-ci, build-linux-dev-ci, build-linux-dev-hipe, build-macos-user, build-macos-dev, build-macos-dev-hipe, build-macos-arm-user, build-macos-arm-dev, build-macos-arm-dev-hipe, build-windows-user, build-windows-dev, build-windows-dev-hipe]
     runs-on: [ubuntu-20.04]
     # Only run on pushed tags (and explicitely ignore scheduled runs)
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/') && github.event_name != 'schedule'
@@ -521,6 +635,12 @@ jobs:
           files: |
             eclipse-emoflon-macos-user/eclipse-emoflon-macos-user.zip
             eclipse-emoflon-macos-dev/eclipse-emoflon-macos-dev.zip
+      - name: Release eclipse-emoflon-macos-arm
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            eclipse-emoflon-macos-arm-user/eclipse-emoflon-macos-arm-user.zip
+            eclipse-emoflon-macos-arm-dev/eclipse-emoflon-macos-arm-dev.zip
       - name: Release eclipse-emoflon-linux-ci
         uses: softprops/action-gh-release@v2
         with:
@@ -544,3 +664,4 @@ jobs:
         with:
           files: |
             eclipse-emoflon-macos-dev-hipe/eclipse-emoflon-macos-dev-hipe.zip
+            eclipse-emoflon-macos-arm-dev-hipe/eclipse-emoflon-macos-arm-dev-hipe.zip
