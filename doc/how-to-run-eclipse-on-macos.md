@@ -51,7 +51,6 @@ If macOS asks if you really want to start the "broken" app, select `Run`.
     - The default *perspective* is not the *eMoflon perspective*.
     - The default workspace encoding may not be *UTF8*.
     - The default git clone path is not `${workspace_loc}/git` as required to run eMoflon.
-- There is no specific build for ARM64/Apple ARM-based macOS systems.
 
 ---
 
