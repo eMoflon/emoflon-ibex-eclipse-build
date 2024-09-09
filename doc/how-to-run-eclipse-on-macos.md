@@ -31,7 +31,7 @@ The following steps are necessary to run a custom Eclipse on modern macOS system
 - Leave your Terminal window open and return to your text editor (showing the contents of `Info.plist`). Scroll down into the block below the line `<key>Eclipse</key>` and enter your Java JDK's path with this syntax: `<string>-vm</string><string>$YOUR_PATH/bin/java</string>`
     - Example: `<string>-vm</string><string>/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home/bin/java</string>`
 - Save the file, close your editor, and open your Terminal window again.
-- Navigate the Terminal window to your Eclipse folder using `cd $FOLDER_NAME`, e.g., `cd Downloads/eclipste`.
+- Navigate the Terminal window to your Eclipse folder using `cd $FOLDER_NAME`, e.g., `cd Downloads/eclipse`.
     - Verify that your custom `Eclipse.app` is located in the currently selected folder via `ls`.
 - Sign the modified `Eclipse.app` with this command: `$ sudo codesign --force --deep --sign - ./Eclipse.app`
     - When requested, type in the password of your user account and hit enter.
