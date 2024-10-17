@@ -257,7 +257,7 @@ jobs:
   # Build Eclipse eMoflon macOS user
   build-macos-user:
     needs: [create-splash-image, collect-github-api-artifacts]
-    runs-on: [macos-12]
+    runs-on: [macos-13]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon macOS user)."
@@ -295,7 +295,7 @@ jobs:
   # Build Eclipse eMoflon macOS dev
   build-macos-dev:
     needs: [create-splash-image, collect-github-api-artifacts]
-    runs-on: [macos-12]
+    runs-on: [macos-13]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon macOS dev)."
@@ -333,7 +333,7 @@ jobs:
   # Build Eclipse eMoflon macOS dev HiPE
   build-macos-dev-hipe:
     needs: [create-splash-image, collect-github-api-artifacts]
-    runs-on: [macos-12]
+    runs-on: [macos-13]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon macOS dev HiPE)."
