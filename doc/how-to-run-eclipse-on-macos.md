@@ -1,6 +1,6 @@
 # How to run a custom Eclipse on macOS
 
-(Apparantly, this was only tested on AMD64-based Macs = Intel Macs only!)
+(Apparantly, this was successfully tested on AMD64-based and ARM64-based Macs.)
 
 
 ## Problem
@@ -40,6 +40,8 @@ The following steps are necessary to run a custom Eclipse on modern macOS system
 
 You can now start your custom `Eclipse.app` with a double click on it.
 If macOS asks if you really want to start the "broken" app, select `Run`.
+
+All modifications on the local `Eclipse.app` can also be made with [this script](../scripts/fix-eclipse-app-macos.sh).
 
 ---
 
