@@ -1,5 +1,5 @@
-org.eclipse.emf.mwe2.launcher.feature.group
-org.eclipse.emf.mwe2.runtime.sdk.feature.group
-org.eclipse.emf.mwe2.language.sdk.feature.group
+org.eclipse.emf.mwe2.launcher.feature.group/2.19.0.v20240823-1107
+org.eclipse.emf.mwe2.runtime.sdk.feature.group/2.19.0.v20240823-1107
+org.eclipse.emf.mwe2.language.sdk.feature.group/2.19.0.v20240823-1107
 org.eclipse.collections.feature.feature.group
 org.apache.commons.lang
