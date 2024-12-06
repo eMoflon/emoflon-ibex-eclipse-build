@@ -199,6 +199,14 @@ remove_update_sites () {
 	rm -rf $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_METADATA
 }
 
+# Removes broken org.apache.commons.logging JAR from plug-ins
+remove_broken_commons_logging () {
+	log "Removes broken org.apache.commons.logging JAR from plug-ins."
+	rm $ECLIPSE_BASE_PATH/plugins/org.apache.commons.logging_1.2.0.v20180409-1502.jar
+	# force org.eclipse.equinox to 
+	# org.apache.commons.logging,1.2.0,plugins/org.apache.commons.logging_1.2.0.jar,4,false
+	sed -i '/org.apache.commons.lang3/a org.apache.commons.logging,1.2.0,plugins/org.apache.commons.logging_1.2.0.jar,4,false' $ECLIPSE_BASE_PATH/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info
+}
 
 #
 # Script
@@ -290,6 +298,9 @@ else
 	log "Deploy custom splash image."
 	chmod +x splash.sh && ./splash.sh deploy $VERSION $ECLIPSE_BASE_PATH
 fi
+
+# Remove broken org.apache.commons.logging JAR
+remove_broken_commons_logging
 
 log "Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
