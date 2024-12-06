@@ -239,7 +239,7 @@ setup_emoflon_headless_local_updatesite
 log "Clean-up Eclipse folder and extract downloaded archive."
 rm -rf ./eclipse/*
 if [[ "$OS" = "linux" ]]; then
-	tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz
+	tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz --warning=no-unknown-keyword
 elif [[ "$OS" = "windows" ]]; then
 	unzip -qq -o eclipse-modeling-$VERSION-R-win32-x86_64.zip
 elif [[ "$OS" = "macos" ]]; then
@@ -262,7 +262,7 @@ for p in ${ORDER[@]}; do
 		log "Skipping plug-in: $p."
 		continue
 	fi
-	
+
 	# Check if Dark Theme packages must be skipped (for CI builds = completely headless).
 	if [[ "$p" = "theme" ]] && [[ $SKIP_THEME -eq 1 ]]; then
 		log "Skipping plug-in: $p."
