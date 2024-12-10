@@ -210,6 +210,19 @@ remove_broken_commons_logging () {
 	sed -i '/org.apache.commons.logging,1.2.0.v20180409-1502,plugins\/org.apache.commons.logging_1.2.0.v20180409-1502.jar,4,false/d' $ECLIPSE_BASE_PATH/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info
 }
 
+# Copies the non-broken org.apache.commons.logging JAR from plug-ins
+save_non_broken_commons_logging () {
+	log "Save non-broken org.apache.commons.logging JAR from plug-ins."
+	cp $ECLIPSE_BASE_PATH/plugins/org.apache.commons.logging_1.2.0.jar /tmp/org.apache.commons.logging_1.2.0.jar
+}
+
+# Restores the non-broken org.apache.commons.logging JAR to plug-ins
+restore_non_broken_commons_logging () {
+	log "Restores the non-broken org.apache.commons.logging JAR from plug-ins."
+	cp /tmp/org.apache.commons.logging_1.2.0.jar $ECLIPSE_BASE_PATH/plugins/org.apache.commons.logging_1.2.0.jar
+	rm /tmp/org.apache.commons.logging_1.2.0.jar
+}
+
 #
 # Script
 #
@@ -257,6 +270,9 @@ fi
 # Install global Eclipse settings from config file
 install_global_eclipse_settings
 
+# Save non-broken org.apache.commons.logging JAR from plug-ins
+save_non_broken_commons_logging
+
 log "Install Eclipse plug-ins."
 for p in ${ORDER[@]}; do
 	# Check if eMoflon packages must be skipped (for dev builds).
@@ -303,6 +319,9 @@ fi
 
 # Remove broken org.apache.commons.logging JAR
 remove_broken_commons_logging
+
+# Restore non-broken org.apache.commons.logging JAR
+restore_non_broken_commons_logging
 
 log "Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
