@@ -199,6 +199,29 @@ remove_update_sites () {
 	rm -rf $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_METADATA
 }
 
+# Removes broken org.apache.commons.logging JAR from plug-ins
+remove_broken_commons_logging () {
+	log "Removes broken org.apache.commons.logging JAR from plug-ins."
+	rm $ECLIPSE_BASE_PATH/plugins/org.apache.commons.logging_1.2.0.v20180409-1502.jar
+	# force org.eclipse.equinox to take correct JAR into account
+	# org.apache.commons.logging,1.2.0,plugins/org.apache.commons.logging_1.2.0.jar,4,false
+	sed -i '/org.apache.commons.lang3/a org.apache.commons.logging,1.2.0,plugins/org.apache.commons.logging_1.2.0.jar,4,false' $ECLIPSE_BASE_PATH/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info
+	# org.apache.commons.logging,1.2.0.v20180409-1502,plugins/org.apache.commons.logging_1.2.0.v20180409-1502.jar,4,false
+	sed -i '/org.apache.commons.logging,1.2.0.v20180409-1502,plugins\/org.apache.commons.logging_1.2.0.v20180409-1502.jar,4,false/d' $ECLIPSE_BASE_PATH/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info
+}
+
+# Copies the non-broken org.apache.commons.logging JAR from plug-ins
+save_non_broken_commons_logging () {
+	log "Save non-broken org.apache.commons.logging JAR from plug-ins."
+	cp $ECLIPSE_BASE_PATH/plugins/org.apache.commons.logging_1.2.0.jar /tmp/org.apache.commons.logging_1.2.0.jar
+}
+
+# Restores the non-broken org.apache.commons.logging JAR to plug-ins
+restore_non_broken_commons_logging () {
+	log "Restores the non-broken org.apache.commons.logging JAR from plug-ins."
+	cp /tmp/org.apache.commons.logging_1.2.0.jar $ECLIPSE_BASE_PATH/plugins/org.apache.commons.logging_1.2.0.jar
+	rm /tmp/org.apache.commons.logging_1.2.0.jar
+}
 
 #
 # Script
@@ -231,7 +254,7 @@ setup_emoflon_headless_local_updatesite
 log "Clean-up Eclipse folder and extract downloaded archive."
 rm -rf ./eclipse/*
 if [[ "$OS" = "linux" ]]; then
-	tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz
+	tar -xzf eclipse-modeling-$VERSION-R-linux-gtk-x86_64.tar.gz --warning=no-unknown-keyword
 elif [[ "$OS" = "windows" ]]; then
 	unzip -qq -o eclipse-modeling-$VERSION-R-win32-x86_64.zip
 elif [[ "$OS" = "macos" ]]; then
@@ -247,6 +270,9 @@ fi
 # Install global Eclipse settings from config file
 install_global_eclipse_settings
 
+# Save non-broken org.apache.commons.logging JAR from plug-ins
+save_non_broken_commons_logging
+
 log "Install Eclipse plug-ins."
 for p in ${ORDER[@]}; do
 	# Check if eMoflon packages must be skipped (for dev builds).
@@ -254,7 +280,7 @@ for p in ${ORDER[@]}; do
 		log "Skipping plug-in: $p."
 		continue
 	fi
-	
+
 	# Check if Dark Theme packages must be skipped (for CI builds = completely headless).
 	if [[ "$p" = "theme" ]] && [[ $SKIP_THEME -eq 1 ]]; then
 		log "Skipping plug-in: $p."
@@ -290,6 +316,12 @@ else
 	log "Deploy custom splash image."
 	chmod +x splash.sh && ./splash.sh deploy $VERSION $ECLIPSE_BASE_PATH
 fi
+
+# Remove broken org.apache.commons.logging JAR
+remove_broken_commons_logging
+
+# Restore non-broken org.apache.commons.logging JAR
+restore_non_broken_commons_logging
 
 log "Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
