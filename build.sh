@@ -203,9 +203,11 @@ remove_update_sites () {
 remove_broken_commons_logging () {
 	log "Removes broken org.apache.commons.logging JAR from plug-ins."
 	rm $ECLIPSE_BASE_PATH/plugins/org.apache.commons.logging_1.2.0.v20180409-1502.jar
-	# force org.eclipse.equinox to 
+	# force org.eclipse.equinox to take correct JAR into account
 	# org.apache.commons.logging,1.2.0,plugins/org.apache.commons.logging_1.2.0.jar,4,false
 	sed -i '/org.apache.commons.lang3/a org.apache.commons.logging,1.2.0,plugins/org.apache.commons.logging_1.2.0.jar,4,false' $ECLIPSE_BASE_PATH/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info
+	# org.apache.commons.logging,1.2.0.v20180409-1502,plugins/org.apache.commons.logging_1.2.0.v20180409-1502.jar,4,false
+	sed -i '/org.apache.commons.logging,1.2.0.v20180409-1502,plugins\/org.apache.commons.logging_1.2.0.v20180409-1502.jar,4,false/d' $ECLIPSE_BASE_PATH/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info
 }
 
 #
