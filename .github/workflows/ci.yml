@@ -22,7 +22,7 @@ on:
 
 env:
   # Eclipse version to use in this CI
-  VERSION: "2024-12"
+  VERSION: "2025-03"
   # emoflon-headless source URL (needed by macOS-based runner workaround)
   EMOFLON_HEADLESS_SRC: "https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
   # import plugin URL
@@ -263,7 +263,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon macOS user)."
       - name: Install dependencies
         run: |
-          brew install p7zip coreutils grep wget curl gsed
+          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
@@ -283,9 +283,7 @@ jobs:
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
-        run: |
-          export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
-          chmod +x build.sh && ./build.sh -m user -o macos
+        run: chmod +x build.sh && ./build.sh -m user -o macos
       - name: Fix permissions
         run: sudo xattr -cr ./eclipse/Eclipse.app
       - name: Upload artifact
@@ -303,7 +301,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon macOS dev)."
       - name: Install dependencies
         run: |
-          brew install p7zip coreutils grep wget curl gsed
+          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
@@ -323,9 +321,7 @@ jobs:
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
-        run: |
-          export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
-          chmod +x build.sh && ./build.sh -m dev -o macos
+        run: chmod +x build.sh && ./build.sh -m dev -o macos
       - name: Fix permissions
         run: sudo xattr -cr ./eclipse/Eclipse.app
       - name: Upload artifact
@@ -343,7 +339,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon macOS dev HiPE)."
       - name: Install dependencies
         run: |
-          brew install p7zip coreutils grep wget curl gsed
+          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
@@ -363,9 +359,7 @@ jobs:
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
-        run: |
-          export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
-          chmod +x build.sh && ./build.sh -m hipedev -o macos
+        run: chmod +x build.sh && ./build.sh -m hipedev -o macos
       - name: Fix permissions
         run: sudo xattr -cr ./eclipse/Eclipse.app
       - name: Upload artifact
@@ -383,7 +377,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon macOS user)."
       - name: Install dependencies
         run: |
-          brew install p7zip coreutils grep wget curl gsed
+          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
@@ -403,9 +397,7 @@ jobs:
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
-        run: |
-          export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
-          chmod +x build.sh && ./build.sh -m user -o macosarm
+        run: chmod +x build.sh && ./build.sh -m user -o macosarm
       - name: Fix permissions
         run: sudo xattr -cr ./eclipse/Eclipse.app
       - name: Upload artifact
@@ -423,7 +415,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon macOS dev)."
       - name: Install dependencies
         run: |
-          brew install p7zip coreutils grep wget curl gsed
+          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
@@ -443,9 +435,7 @@ jobs:
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
-        run: |
-          export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
-          chmod +x build.sh && ./build.sh -m dev -o macosarm
+        run: chmod +x build.sh && ./build.sh -m dev -o macosarm
       - name: Fix permissions
         run: sudo xattr -cr ./eclipse/Eclipse.app
       - name: Upload artifact
@@ -463,7 +453,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon macOS dev HiPE)."
       - name: Install dependencies
         run: |
-          brew install p7zip coreutils grep wget curl gsed
+          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
@@ -483,9 +473,7 @@ jobs:
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
-        run: |
-          export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
-          chmod +x build.sh && ./build.sh -m hipedev -o macosarm
+        run: chmod +x build.sh && ./build.sh -m hipedev -o macosarm
       - name: Fix permissions
         run: sudo xattr -cr ./eclipse/Eclipse.app
       - name: Upload artifact
