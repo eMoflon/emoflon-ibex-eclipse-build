@@ -35,7 +35,7 @@ OUTPUT_FILE_PREFIX_WINDOWS="eclipse-emoflon-windows"
 OUTOUT_FILE_PREFIX_MACOS="eclipse-emoflon-macos"
 OUTOUT_FILE_PREFIX_MACOSARM="eclipse-emoflon-macos-arm"
 MIRROR="https://ftp.fau.de"
-UPDATESITES="https://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,https://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,https://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://devstyle.codetogether.io/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/,http://update.eclemma.org/,https://pmd.github.io/pmd-eclipse-plugin-p2-site/,https://checkstyle.org/eclipse-cs-update-site/,https://spotbugs.github.io/eclipse/,https://download.eclipse.org/technology/m2e/releases/latest,https://download.eclipse.org/eclipse/updates/4.36-I-builds/"
+UPDATESITES="https://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,https://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,https://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://devstyle.codetogether.io/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/,http://update.eclemma.org/,https://pmd.github.io/pmd-eclipse-plugin-p2-site/,https://checkstyle.org/eclipse-cs-update-site/,https://spotbugs.github.io/eclipse/,https://download.eclipse.org/technology/m2e/releases/latest"
 EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
 
 # Import plug-in:
@@ -264,10 +264,10 @@ install_global_eclipse_settings
 # Update PDE to fix plug-in dependency bug on Windows
 if [[ "$OS" = "windows" ]]; then
 	log "Remove old version of the PDE."
-	uninstall_packages "$UPDATESITES" "./packages/pde-remove-packages.list"
+	uninstall_packages "$UPDATESITES,https://download.eclipse.org/eclipse/updates/4.36-I-builds/" "./packages/pde-remove-packages.list"
 
 	log "Install new version of the PDE."
-	install_packages "$UPDATESITES" "./packages/pde-fix-packages.list"
+	install_packages "$UPDATESITES,https://download.eclipse.org/eclipse/updates/4.36-I-builds/" "./packages/pde-fix-packages.list"
 fi
 
 log "Install Eclipse plug-ins."
