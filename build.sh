@@ -44,7 +44,7 @@ IMPORT_PLUGIN_FILENAME="com.seeq.eclipse.importprojects_$IMPORT_PLUGIN_VERSION.j
 IMPORT_PLUGIN_SRC="https://api.github.com/repos/maxkratz/eclipse-import-projects-plugin/releases/tags/v$IMPORT_PLUGIN_VERSION"
 
 # Array with the order to install the plugins with.
-ORDER_LINUX=("pde-fix" "xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme" "additional")
+ORDER_LINUX=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme" "additional")
 
 #
 # Configure OS specific details
@@ -261,8 +261,14 @@ fi
 # Install global Eclipse settings from config file
 install_global_eclipse_settings
 
-log "Remove old version of the PDE."
-uninstall_packages "$UPDATESITES" "./packages/pde-remove-packages.list"
+# Update PDE to fix plug-in dependency bug on Windows
+if [[ "$OS" = "windows" ]]; then
+	log "Remove old version of the PDE."
+	uninstall_packages "$UPDATESITES" "./packages/pde-remove-packages.list"
+
+	log "Install new version of the PDE."
+	install_packages "$UPDATESITES" "./packages/pde-fix-packages.list"
+fi
 
 log "Install Eclipse plug-ins."
 for p in ${ORDER[@]}; do
