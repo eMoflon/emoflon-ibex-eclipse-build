@@ -1,3 +1,7 @@
-org.eclipse.pde/3.13.3100.v20250330-1800
-org.eclipse.pde.feature.group/3.16.300.v20250330-1800
-org.eclipse.sdk.feature.group/4.36.0.v20250330-1825
+org.eclipse.pde
+org.eclipse.pde.feature.group
+org.eclipse.sdk.feature.group
+org.eclipse.jdt.feature.jar
+org.eclipse.jdt.feature.group
+org.eclipse.platform.feature.group
+org.eclipse.pde.spies.feature.group

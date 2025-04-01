@@ -1,3 +1,7 @@
 org.eclipse.pde
 org.eclipse.pde.feature.group
 org.eclipse.sdk.feature.group
+org.eclipse.jdt.feature.jar
+org.eclipse.jdt.feature.group
+org.eclipse.platform.feature.group
+org.eclipse.pde.spies.feature.group
