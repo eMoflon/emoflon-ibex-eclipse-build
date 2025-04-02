@@ -264,9 +264,11 @@ install_global_eclipse_settings
 # PDE workaround
 log "Remove old version of the PDE."
 if [[ "$OS" = "macos" ]] || [[ "$OS" = "macosarm" ]] || [[ "$OS" = "linux" ]]; then
+	log "Applying PDE workaround for Unix."
 	uninstall_packages "$UPDATESITES" "./packages/pde-remove-packages.list"
 	install_packages "$UPDATESITES" "./packages/pde-fix-packages.list"
 elif [[ "$OS" = "windows" ]]; then
+	log "Applying PDE workaround for Windows."
 	uninstall_packages "$UPDATESITES" "./packages/pde-remove-packages_windows.list"
 	install_packages "$UPDATESITES" "./packages/pde-fix-packages_windows.list"
 fi
