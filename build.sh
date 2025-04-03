@@ -202,10 +202,11 @@ remove_update_sites () {
 # Patches the PDE JAR file to fix a bug with spaces in paths.
 # https://github.com/eclipse-pde/eclipse.pde/pull/1709
 patch_pde_jar () {
+	log "Patching PDE JAR."
 	PDE_JAR_FILE="org.eclipse.pde.core_3.20.100.v20250211-2032.jar"
 	# Remove original JAR file
-	rm -f $ECLIPSE_BIN_PATH/plugins/$PDE_JAR_FILE
-	cp ./patches/$PDE_JAR_FILE $ECLIPSE_BIN_PATH/plugins/$PDE_JAR_FILE
+	rm -f $ECLIPSE_BASE_PATH/plugins/$PDE_JAR_FILE
+	cp ./patches/$PDE_JAR_FILE $ECLIPSE_BASE_PATH/plugins/$PDE_JAR_FILE
 }
 
 #
