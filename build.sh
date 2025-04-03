@@ -195,10 +195,18 @@ remove_update_sites () {
 	# First, create a ZIP as "backup"
 	zip -q -r $UPDATE_SITE_CONFIG_PATH/update-sites.zip $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_ARTIFACT $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_METADATA
 
-	rm -rf $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_ARTIFACT 
+	rm -rf $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_ARTIFACT
 	rm -rf $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_METADATA
 }
 
+# Patches the PDE JAR file to fix a bug with spaces in paths.
+# https://github.com/eclipse-pde/eclipse.pde/pull/1709
+patch_pde_jar () {
+	PDE_JAR_FILE="org.eclipse.pde.core_3.20.100.v20250211-2032.jar"
+	# Remove original JAR file
+	rm -f $ECLIPSE_BIN_PATH/plugins/$PDE_JAR_FILE
+	cp ./patches/$PDE_JAR_FILE $ECLIPSE_BIN_PATH/plugins/$PDE_JAR_FILE
+}
 
 #
 # Script
@@ -290,6 +298,9 @@ else
 	log "Deploy custom splash image."
 	chmod +x splash.sh && ./splash.sh deploy $VERSION $ECLIPSE_BASE_PATH
 fi
+
+# Deploy PDE JAR file path
+patch_pde_jar
 
 log "Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
