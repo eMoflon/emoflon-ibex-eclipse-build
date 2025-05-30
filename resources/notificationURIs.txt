@@ -1,0 +1,3 @@
+https://www.eclipse.org/setups/notification/devstyle/
+https://www.eclipse.org/setups/notification/milestone
+https://www.eclipse.org/setups/notification/java24/index.html
