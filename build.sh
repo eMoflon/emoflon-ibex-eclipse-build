@@ -209,6 +209,15 @@ patch_pde_jar () {
 	cp ./patches/$PDE_JAR_FILE $ECLIPSE_BASE_PATH/plugins/$PDE_JAR_FILE
 }
 
+# Remove all currently known notification URLs.
+# https://github.com/eclipse-packaging/packages/issues/310#issuecomment-2919590417
+remove_notification_urls () {
+	log "Removing Eclipse notification URLs."
+	mkdir -p $ECLIPSE_BASE_PATH/configuration/org.eclipse.oomph.setup/
+	URL_FILE="notificationURIs.txt"
+	cp ./resources/$URL_FILE $ECLIPSE_BASE_PATH/configuration/org.eclipse.oomph.setup/$URL_FILE
+}
+
 #
 # Script
 #
@@ -302,6 +311,9 @@ fi
 
 # Deploy PDE JAR file path
 patch_pde_jar
+
+# Remove notification URLs
+remove_notification_urls
 
 log "Clean-up old archives and create new archive."
 rm -f ./$OUTPUT_FILE
