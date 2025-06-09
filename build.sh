@@ -141,7 +141,7 @@ setup_emoflon_headless_local_updatesite () {
 	# Append local folder to path (has to be absolute and, therefore, dynamic)
 	if [[ ! -z ${GITHUB_WORKSPACE} ]] && [[ "$OS" = "windows" ]]; then
 		log "Using a Github-hosted runner on Windows."
-		UPDATESITES+=",file:/D:/a/emoflon-ibex-eclipse-build/emoflon-ibex-eclipse-build/tmp/emoflon-headless/"
+		UPDATESITES+=",file:/C:/a/emoflon-ibex-eclipse-build/emoflon-ibex-eclipse-build/tmp/emoflon-headless/"
 	elif [[ "$OS" = "linux" ]]; then
 		log "Using a runner on Linux."
 		UPDATESITES+=",file://$PWD/tmp/emoflon-headless/"
