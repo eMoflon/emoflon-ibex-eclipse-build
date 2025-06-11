@@ -195,19 +195,10 @@ remove_update_sites () {
 	# First, create a ZIP as "backup"
 	zip -q -r $UPDATE_SITE_CONFIG_PATH/update-sites.zip $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_ARTIFACT $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_METADATA
 
-	rm -rf $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_ARTIFACT
+	rm -rf $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_ARTIFACT 
 	rm -rf $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_METADATA
 }
 
-# Patches the PDE JAR file to fix a bug with spaces in paths.
-# https://github.com/eclipse-pde/eclipse.pde/pull/1709
-patch_pde_jar () {
-	log "Patching PDE JAR."
-	PDE_JAR_FILE="org.eclipse.pde.core_3.20.100.v20250211-2032.jar"
-	# Remove original JAR file
-	rm -f $ECLIPSE_BASE_PATH/plugins/$PDE_JAR_FILE
-	cp ./patches/$PDE_JAR_FILE $ECLIPSE_BASE_PATH/plugins/$PDE_JAR_FILE
-}
 
 # Remove all currently known notification URLs.
 # https://github.com/eclipse-packaging/packages/issues/310#issuecomment-2919590417
@@ -308,9 +299,6 @@ else
 	log "Deploy custom splash image."
 	chmod +x splash.sh && ./splash.sh deploy $VERSION $ECLIPSE_BASE_PATH
 fi
-
-# Deploy PDE JAR file path
-patch_pde_jar
 
 # Remove notification URLs
 remove_notification_urls
