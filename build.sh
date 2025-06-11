@@ -35,7 +35,7 @@ OUTPUT_FILE_PREFIX_WINDOWS="eclipse-emoflon-windows"
 OUTOUT_FILE_PREFIX_MACOS="eclipse-emoflon-macos"
 OUTOUT_FILE_PREFIX_MACOSARM="eclipse-emoflon-macos-arm"
 MIRROR="https://ftp.fau.de"
-UPDATESITES="https://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,https://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,https://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://devstyle.codetogether.io/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/,http://update.eclemma.org/,https://pmd.github.io/pmd-eclipse-plugin-p2-site/,https://checkstyle.org/eclipse-cs-update-site/,https://spotbugs.github.io/eclipse/,https://download.eclipse.org/technology/m2e/releases/latest"
+UPDATESITES="https://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/,https://hallvard.github.io/plantuml/,https://hipe-devops.github.io/HiPE-Updatesite/hipe.updatesite/,https://www.kermeta.org/k2/update,https://emoflon.org/emoflon-ibex-updatesite/snapshot/updatesite/,https://devstyle.codetogether.io/,https://download.eclipse.org/releases/$VERSION,https://www.codetogether.com/updates/ci/,http://update.eclemma.org/,https://pmd.github.io/pmd-eclipse-plugin-p2-site/,https://checkstyle.org/eclipse-cs-update-site/,https://spotbugs.github.io/eclipse/,https://download.eclipse.org/technology/m2e/releases/latest,https://download.eclipse.org/eclipse/updates/4.36-I-builds/"
 EMOFLON_HEADLESS_SRC="https://api.github.com/repos/eMoflon/emoflon-headless/releases/latest"
 
 # Import plug-in:
@@ -44,7 +44,7 @@ IMPORT_PLUGIN_FILENAME="com.seeq.eclipse.importprojects_$IMPORT_PLUGIN_VERSION.j
 IMPORT_PLUGIN_SRC="https://api.github.com/repos/maxkratz/eclipse-import-projects-plugin/releases/tags/v$IMPORT_PLUGIN_VERSION"
 
 # Array with the order to install the plugins with.
-ORDER_LINUX=("xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme" "additional")
+ORDER_LINUX=("pde-fix" "xtext" "plantuml" "hipe" "kermeta" "misc" "emoflon-headless" "emoflon" "theme" "additional")
 
 #
 # Configure OS specific details
@@ -106,6 +106,20 @@ install_packages () {
 			-application org.eclipse.equinox.p2.director \
 			-repository "$1" \
 			-installIU "$(parse_package_list $2)"
+}
+
+# Uninstalls a given list of packages from a given update site.
+uninstall_packages () {
+	if [[ "$OS" = "macos" ]] || [[ "$OS" = "macosarm" ]]; then
+		chmod +x $ECLIPSE_BIN_PATH
+	fi
+
+	echo "$(parse_package_list $2)"
+
+	$ECLIPSE_BIN_PATH -nosplash \
+			-application org.eclipse.equinox.p2.director \
+			-repository "$1" \
+			-uninstallIU "$(parse_package_list $2)"
 }
 
 # Displays the given input including "=> " on the console.
@@ -199,15 +213,6 @@ remove_update_sites () {
 	rm -rf $UPDATE_SITE_CONFIG_PATH/$UPDATE_SITE_METADATA
 }
 
-# Patches the PDE JAR file to fix a bug with spaces in paths.
-# https://github.com/eclipse-pde/eclipse.pde/pull/1709
-patch_pde_jar () {
-	log "Patching PDE JAR."
-	PDE_JAR_FILE="org.eclipse.pde.core_3.20.100.v20250211-2032.jar"
-	# Remove original JAR file
-	rm -f $ECLIPSE_BASE_PATH/plugins/$PDE_JAR_FILE
-	cp ./patches/$PDE_JAR_FILE $ECLIPSE_BASE_PATH/plugins/$PDE_JAR_FILE
-}
 
 # Remove all currently known notification URLs.
 # https://github.com/eclipse-packaging/packages/issues/310#issuecomment-2919590417
@@ -265,6 +270,9 @@ fi
 # Install global Eclipse settings from config file
 install_global_eclipse_settings
 
+log "Remove old version of the PDE."
+uninstall_packages "$UPDATESITES" "./packages/pde-remove-packages.list"
+
 log "Install Eclipse plug-ins."
 for p in ${ORDER[@]}; do
 	# Check if eMoflon packages must be skipped (for dev builds).
@@ -308,9 +316,6 @@ else
 	log "Deploy custom splash image."
 	chmod +x splash.sh && ./splash.sh deploy $VERSION $ECLIPSE_BASE_PATH
 fi
-
-# Deploy PDE JAR file path
-patch_pde_jar
 
 # Remove notification URLs
 remove_notification_urls
