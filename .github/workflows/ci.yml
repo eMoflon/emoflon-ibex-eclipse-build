@@ -102,11 +102,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -114,7 +114,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -136,11 +136,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -148,7 +148,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -169,7 +169,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -177,7 +177,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -200,7 +200,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -208,7 +208,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -231,11 +231,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -243,7 +243,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -267,11 +267,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -279,7 +279,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -305,11 +305,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -317,7 +317,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -343,11 +343,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -355,7 +355,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -381,11 +381,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -393,7 +393,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -419,11 +419,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -431,7 +431,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -457,11 +457,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -469,7 +469,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -502,11 +502,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -514,7 +514,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -546,11 +546,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -558,7 +558,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
@@ -590,11 +590,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Download splash image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: splash.bmp
       - name: Download emoflon-headless updatesite
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: emoflon-headless-updatesite.zip
       - name: Move emoflon-headless updatesite
@@ -602,7 +602,7 @@ jobs:
           mkdir -p ./tmp/emoflon-headless
           mv emoflon-headless-updatesite.zip ./tmp/emoflon-headless/updatesite.zip
       - name: Download Eclipse import plugin JAR
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: com.seeq.eclipse.importprojects.jar
       - name: Run build script
