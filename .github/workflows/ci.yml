@@ -491,7 +491,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon Windows user)."
       - name: Install dependencies
         run: |
-          choco install wget curl unzip zip --no-progress
+          bash scripts/install-windows-dependencies.sh
       - name: Install correct Java version
         uses: actions/setup-java@v5
         with:
@@ -535,7 +535,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon Windows dev)."
       - name: Install dependencies
         run: |
-          choco install wget curl unzip zip --no-progress
+          bash scripts/install-windows-dependencies.sh
       - name: Install correct Java version
         uses: actions/setup-java@v5
         with:
@@ -579,7 +579,7 @@ jobs:
         run: echo "Started CI build (Eclipse eMoflon Windows dev HiPE)."
       - name: Install dependencies
         run: |
-          choco install wget curl unzip zip --no-progress
+          bash scripts/install-windows-dependencies.sh
       - name: Install correct Java version
         uses: actions/setup-java@v5
         with:
