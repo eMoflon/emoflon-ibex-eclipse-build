@@ -82,6 +82,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v6
+      - name: Install dependencies
+        run: sudo apt-get install -yq imagemagick
       - name: Start message
         run: echo "Creating splash image for version $VERSION."
       - name: Run splash creator script
