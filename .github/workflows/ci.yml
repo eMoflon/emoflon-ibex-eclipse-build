@@ -261,11 +261,11 @@ jobs:
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon macOS user)."
-      - name: Install dependencies
-        run: |
-          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          bash scripts/install-macos-dependencies.sh
       - name: Download splash image
         uses: actions/download-artifact@v8
         with:
@@ -299,11 +299,11 @@ jobs:
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon macOS dev)."
-      - name: Install dependencies
-        run: |
-          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          bash scripts/install-macos-dependencies.sh
       - name: Download splash image
         uses: actions/download-artifact@v8
         with:
@@ -337,11 +337,11 @@ jobs:
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon macOS dev HiPE)."
-      - name: Install dependencies
-        run: |
-          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          bash scripts/install-macos-dependencies.sh
       - name: Download splash image
         uses: actions/download-artifact@v8
         with:
@@ -375,11 +375,11 @@ jobs:
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon macOS user)."
-      - name: Install dependencies
-        run: |
-          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          bash scripts/install-macos-dependencies.sh
       - name: Download splash image
         uses: actions/download-artifact@v8
         with:
@@ -413,11 +413,11 @@ jobs:
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon macOS dev)."
-      - name: Install dependencies
-        run: |
-          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          bash scripts/install-macos-dependencies.sh
       - name: Download splash image
         uses: actions/download-artifact@v8
         with:
@@ -451,11 +451,11 @@ jobs:
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon macOS dev HiPE)."
-      - name: Install dependencies
-        run: |
-          brew install p7zip coreutils grep wget curl
       - name: Check out repository code
         uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          bash scripts/install-macos-dependencies.sh
       - name: Download splash image
         uses: actions/download-artifact@v8
         with:
@@ -489,9 +489,6 @@ jobs:
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows user)."
-      - name: Install dependencies
-        run: |
-          choco install wget curl unzip zip --no-progress
       - name: Install correct Java version
         uses: actions/setup-java@v5
         with:
@@ -501,6 +498,9 @@ jobs:
         run: git config --global core.autocrlf input
       - name: Check out repository code
         uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          bash scripts/install-windows-dependencies.sh
       - name: Download splash image
         uses: actions/download-artifact@v8
         with:
@@ -533,9 +533,6 @@ jobs:
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows dev)."
-      - name: Install dependencies
-        run: |
-          choco install wget curl unzip zip --no-progress
       - name: Install correct Java version
         uses: actions/setup-java@v5
         with:
@@ -545,6 +542,9 @@ jobs:
         run: git config --global core.autocrlf input
       - name: Check out repository code
         uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          bash scripts/install-windows-dependencies.sh
       - name: Download splash image
         uses: actions/download-artifact@v8
         with:
@@ -577,9 +577,6 @@ jobs:
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows dev HiPE)."
-      - name: Install dependencies
-        run: |
-          choco install wget curl unzip zip --no-progress
       - name: Install correct Java version
         uses: actions/setup-java@v5
         with:
@@ -589,6 +586,9 @@ jobs:
         run: git config --global core.autocrlf input
       - name: Check out repository code
         uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          bash scripts/install-windows-dependencies.sh
       - name: Download splash image
         uses: actions/download-artifact@v8
         with:
