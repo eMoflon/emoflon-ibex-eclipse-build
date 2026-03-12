@@ -34,7 +34,7 @@ jobs:
   # This is necessary because some of the Github-hosted macOS-based runner
   # did trigger the API rate limit from time to time.
   collect-github-api-artifacts:
-    runs-on: [ubuntu-22.04]
+    runs-on: [ubuntu-24.04]
     steps:
       - name: Find emoflon-headless updatesite
         run: |
@@ -78,10 +78,12 @@ jobs:
 
   # Create splash image
   create-splash-image:
-    runs-on: [ubuntu-22.04]
+    runs-on: [ubuntu-24.04]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v6
+      - name: Install dependencies
+        run: sudo apt-get install -yq imagemagick
       - name: Start message
         run: echo "Creating splash image for version $VERSION."
       - name: Run splash creator script
@@ -95,7 +97,7 @@ jobs:
   # Build Eclipse eMoflon Linux user
   build-linux-user:
     needs: [create-splash-image, collect-github-api-artifacts]
-    runs-on: [ubuntu-22.04]
+    runs-on: [ubuntu-24.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux user)."
@@ -129,7 +131,7 @@ jobs:
   # Build Eclipse eMoflon Linux dev
   build-linux-dev:
     needs: [create-splash-image, collect-github-api-artifacts]
-    runs-on: [ubuntu-22.04]
+    runs-on: [ubuntu-24.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev)."
@@ -162,7 +164,7 @@ jobs:
   # Build Eclipse eMoflon Linux user CI
   build-linux-user-ci:
     needs: [collect-github-api-artifacts]
-    runs-on: [ubuntu-22.04]
+    runs-on: [ubuntu-24.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux user CI)."
@@ -193,7 +195,7 @@ jobs:
   # Build Eclipse eMoflon Linux dev CI
   build-linux-dev-ci:
     needs: [collect-github-api-artifacts]
-    runs-on: [ubuntu-22.04]
+    runs-on: [ubuntu-24.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev CI)."
@@ -224,7 +226,7 @@ jobs:
   # Build Eclipse eMoflon Linux dev HiPE
   build-linux-dev-hipe:
     needs: [create-splash-image, collect-github-api-artifacts]
-    runs-on: [ubuntu-22.04]
+    runs-on: [ubuntu-24.04]
     steps:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Linux dev HiPE)."
@@ -617,7 +619,7 @@ jobs:
   # Create a release if running on tag
   create-release:
     needs: [build-linux-user, build-linux-dev, build-linux-user-ci, build-linux-dev-ci, build-linux-dev-hipe, build-macos-user, build-macos-dev, build-macos-dev-hipe, build-macos-arm-user, build-macos-arm-dev, build-macos-arm-dev-hipe, build-windows-user, build-windows-dev, build-windows-dev-hipe]
-    runs-on: [ubuntu-22.04]
+    runs-on: [ubuntu-24.04]
     # Only run on pushed tags (and explicitely ignore scheduled runs)
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/') && github.event_name != 'schedule'
     steps:
