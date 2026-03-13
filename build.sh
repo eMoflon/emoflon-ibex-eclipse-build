@@ -213,13 +213,6 @@ remove_notification_urls () {
 # Script
 #
 
-# Patches the slf4j JAR file to fix an installation bug of the checkstyle plug-in.
-patch_slf4j_jar () {
-	log "Patching slf4j JAR."
-	SLF4J_JAR_FILE="org.slf4j.api_1.7.30.v20221112-0806.jar"
-	cp ./patches/$SLF4J_JAR_FILE $ECLIPSE_BASE_PATH/plugins/$SLF4J_JAR_FILE
-}
-
 # Check if script needs to download the initial Eclipse archive.
 if [[ ! -f "./$ARCHIVE_FILE" ]]; then
 	log "Downloading Eclipse $VERSION archive from $MIRROR."
@@ -262,9 +255,6 @@ fi
 
 # Install global Eclipse settings from config file
 install_global_eclipse_settings
-
-# Install slf4j via patch
-patch_slf4j_jar
 
 log "Install Eclipse plug-ins."
 for p in ${ORDER[@]}; do
