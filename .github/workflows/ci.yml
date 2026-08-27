@@ -492,7 +492,7 @@ jobs:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows user)."
       - name: Install correct Java version
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           distribution: 'adopt'
           java-version: '16'
@@ -536,7 +536,7 @@ jobs:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows dev)."
       - name: Install correct Java version
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           distribution: 'adopt'
           java-version: '16'
@@ -580,7 +580,7 @@ jobs:
       - name: Start message
         run: echo "Started CI build (Eclipse eMoflon Windows dev HiPE)."
       - name: Install correct Java version
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           distribution: 'adopt'
           java-version: '16'
