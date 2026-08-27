@@ -494,8 +494,8 @@ jobs:
       - name: Install correct Java version
         uses: actions/setup-java@v6
         with:
-          distribution: 'adopt'
-          java-version: '16'
+          distribution: 'temurin'
+          java-version: '21'
       - name: Fix Git line endings
         run: git config --global core.autocrlf input
       - name: Check out repository code
@@ -538,8 +538,8 @@ jobs:
       - name: Install correct Java version
         uses: actions/setup-java@v6
         with:
-          distribution: 'adopt'
-          java-version: '16'
+          distribution: 'temurin'
+          java-version: '21'
       - name: Fix Git line endings
         run: git config --global core.autocrlf input
       - name: Check out repository code
@@ -582,8 +582,8 @@ jobs:
       - name: Install correct Java version
         uses: actions/setup-java@v6
         with:
-          distribution: 'adopt'
-          java-version: '16'
+          distribution: 'temurin'
+          java-version: '21'
       - name: Fix Git line endings
         run: git config --global core.autocrlf input
       - name: Check out repository code
