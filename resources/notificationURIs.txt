@@ -1,5 +1,5 @@
 https://www.eclipse.org/setups/notification/devstyle/
 https://www.eclipse.org/setups/notification/milestone
 https://www.eclipse.org/setups/notification/java24/index.html
-https://www.eclipse.org/setups/notification/java27/index.html
+https://www.eclipse.org/setups/notification/java27/
 https://www.eclipse.org/setups/notification/sponsor/
